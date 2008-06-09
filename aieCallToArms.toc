@@ -1,0 +1,8 @@
+﻿## Interface: 20400
+## Title: aieCallToArms
+## DefaultState: Enabled
+## Notes: LFG AddOn (R13.3_aie04)
+## LoadOnDemand: 0
+## SavedVariables: aieCTA_SavedVariables
+aieCallToArms.xml
+Bindings.xml
