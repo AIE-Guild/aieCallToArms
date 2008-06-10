@@ -31,15 +31,15 @@ CTAWM = {};
 -- CTA or an XML object must call these functions in OnEvent() and OnUpdate()
 
 CTAWM.onEventVariablesLoaded = function( event )
-	if( CTA_SavedVariables.CTAWM_Variables == nil ) then
-		CTA_SavedVariables.CTAWM_Variables = {
+	if( aieCTA_SavedVariables.CTAWM_Variables == nil ) then
+		aieCTA_SavedVariables.CTAWM_Variables = {
 			data = {},
 			maxEntriesPerRealm = 100
 		}; 
 	end
-	CTA_SavedVariables.CTAWM_Variables.data[GetRealmName()] = CTA_SavedVariables.CTAWM_Variables.data[GetRealmName()] or {};
-	CTAWM.whoTable = CTA_SavedVariables.CTAWM_Variables.data[GetRealmName()];
-	CTAWM.maxEntriesPerRealm = CTA_SavedVariables.CTAWM_Variables.maxEntriesPerRealm;
+	aieCTA_SavedVariables.CTAWM_Variables.data[GetRealmName()] = aieCTA_SavedVariables.CTAWM_Variables.data[GetRealmName()] or {};
+	CTAWM.whoTable = aieCTA_SavedVariables.CTAWM_Variables.data[GetRealmName()];
+	CTAWM.maxEntriesPerRealm = aieCTA_SavedVariables.CTAWM_Variables.maxEntriesPerRealm;
 	
 	CTAWM.preHookSendWho  = SendWho;
 	SendWho = CTAWM.hookedSendWho;

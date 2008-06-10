@@ -1732,7 +1732,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>			
-												CTA_SavedVariables.muteLFGChannel = this:GetChecked();
+												aieCTA_SavedVariables.muteLFGChannel = this:GetChecked();
 											</OnClick>
 											<OnLoad>
 												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
@@ -1768,7 +1768,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>								
-													CTA_SavedVariables.showFilteredChat = this:GetChecked();
+													aieCTA_SavedVariables.showFilteredChat = this:GetChecked();
 											</OnClick>
 											<OnLoad>
 												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
@@ -1804,7 +1804,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>								
-												CTA_SavedVariables.showOnMinimap = this:GetChecked();
+												aieCTA_SavedVariables.showOnMinimap = this:GetChecked();
 											</OnClick>
 											<OnLoad>
 												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
@@ -1823,7 +1823,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>								
-													CTA_SavedVariables.playSoundForNewResults = this:GetChecked();
+													aieCTA_SavedVariables.playSoundForNewResults = this:GetChecked();
 											</OnClick>
 											<OnLoad>
 												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
@@ -3353,7 +3353,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												this:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												CTA_SavedVariables.MinimapArcOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapArcOffset = this:GetValue();
 												CTA_UpdateMinimapIcon();
 												CTA_IconMsg( floor(this:GetValue() ));								
 											</OnValueChanged>
@@ -3379,7 +3379,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												this:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												CTA_SavedVariables.MinimapRadiusOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapRadiusOffset = this:GetValue();
 												CTA_UpdateMinimapIcon();
 												CTA_IconMsg( floor(this:GetValue() ));								
 											</OnValueChanged>
@@ -3406,7 +3406,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												this:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												CTA_SavedVariables.MinimapMsgArcOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapMsgArcOffset = this:GetValue();
 												CTA_UpdateMinimapIcon();
 												CTA_IconMsg( floor(this:GetValue()) );
 											</OnValueChanged>
@@ -3432,7 +3432,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												this:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												CTA_SavedVariables.MinimapMsgRadiusOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapMsgRadiusOffset = this:GetValue();
 												CTA_UpdateMinimapIcon();
 												CTA_IconMsg( floor(this:GetValue() ));								
 											</OnValueChanged>
@@ -3459,7 +3459,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												this:SetValueStep(0.002);
 											</OnLoad>
 											<OnValueChanged>
-												CTA_SavedVariables.MainFrameTransparency = this:GetValue();
+												aieCTA_SavedVariables.MainFrameTransparency = this:GetValue();
 												CTA_MainFrame:SetAlpha( this:GetValue() );
 												CTA_IconMsg( floor( 100 * this:GetValue() ));								
 											</OnValueChanged>
@@ -3531,8 +3531,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												this:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												CTA_SavedVariables.FilterLevel = this:GetValue();
-												CTA_FilterLevelSliderNote:SetText( 	CTA_FilterLevelNotes[ CTA_SavedVariables.FilterLevel ] );						
+												aieCTA_SavedVariables.FilterLevel = this:GetValue();
+												CTA_FilterLevelSliderNote:SetText( 	CTA_FilterLevelNotes[ aieCTA_SavedVariables.FilterLevel ] );						
 											</OnValueChanged>
 										</Scripts>
 									</Slider>																

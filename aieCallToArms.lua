@@ -6,14 +6,14 @@
 		@Author:		Eike Hanus (R10E)		
         @Author:        Mark Rogaski (AIE)
 		@DateCreated: 	26th May 2005
-		@LastUpdate: 	8th June 2008
+		@LastUpdate: 	10th June 2008
 		@Release:		R13.3_aie05
 		@Interface:		20400
 --]]
 
-		CTA_RELEASEVERSION 	= "AIE-05";
-		CTA_RELEASENOTE 	= "AIE-05";
-		CTA_THIS_VERSION	= 504;
+		CTA_RELEASEVERSION 	= "AIE-06";
+		CTA_RELEASENOTE 	= "AIE-06";
+		CTA_THIS_VERSION	= 505;
 	
 --[[	
 		E-Mail Eike Hanus:	Cantoria@Web.de	
@@ -36,7 +36,7 @@ CTA_HORDE						= "Horde";
 CTA_DEFAULT_LFM_TRIGGER					= "lf%d?m";
 CTA_DEFAULT_LFG_TRIGGER					= "lfg";
 
-CTA_SavedVariables = {
+aieCTA_SavedVariables = {
 	version						= 0,
 	runCount					= 0,
 	GreyList 					= {},
@@ -253,7 +253,7 @@ function CTA_OnLoad()
 	--Hook into ChatFrame to hide AddOn communication
 	local old_ChatFrame_OnEvent = ChatFrame_OnEvent;
 	function ChatFrame_OnEvent(event)
-		if( CTA_SavedVariables.muteLFGChannel and ( arg9 or "?" ) == CTA_MONITOR_CHANNEL_NAME ) then
+		if( aieCTA_SavedVariables.muteLFGChannel and ( arg9 or "?" ) == CTA_MONITOR_CHANNEL_NAME ) then
 			return;
 		end
 
@@ -418,17 +418,17 @@ function CTA_SlashHandler(com)
 	--]]
 	
 	if( com == "clear_lfx" ) then
-		CTA_SavedVariables.messageList = {};		
-		CTA_SavedVariables.messageList[GetRealmName()] = CTA_SavedVariables.messageList[GetRealmName()] or {};
-		CTA_SavedVariables.messageList[GetRealmName()][1] = CTA_SavedVariables.messageList[GetRealmName()][1] or {};
-		CTA_SavedVariables.messageList[GetRealmName()][2] = CTA_SavedVariables.messageList[GetRealmName()][2] or {};
+		aieCTA_SavedVariables.messageList = {};		
+		aieCTA_SavedVariables.messageList[GetRealmName()] = aieCTA_SavedVariables.messageList[GetRealmName()] or {};
+		aieCTA_SavedVariables.messageList[GetRealmName()][1] = aieCTA_SavedVariables.messageList[GetRealmName()][1] or {};
+		aieCTA_SavedVariables.messageList[GetRealmName()][2] = aieCTA_SavedVariables.messageList[GetRealmName()][2] or {};
 		CTA_MessageList = nil;
 		if( (UnitFactionGroup("player")) == "Alliance" ) then
 			CTA_IsAllianceFactionUser = 1;
-			CTA_MessageList = CTA_SavedVariables.messageList[GetRealmName()][1];
+			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][1];
 			CTA_Util.chatPrintln( "Showing Alliance Messages" ); 
 		else
-			CTA_MessageList = CTA_SavedVariables.messageList[GetRealmName()][2];
+			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][2];
 			CTA_Util.chatPrintln( "Showing Horde Messages" ); 
 		end	
 		CTA_UpdateResults(); 
@@ -749,7 +749,7 @@ local function OpenLFGChannel()
 end
 
 function autoLFG:Init()
-    self.State = CTA_SavedVariables.autoLFG
+    self.State = aieCTA_SavedVariables.autoLFG
     if self.State then 
         self.CHAT_MSG_CHANNEL_NOTICE = OpenLFGChannel
     end
@@ -776,7 +776,7 @@ function autoLFG:Toggle()
   
   CTA_Println( CTA_AUTO_LFG_IS..": "..(autoLFG.State and CTA_YES or CTA_NO) );
   CTA_UpdateMinimapTexture()
-  CTA_SavedVariables.autoLFG = self.State
+  aieCTA_SavedVariables.autoLFG = self.State
 end
 
 
@@ -818,15 +818,15 @@ end
 
 function CTA_OnEvent( event ) -- Called by XML on Event
 	if(event == "PLAYER_ENTERING_WORLD" and CTA_Reload ) then --"VARIABLES_LOADED") then
-		CTA_MinimapArcSlider:SetValue( CTA_SavedVariables.MinimapArcOffset );
-		CTA_MinimapRadiusSlider:SetValue( CTA_SavedVariables.MinimapRadiusOffset );
-		CTA_MinimapMsgArcSlider:SetValue( CTA_SavedVariables.MinimapMsgArcOffset );
-		CTA_MinimapMsgRadiusSlider:SetValue( CTA_SavedVariables.MinimapMsgRadiusOffset );
+		CTA_MinimapArcSlider:SetValue( aieCTA_SavedVariables.MinimapArcOffset );
+		CTA_MinimapRadiusSlider:SetValue( aieCTA_SavedVariables.MinimapRadiusOffset );
+		CTA_MinimapMsgArcSlider:SetValue( aieCTA_SavedVariables.MinimapMsgArcOffset );
+		CTA_MinimapMsgRadiusSlider:SetValue( aieCTA_SavedVariables.MinimapMsgRadiusOffset );
 		CTA_UpdateMinimapIcon();	
 		CTA_AddGreyToBlack();
 		CTA_ImportIgnoreListToGreyList();	
-		if( not CTA_SavedVariables.runCount or CTA_SavedVariables.runCount == 0 ) then
-			CTA_SavedVariables.runCount = 0;
+		if( not aieCTA_SavedVariables.runCount or aieCTA_SavedVariables.runCount == 0 ) then
+			aieCTA_SavedVariables.runCount = 0;
 			CTA_MainFrame:Show();
 			CTA_SearchFrame:Hide();
 			CTA_MoreFeaturesFrame:Show();
@@ -836,58 +836,58 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 			--CTA_GreyListFrame:Hide();
 			--CTA_LogFrame:Hide();
 		end
-		CTA_SavedVariables.runCount = CTA_SavedVariables.runCount + 1;
+		aieCTA_SavedVariables.runCount = aieCTA_SavedVariables.runCount + 1;
 		
-		CTA_FrameTransparencySlider:SetValue( ( CTA_SavedVariables.MainFrameTransparency or 0.85 ) );
+		CTA_FrameTransparencySlider:SetValue( ( aieCTA_SavedVariables.MainFrameTransparency or 0.85 ) );
 		CTA_MainFrame:SetAlpha( CTA_FrameTransparencySlider:GetValue() );
 			
-		CTA_MuteLFGChannelCheckButton:SetChecked( CTA_SavedVariables.muteLFGChannel );
-		CTA_ShowOnMinimapCheckButton:SetChecked( CTA_SavedVariables.showOnMinimap );
-		CTA_ShowFilteredMessagesInChatCheckButton:SetChecked( CTA_SavedVariables.showFilteredChat );
-		CTA_PlaySoundOnNewResultCheckButton:SetChecked( CTA_SavedVariables.playSoundForNewResults );
+		CTA_MuteLFGChannelCheckButton:SetChecked( aieCTA_SavedVariables.muteLFGChannel );
+		CTA_ShowOnMinimapCheckButton:SetChecked( aieCTA_SavedVariables.showOnMinimap );
+		CTA_ShowFilteredMessagesInChatCheckButton:SetChecked( aieCTA_SavedVariables.showFilteredChat );
+		CTA_PlaySoundOnNewResultCheckButton:SetChecked( aieCTA_SavedVariables.playSoundForNewResults );
 				
-		CTA_SavedVariables.FilterLevel = CTA_SavedVariables.FilterLevel or 4;
-		if( not CTA_SavedVariables.version or CTA_SavedVariables.version < CTA_THIS_VERSION ) then
+		aieCTA_SavedVariables.FilterLevel = aieCTA_SavedVariables.FilterLevel or 4;
+		if( not aieCTA_SavedVariables.version or aieCTA_SavedVariables.version < CTA_THIS_VERSION ) then
 			CTA_MinimapMessageFrame2:AddMessage( CTA_RESETTING_LFX, 1, 1, 1 );
 			CTA_LogMsg( CTA_RESETTING_LFX );
-			CTA_SavedVariables.version = CTA_THIS_VERSION;
-			CTA_SavedVariables.FilterLevel = 4;
-			CTA_SavedVariables.messageList = {};
+			aieCTA_SavedVariables.version = CTA_THIS_VERSION;
+			aieCTA_SavedVariables.FilterLevel = 4;
+			aieCTA_SavedVariables.messageList = {};
 			--if( GetLocale() == "frFR" ) then
-			--	CTA_SavedVariables.FilterLevel = 1;
+			--	aieCTA_SavedVariables.FilterLevel = 1;
 			--end
 		else
-			CTA_SavedVariables.messageList = CTA_SavedVariables.messageList or {};	
+			aieCTA_SavedVariables.messageList = aieCTA_SavedVariables.messageList or {};	
 		end
 		
-		--CTA_SavedVariables.userChannelName = CTA_SavedVariables.userChannelName or CTA_MONITOR_CHANNEL_NAME;
+		--aieCTA_SavedVariables.userChannelName = aieCTA_SavedVariables.userChannelName or CTA_MONITOR_CHANNEL_NAME;
 		
-		CTA_SavedVariables.messageList[GetRealmName()] = CTA_SavedVariables.messageList[GetRealmName()] or {};
-		CTA_SavedVariables.messageList[GetRealmName()][1] = CTA_SavedVariables.messageList[GetRealmName()][1] or {};
-		CTA_SavedVariables.messageList[GetRealmName()][2] = CTA_SavedVariables.messageList[GetRealmName()][2] or {};
+		aieCTA_SavedVariables.messageList[GetRealmName()] = aieCTA_SavedVariables.messageList[GetRealmName()] or {};
+		aieCTA_SavedVariables.messageList[GetRealmName()][1] = aieCTA_SavedVariables.messageList[GetRealmName()][1] or {};
+		aieCTA_SavedVariables.messageList[GetRealmName()][2] = aieCTA_SavedVariables.messageList[GetRealmName()][2] or {};
 		
 		CTA_MessageList = nil;
 		if( (UnitFactionGroup("player")) == "Alliance" ) then
 			CTA_IsAllianceFactionUser = 1;
-			CTA_MessageList = CTA_SavedVariables.messageList[GetRealmName()][1];
+			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][1];
 			CTA_LogMsg( CTA_SHOWING_ALLIANCE_LFX ); 
 		else
-			CTA_MessageList = CTA_SavedVariables.messageList[GetRealmName()][2];
+			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][2];
 			CTA_LogMsg( CTA_SHOWING_HORDE_LFX ); 
 		end	
 		
-		CTA_SavedVariables.timeLastMsgAdded = CTA_SavedVariables.timeLastMsgAdded or 0;
-		if( time() - CTA_SavedVariables.timeLastMsgAdded > 900 ) then
+		aieCTA_SavedVariables.timeLastMsgAdded = aieCTA_SavedVariables.timeLastMsgAdded or 0;
+		if( time() - aieCTA_SavedVariables.timeLastMsgAdded > 900 ) then
 			CTA_MinimapMessageFrame2:AddMessage( CTA_CLEAR_OLD_MSGS, 1, 1, 1 ); 
 			CTA_LogMsg( CTA_CLEAR_OLD_MSGS );
 			CTA_MessageList = {};
 		end
 		
-		CTA_FilterLevelSlider:SetValue( CTA_SavedVariables.FilterLevel );
-		CTA_FilterLevelSliderNote:SetText( 	CTA_FilterLevelNotes[ CTA_SavedVariables.FilterLevel ] );						
+		CTA_FilterLevelSlider:SetValue( aieCTA_SavedVariables.FilterLevel );
+		CTA_FilterLevelSliderNote:SetText( 	CTA_FilterLevelNotes[ aieCTA_SavedVariables.FilterLevel ] );						
 		
-		CTA_SavedVariables.chatFrameNum = CTA_SavedVariables.chatFrameNum or 1;
-		CTA_ChatFrameNumberEditBox:SetText( CTA_SavedVariables.chatFrameNum );
+		aieCTA_SavedVariables.chatFrameNum = aieCTA_SavedVariables.chatFrameNum or 1;
+		CTA_ChatFrameNumberEditBox:SetText( aieCTA_SavedVariables.chatFrameNum );
 		
 		CTAWM.onEventVariablesLoaded(event);	
 		
@@ -1086,7 +1086,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 	
 		for code, opname, com, opt in string.gmatch( arg1, "/cta C<(%d+):(.+):(.+):(.+)>" ) do 	
 		--[[ Removed for beta 4 tests
-			if( CTA_Util.search( com, CTA_SavedVariables.lfmTrigger ) > 0 ) then
+			if( CTA_Util.search( com, aieCTA_SavedVariables.lfmTrigger ) > 0 ) then
 		--]]
 
 				for i = 1, getn(lfxChatMessageList) do
@@ -1132,7 +1132,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 		for code, opname, com, opt in string.gmatch( arg1, "/cta D<(%d+):(.+):(.+):(.+)>" ) do 	
 
 		--[[ Removed for beta 4 tests
-			if( CTA_Util.search( com, CTA_SavedVariables.lfgTrigger ) > 0 ) then
+			if( CTA_Util.search( com, aieCTA_SavedVariables.lfgTrigger ) > 0 ) then
 		--]]
 			
 				for i = 1, getn(lfxChatMessageList) do
@@ -1185,7 +1185,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 
 			-- INSERT SCORING ALGORITHM HERE! ----->
 			
-			local score, mtype = CTA_Util.rateResults( msg, CTA_SavedVariables.FilterLevel );
+			local score, mtype = CTA_Util.rateResults( msg, aieCTA_SavedVariables.FilterLevel );
 			
 			-- <----- INSERT SCORING ALGORITHM HERE!
 
@@ -1245,7 +1245,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
     			entry.op = author;
 
     			table.insert( CTA_MessageList, 1, entry );		
-    			CTA_SavedVariables.timeLastMsgAdded = time();
+    			aieCTA_SavedVariables.timeLastMsgAdded = time();
     			CTA_PollApplyFilters = 1;
     		else
         		for i = 1, getn(lfxChatMessageList) do
@@ -1278,7 +1278,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 				b = info.b;
 			end
 			
-			if( CTA_SavedVariables.showFilteredChat ) then
+			if( aieCTA_SavedVariables.showFilteredChat ) then
 				if( entry.who and entry.who.level ~= 0 ) then
 					DEFAULT_CHAT_FRAME:AddMessage( "[LFG][|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ).."|Hplayer:"..author.."|h"..author.. ", "..entry.who.level.." " .. entry.who.class .. "|h|r]:|c"..mCol..msg .. "|r", r, g, b );
 				else
@@ -1287,7 +1287,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 			end
 
 			-- R10: Show new messages in minimap icon text
-			if( CTA_SavedVariables.showOnMinimap ) then 
+			if( aieCTA_SavedVariables.showOnMinimap ) then 
 				--R11: return to R5 features
 				-- B8: improved
 				if( entry.who and entry.who.level ~= 0 ) then
@@ -1299,7 +1299,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 			--]]
     	--[[elseif( true ) then 
 --    	elseif( CTA_MonitorChatCheckButton:GetChecked() ) then
-    	--	if( not CTA_SavedVariables.lfmTrigger or strlen( CTA_SavedVariables.lfmTrigger ) < 3 ) then return; end
+    	--	if( not aieCTA_SavedVariables.lfmTrigger or strlen( aieCTA_SavedVariables.lfmTrigger ) < 3 ) then return; end
     
     		-- R7
     
@@ -1315,9 +1315,9 @@ function CTA_OnEvent( event ) -- Called by XML on Event
     		local msg = arg1 or "?";
     		local type = "C"
     
-    		local score = CTA_Util.search( msg, CTA_SavedVariables.lfmTrigger );
+    		local score = CTA_Util.search( msg, aieCTA_SavedVariables.lfmTrigger );
     		if( score == 0 ) then
-    			score = CTA_Util.search( msg, CTA_SavedVariables.lfgTrigger );
+    			score = CTA_Util.search( msg, aieCTA_SavedVariables.lfgTrigger );
     			type = "D"
     		end
     		
@@ -1688,7 +1688,7 @@ function CTA_ApplyFiltersToGroupList()
 	cmn = cmn + 1;
 	local pruneCount = 0;
 	local newResult = nil;
-	--local dmn = time() - CTA_SavedVariables.messageList[i].time;
+	--local dmn = time() - aieCTA_SavedVariables.messageList[i].time;
 	
 	-- R11B4
 	local entryToShowInChatAndOrMinimap = nil;
@@ -1819,7 +1819,7 @@ function CTA_ApplyFiltersToGroupList()
 		CTA_LogMsg( CTA_REMOVED_OLD_RESULT_ITEMS[1]..pruneCount..CTA_REMOVED_OLD_RESULT_ITEMS[2] );
 	end
 	
-	if ( oldListSize < getn( CTA_FilteredResultsList ) and CTA_SavedVariables.playSoundForNewResults ) then
+	if ( oldListSize < getn( CTA_FilteredResultsList ) and aieCTA_SavedVariables.playSoundForNewResults ) then
 		PlaySoundFile( "Sound\\Interface\\PickUp\\PutDownRing.wav" );
 	end
 	
@@ -1832,7 +1832,7 @@ function CTA_ApplyFiltersToGroupList()
 			msghex = "bbbbff";
 		end
 		
-		if( CTA_SavedVariables.showFilteredChat ) then
+		if( aieCTA_SavedVariables.showFilteredChat ) then
 			entry.shownInChatAndOrMinimap = 1;
 			local fnum = 1;
 			if( ( CTA_ChatFrameNumberEditBox:GetText() or "" ) ~= "" ) then
@@ -1840,14 +1840,14 @@ function CTA_ApplyFiltersToGroupList()
 			end
 			local frame = getglobal( "ChatFrame"..fnum );
 			if( frame ) then
-				CTA_SavedVariables.chatFrameNum = fnum;
+				aieCTA_SavedVariables.chatFrameNum = fnum;
 				frame:AddMessage( "[|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ).."|Hplayer:"..author.."|h"..author.. ", "..entry.who.level.." " .. entry.who.class .. "|h|r]: |cff"..msghex..entry.message.. "|r", 1, 0.8, 0 );
 			else
 				DEFAULT_CHAT_FRAME:AddMessage( "[|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ).."|Hplayer:"..author.."|h"..author.. ", "..entry.who.level.." " .. entry.who.class .. "|h|r]: |cff"..msghex..entry.message.. "|r", 1, 0.8, 0 );
 			end
 		end
 
-		if( CTA_SavedVariables.showOnMinimap ) then 
+		if( aieCTA_SavedVariables.showOnMinimap ) then 
 			entry.shownInChatAndOrMinimap = 2;
 			CTA_MinimapMessageFrame:AddMessage( "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ).."|Hplayer:"..author.."|h "..author.. ", "..entry.who.level.." " .. entry.who.class .. "|h|r", 1, 0.8, 0 );
 			CTA_MinimapMessageFrame2:AddMessage( "|cff"..msghex..entry.message.. "|r", 1, 0.8, 0 );
@@ -3245,7 +3245,7 @@ function CTA_UpdateGreyListItems()
 		if( index + CTA_PlayerListOffset <= gls  ) then 
 			local data = CTA_BlackList[ index + CTA_PlayerListOffset ];
 			getglobal( "CTA_GreyListItem"..index.."NameLabel" ):SetText( data.name );
-			local i = CTA_FindInList( data.name, CTA_SavedVariables.GreyList );
+			local i = CTA_FindInList( data.name, aieCTA_SavedVariables.GreyList );
 			if( i ) then
 				getglobal( "CTA_GreyListItem"..index.."NoteLabel" ):SetTextColor( 1, 1, 1 );
 			else
@@ -3289,10 +3289,10 @@ end
 function CTA_EditGreyListItem()
 	local listItem = getglobal( this:GetName() );
 	CTA_GreyListItemEditFrame.name = ( getglobal( listItem:GetName().."NameLabel" ):GetText() or "?" );
-	if( not CTA_FindInList( CTA_GreyListItemEditFrame.name, CTA_SavedVariables.GreyList ) ) then
-		CTA_AddPlayer( CTA_GreyListItemEditFrame.name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, CTA_SavedVariables.GreyList );
+	if( not CTA_FindInList( CTA_GreyListItemEditFrame.name, aieCTA_SavedVariables.GreyList ) ) then
+		CTA_AddPlayer( CTA_GreyListItemEditFrame.name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, aieCTA_SavedVariables.GreyList );
 	end
-	CTA_GreyListItemEditFrameEditBox:SetText( CTA_SavedVariables.GreyList[ CTA_FindInList( CTA_GreyListItemEditFrame.name, CTA_SavedVariables.GreyList ) ].note );
+	CTA_GreyListItemEditFrameEditBox:SetText( aieCTA_SavedVariables.GreyList[ CTA_FindInList( CTA_GreyListItemEditFrame.name, aieCTA_SavedVariables.GreyList ) ].note );
 	CTA_GreyListItemEditFrameTitleLabel:SetText( CTA_EDIT_PLAYER..": "..CTA_GreyListItemEditFrame.name );
 	CTA_GreyListItemEditFrame:Show();
 end
@@ -3306,7 +3306,7 @@ end
 --]]
 		
 function CTA_GreyListItemSaveChanges() -- Called by XML
-	CTA_SavedVariables.GreyList[CTA_FindInList( CTA_GreyListItemEditFrame.name, CTA_SavedVariables.GreyList )].note = CTA_GreyListItemEditFrameEditBox:GetText();
+	aieCTA_SavedVariables.GreyList[CTA_FindInList( CTA_GreyListItemEditFrame.name, aieCTA_SavedVariables.GreyList )].note = CTA_GreyListItemEditFrameEditBox:GetText();
 	CTA_BlackList[CTA_FindInList( CTA_GreyListItemEditFrame.name, CTA_BlackList )].note = CTA_GreyListItemEditFrameEditBox:GetText();
 	
 	CTA_GreyListItemEditFrame:Hide();
@@ -3323,7 +3323,7 @@ end
 		
 function CTA_DeletePlayer() -- Called by XML
 	table.remove( CTA_BlackList , CTA_FindInList( CTA_GreyListItemEditFrame.name, CTA_BlackList ) );
-	table.remove( CTA_SavedVariables.GreyList , CTA_FindInList( CTA_GreyListItemEditFrame.name, CTA_SavedVariables.GreyList ) );
+	table.remove( aieCTA_SavedVariables.GreyList , CTA_FindInList( CTA_GreyListItemEditFrame.name, aieCTA_SavedVariables.GreyList ) );
 	CTA_GreyListItemEditFrame:Hide();
 	CTA_ShowGreyListFrame();
 end
@@ -3336,8 +3336,8 @@ function CTA_ImportFriendsToGreyList()
 	numFriends = GetNumFriends();
 	for i=1,numFriends do
 		local name, level, class, area, connected = GetFriendInfo(i);
-		if( not CTA_SavedVariables.GreyList[name] ) then
-			CTA_AddPlayer( name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, CTA_SavedVariables.GreyList );
+		if( not aieCTA_SavedVariables.GreyList[name] ) then
+			CTA_AddPlayer( name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, aieCTA_SavedVariables.GreyList );
 		end
 	end		
 end
@@ -3355,7 +3355,7 @@ function CTA_ImportIgnoreListToGreyList()
 	local numIgnores = GetNumIgnores();
 	for i = 1, numIgnores do
 		local name = GetIgnoreName(i);
-		CTA_AddPlayer( name, CTA_DEFAULT_IMPORTED_IGNORED_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, CTA_SavedVariables.GreyList );
+		CTA_AddPlayer( name, CTA_DEFAULT_IMPORTED_IGNORED_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, aieCTA_SavedVariables.GreyList );
 		CTA_AddPlayer( name, CTA_DEFAULT_IMPORTED_IGNORED_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, CTA_BlackList );
 	end
 end
@@ -3370,8 +3370,8 @@ end
 --]]
 		
 function CTA_AddGreyToBlack()
-	for i = 1, getn(CTA_SavedVariables.GreyList) do
-		CTA_AddToList( CTA_SavedVariables.GreyList[i], CTA_BlackList );
+	for i = 1, getn(aieCTA_SavedVariables.GreyList) do
+		CTA_AddToList( aieCTA_SavedVariables.GreyList[i], CTA_BlackList );
 	end
 end
 
@@ -3528,7 +3528,7 @@ function CTA_DialogOKButton_OnCLick() -- Called by XML
 	if( item:GetName() == "CTA_AddPlayerFrame" ) then
 		local name = CTA_AddPlayerFrameEditBox:GetText();
 		if( name and name ~= "" ) then
-			CTA_AddPlayer( name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, CTA_SavedVariables.GreyList );
+			CTA_AddPlayer( name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, aieCTA_SavedVariables.GreyList );
 			CTA_AddPlayer( name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, CTA_BlackList );
 		end
 		CTA_AddPlayerFrame:Hide();
@@ -3554,12 +3554,12 @@ end
 
 function CTA_UpdateMinimapIcon()
 	CTA_MinimapIcon:SetPoint( "TOPLEFT", "Minimap", "TOPLEFT",
-		55 - ( ( CTA_SavedVariables.MinimapRadiusOffset ) * cos( CTA_SavedVariables.MinimapArcOffset ) ),
-		( ( CTA_SavedVariables.MinimapRadiusOffset ) * sin( CTA_SavedVariables.MinimapArcOffset ) ) - 55
+		55 - ( ( aieCTA_SavedVariables.MinimapRadiusOffset ) * cos( aieCTA_SavedVariables.MinimapArcOffset ) ),
+		( ( aieCTA_SavedVariables.MinimapRadiusOffset ) * sin( aieCTA_SavedVariables.MinimapArcOffset ) ) - 55
 	);
 	CTA_MinimapMessageFrame:SetPoint( "TOPRIGHT", "Minimap", "TOPRIGHT",
-		( 0 - ( ( CTA_SavedVariables.MinimapMsgRadiusOffset ) * cos( CTA_SavedVariables.MinimapMsgArcOffset ) ) ) - 55,
-		( ( CTA_SavedVariables.MinimapMsgRadiusOffset ) * sin (CTA_SavedVariables.MinimapMsgArcOffset ) ) - 55
+		( 0 - ( ( aieCTA_SavedVariables.MinimapMsgRadiusOffset ) * cos( aieCTA_SavedVariables.MinimapMsgArcOffset ) ) ) - 55,
+		( ( aieCTA_SavedVariables.MinimapMsgRadiusOffset ) * sin (aieCTA_SavedVariables.MinimapMsgArcOffset ) ) - 55
 	);
 
 end

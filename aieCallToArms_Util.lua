@@ -649,7 +649,7 @@ match_score = {
 	------------------------------------------------------------------------------------------------------------------------
 --]]
 CTA_Util.testRun = function ( start, stop )
-	if( not CTA_SavedVariables.lfmTrigger or strlen( CTA_SavedVariables.lfmTrigger ) < 3 ) then return; end
+	if( not aieCTA_SavedVariables.lfmTrigger or strlen( aieCTA_SavedVariables.lfmTrigger ) < 3 ) then return; end
 	
 	start = start or 1
 	stop = stop or table.getn(data_to_parse)
