@@ -1,7 +1,8 @@
 ﻿## Interface: 20400
 ## Title: aieCallToArms
+## Version: 13.3.07
 ## DefaultState: Enabled
-## Notes: LFG AddOn (R13.3_aie05)
+## Notes: LFG AddOn for Alea Iacta Est on Earthen Ring
 ## LoadOnDemand: 0
 ## SavedVariables: aieCTA_SavedVariables
 aieCallToArms.xml

@@ -31,7 +31,7 @@ CTA_ANY_CLASS 				= "Any class";
 
 -- User interface --
 
-CTA_CALL_TO_ARMS 			= "Call To Arms";
+CTA_CALL_TO_ARMS 			= "AIE Call To Arms";
 
 CTA_GROUP				= "group";
 CTA_PARTY				= "party";

@@ -38,7 +38,7 @@ if( GetLocale() == "frFR" ) then
 	
 	-- User interface --
 	
-	CTA_CALL_TO_ARMS = "Call To Arms";
+	CTA_CALL_TO_ARMS = "AIE Call To Arms";
 	
 	CTA_GROUP = "groupe";
 	CTA_PARTY = "groupe";

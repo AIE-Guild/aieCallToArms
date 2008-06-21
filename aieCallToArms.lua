@@ -11,9 +11,9 @@
 		@Interface:		20400
 --]]
 
-		CTA_RELEASEVERSION 	= "AIE-06";
-		CTA_RELEASENOTE 	= "AIE-06";
-		CTA_THIS_VERSION	= 505;
+		CTA_RELEASEVERSION 	= "R13.3.07";
+		CTA_RELEASENOTE 	= "R13.3.07";
+		CTA_THIS_VERSION	= 506;
 	
 --[[	
 		E-Mail Eike Hanus:	Cantoria@Web.de	
@@ -1950,21 +1950,27 @@ function CTA_UpdateResults()
 				elseif( entry.ctaType== "B" ) then
 
 --					mainText = entry.author..": "..entry.message;
-					mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.author.."|r: "..entry.message;
-					if( entry.who and entry.who.level ~= 0 ) then
-						if( entry.who.guild == "<>" ) then
-							moreText = "Level "..entry.who.level.." "..entry.who.class;
-						else
-							moreText = "Level "..entry.who.level.." "..entry.who.class..", "..entry.who.guild;
-						end
-						--[[
-						if( entry.grouped == "yes" ) then
-							moreText = moreText.." - In a group at tiem of message ";
-						else
-							moreText = moreText.." (not in a group)";
-						end
-						]]
-					end
+                    if (entry.who) then
+					    mainText = "|cff" .. CTA_ClassColors[entry.who.class] 
+                            .. entry.author .. "|r: " .. entry.message;
+                        if (entry.who.level ~= 0) then
+                            if( entry.who.guild == "<>" ) then
+                                moreText = "Level "..entry.who.level.." "..entry.who.class;
+                            else
+                                moreText = "Level "..entry.who.level.." "..entry.who.class..", "..entry.who.guild;
+                            end
+                            --[[
+                            if( entry.grouped == "yes" ) then
+                                moreText = moreText.." - In a group at tiem of message ";
+                            else
+                                moreText = moreText.." (not in a group)";
+                            end
+                            ]]
+                        end
+                    else
+					    mainText = "|cffffffff" .. entry.author .. "|r: " 
+                            .. entry.message;
+                    end
 --			rightText = "forwarded by "..entry.author.." "..rightText;
 				rightText = CTA_PLAYER_LAST_UPDATE.. rightText;
 						

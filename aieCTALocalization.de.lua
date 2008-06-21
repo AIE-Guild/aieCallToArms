@@ -29,7 +29,7 @@ if ( GetLocale() == "deDE" ) then
 	
 	-- User interface --
 	
-	CTA_CALL_TO_ARMS 			= "Call To Arms";
+	CTA_CALL_TO_ARMS 			= "AIE Call To Arms";
 	
 	CTA_GROUP 				= "Schlachtgruppe";
 	CTA_PARTY 				= "Gruppe";
