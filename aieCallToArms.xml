@@ -2,8 +2,6 @@
 C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 
 
-
-
 	<!-- 
 		LUA Script files
 	-->
@@ -119,7 +117,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				GameTooltip:Hide();
 			</OnLeave>	
 			<OnClick>
-				if ( this:GetChecked() ) then
+				if ( self:GetChecked() ) then
 					PlaySound("igMainMenuOptionCheckBoxOff");
 				else
 					PlaySound("igMainMenuOptionCheckBoxOn");
@@ -134,10 +132,10 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
         </Size>
 		<Scripts>
 			<OnLoad>
-				this:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 1);
+				self:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 1);
 			</OnLoad>			
 			<OnCLick>
-				CTA_Tab_OnCLick();
+				CTA_Tab_OnClick(self, button, down);
 			</OnCLick>
 		</Scripts>
     </Button>
@@ -229,12 +227,12 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 
 		</Frames>			
 	</Frame>		
-
-	<Frame name="CTA_OptionFrameBoxTemplate" inherits="OptionFrameBoxTemplate" virtual="true">		
+<!-- WOW 3.0 replaced OptionFrameBoxTemplate with OptionsBoxTemplate -->
+	<Frame name="CTA_OptionFrameBoxTemplate" inherits="OptionsBoxTemplate" virtual="true">		
 		<Scripts>
 			<OnLoad>
-				this:SetBackdropBorderColor(0.4, 0.4, 0.4);
-				this:SetBackdropColor(0.15, 0.15, 0.15);
+				self:SetBackdropBorderColor(0.4, 0.4, 0.4);
+				self:SetBackdropColor(0.15, 0.15, 0.15);
 			</OnLoad>
 		</Scripts>				
 	</Frame>
@@ -293,7 +291,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				<FontString inherits="ChatFontNormal"/>
 				<Scripts>
 					<OnLoad>
-						this:SetTextInsets(4,0,0,0);
+						self:SetTextInsets(4,0,0,0);
 					</OnLoad>
 				</Scripts>				
 			</EditBox>
@@ -307,7 +305,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						CTA_DialogOKButton_OnCLick();
+						CTA_DialogOKButton_OnClick(self, button, down);
 					</OnClick>
 				</Scripts>
 			</Button>						
@@ -321,7 +319,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						this:GetParent():Hide();
+						self:GetParent():Hide();
 					</OnClick>				
 				</Scripts>
 			</Button>	
@@ -528,11 +526,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				<Scripts>
 					<OnEnter>
 						CTA_ListItemAuxLeft_ShowTooltip();
-						CTA_ResultItem_Hover_On(this:GetParent());
+						CTA_ResultItem_Hover_On(self:GetParent());
 					</OnEnter>
 					<OnLeave>
 						GameTooltip:Hide();
-						CTA_ResultItem_Hover_Off(this:GetParent());
+						CTA_ResultItem_Hover_Off(self:GetParent());
 					</OnLeave>		
 				</Scripts>					
 			</Frame>
@@ -592,24 +590,24 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				<Scripts>
 					<OnEnter>
 						CTA_ListItemAuxRight_ShowTooltip();
-						CTA_ResultItem_Hover_On(this:GetParent());
+						CTA_ResultItem_Hover_On(self:GetParent());
 					</OnEnter>
 					<OnLeave>
 						GameTooltip:Hide();
-						CTA_ResultItem_Hover_Off(this:GetParent());
+						CTA_ResultItem_Hover_Off(self:GetParent());
 					</OnLeave>		
 				</Scripts>					
 			</Frame>	
 		</Frames>		
 		<Scripts>
 		    <OnMouseUp>
-				CTA_ListItem_OnMouseUp();
+				CTA_ListItem_OnMouseUp(self, button);
 		    </OnMouseUp>
 			<OnEnter>
-				CTA_ResultItem_Hover_On(this);
+				CTA_ResultItem_Hover_On(self);
 			</OnEnter>
 			<OnLeave>
-				CTA_ResultItem_Hover_Off(this);
+				CTA_ResultItem_Hover_Off(self);
 			</OnLeave>		
 		</Scripts>					
 	</Frame>		
@@ -743,7 +741,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>	
 					<OnClick>
-						CTA_AcidItemButton_OnClick();
+						CTA_AcidItemButton_OnClick(self, button, down);
 					</OnClick>												
 				</Scripts>
 				<NormalTexture file="Interface\MainMenuBar\UI-MainMenu-ScrollDownButton-Up"/>
@@ -765,7 +763,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						CTA_AcidItemButton_OnClick();
+						CTA_AcidItemButton_OnClick(self, button, down);
 					</OnClick>																									
 				</Scripts>
 				<NormalTexture file="Interface\MainMenuBar\UI-MainMenu-ScrollUpButton-Up"/>
@@ -786,13 +784,13 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnEnter>
-						CTA_ShowTooltip(this);
+						CTA_ShowTooltip(self);
 					</OnEnter>
 					<OnLeave>
 						GameTooltip:Hide();
 					</OnLeave>
 					<OnClick>
-						CTA_AcidItemButton_OnClick();
+						CTA_AcidItemButton_OnClick(self, button, down);
 					</OnClick>																									
 				</Scripts>
 			</Button>			
@@ -1032,7 +1030,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				<Scripts>
 					<OnHyperlinkClick>
 						CTA_Util.chatPrintln( "Clicked" ); 
-						ChatFrame_OnHyperlinkShow(arg1, arg2, arg3);
+						ChatFrame_OnHyperlinkShow(self,link,text,button);
 					</OnHyperlinkClick>
 				</Scripts>
 				<FontString font="Fonts\arialn.ttf" justifyH="RIGHT" nonspacewrap="false">
@@ -1073,7 +1071,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</FontString>	
 				<Scripts>
 					<OnHyperlinkClick>
-						ChatFrame_OnHyperlinkShow(arg1);
+						ChatFrame_OnHyperlinkShow(self,link,text,button);
 					</OnHyperlinkClick>
 				</Scripts>
 			</MessageFrame>		
@@ -1083,28 +1081,28 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				CTA_MinimapIconOnClick(arg1)				
 			</OnClick>	
 			<OnEnter>
-				CTA_ShowTooltip(this);
+				CTA_ShowTooltip(self);
 			</OnEnter>
 		    <OnMouseUp>		    </OnMouseUp>		
 			<OnLeave>			
 				GameTooltip:Hide();
 			</OnLeave>	
 			<OnLoad>
-				this:RegisterForClicks("LeftButtonUp", "RightButtonDown");
+				self:RegisterForClicks("LeftButtonUp", "RightButtonDown");
 
 				CTA_MinimapIconBgTexture:SetVertexColor( 0.5, 0.25, 0.25 );				
 				CTA_UpdateMinimapIcon();
-				this:Show();
+				self:Show();
 			</OnLoad>
 			<OnEvent>
 			</OnEvent>	
 			<OnUpdate>
 			</OnUpdate>	
 		    <OnDragStart>
-		      	this:StartMoving();
+		      	self:StartMoving();
 		    </OnDragStart>
 		    <OnDragStop>
-		      	this:StopMovingOrSizing();
+		      	self:StopMovingOrSizing();
 		    </OnDragStop>								
 		</Scripts>
 		<!-- NormalTexture file="Interface\Addons\CallToArms\ctamini"/>
@@ -1476,8 +1474,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		
 								<Scripts>
 									<OnLoad>
-										UIDropDownMenu_Initialize(this, CTA_SearchDropDown_Init );
-										UIDropDownMenu_SetWidth(200);	
+										UIDropDownMenu_Initialize(self, CTA_SearchDropDown_Init );
+										UIDropDownMenu_SetWidth(self, 200);	
 										UIDropDownMenu_SetSelectedID(CTA_SearchDropDown, 1);
 									</OnLoad>
 								</Scripts>
@@ -1512,15 +1510,15 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 								<FontString inherits="ChatFontNormal"/>
 								<Scripts>
 									<OnEnter>
-										CTA_ShowTooltip(this);
+										CTA_ShowTooltip(self);
 									</OnEnter>
 									<OnLeave>
 										GameTooltip:Hide();
 									</OnLeave>			
 									
 									<OnLoad>
-										this:SetTextInsets(4,0,0,0);
-										getglobal( this:GetName().."TextLabel" ):SetText( CTA_KEYWORDS_DROPDOWN_DESCR );
+										self:SetTextInsets(4,0,0,0);
+										getglobal( self:GetName().."TextLabel" ):SetText( CTA_KEYWORDS_DROPDOWN_DESCR );
 									</OnLoad>
 									<OnTabPressed>
 										if ( ChatFrameEditBox ) then
@@ -1529,7 +1527,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										end								
 									</OnTabPressed>
 									<OnEnterPressed>
-										this:ClearFocus();
+										self:ClearFocus();
 										CTA_ApplyFiltersToGroupList();
 									</OnEnterPressed>
 								
@@ -1665,8 +1663,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				
 										<Scripts>
 											<OnLoad>
-												UIDropDownMenu_Initialize(this, CTA_PlayerClassDropDown_Init );
-												UIDropDownMenu_SetWidth(100);			
+												UIDropDownMenu_Initialize(self, CTA_PlayerClassDropDown_Init );
+												UIDropDownMenu_SetWidth(self,100);			
 												UIDropDownMenu_SetSelectedID(CTA_PlayerClassDropDown, 1);
 											</OnLoad>
 										</Scripts>
@@ -1682,9 +1680,9 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												this:SetTextInsets(4,0,0,0);
-												this:SetWidth( 32 );
-												getglobal( this:GetName().."TextLabel" ):SetText( CTA_SHOW_LEVELS );
+												self:SetTextInsets(4,0,0,0);
+												self:SetWidth( 32 );
+												getglobal( self:GetName().."TextLabel" ):SetText( CTA_SHOW_LEVELS );
 											</OnLoad>
 										</Scripts>				
 									</EditBox>			
@@ -1698,16 +1696,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												this:SetTextInsets(4,0,0,0);
-												this:SetWidth( 32 );
-												getglobal( this:GetName().."TextLabel" ):SetText( "-" );
+												self:SetTextInsets(4,0,0,0);
+												self:SetWidth( 32 );
+												getglobal( self:GetName().."TextLabel" ):SetText( "-" );
 											</OnLoad>
 										</Scripts>				
 									</EditBox>			
 
 
 								</Frames>
-							</Frame>
+							</Frame>se;lk
 
 							<Frame name="CTA_SearchFrame_Filters_GroupInternalFrame" inherits="CTA_OptionFrameBoxTemplate">
 								<Size>
@@ -1732,11 +1730,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>			
-												aieCTA_SavedVariables.muteLFGChannel = this:GetChecked();
+												aieCTA_SavedVariables.muteLFGChannel = self:GetChecked();
 											</OnClick>
 											<OnLoad>
-												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
-												getglobal( this:GetName().."TextLabel" ):SetText( CTA_MUTE_LFG_CHANNEL );
+												getglobal( self:GetName().."TextLabel" ):SetWidth( 500 );
+												getglobal( self:GetName().."TextLabel" ):SetText( CTA_MUTE_LFG_CHANNEL );
 											</OnLoad>
 										</Scripts>							
 									</CheckButton>
@@ -1751,9 +1749,9 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												this:SetTextInsets(4,0,0,0);
-												this:SetWidth( 160 );
-												getglobal( this:GetName().."TextLabel" ):SetText( "Channel Name" );
+												self:SetTextInsets(4,0,0,0);
+												self:SetWidth( 160 );
+												getglobal( self:GetName().."TextLabel" ):SetText( "Channel Name" );
 											</OnLoad>
 										</Scripts>				
 									</EditBox-->	
@@ -1768,11 +1766,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>								
-													aieCTA_SavedVariables.showFilteredChat = this:GetChecked();
+													aieCTA_SavedVariables.showFilteredChat = self:GetChecked();
 											</OnClick>
 											<OnLoad>
-												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
-												getglobal( this:GetName().."TextLabel" ):SetText( CTA_SHOW_IN_CHAT );
+												getglobal( self:GetName().."TextLabel" ):SetWidth( 500 );
+												getglobal( self:GetName().."TextLabel" ):SetText( CTA_SHOW_IN_CHAT );
 											</OnLoad>
 										</Scripts>							
 									</CheckButton>
@@ -1787,9 +1785,9 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												this:SetTextInsets(4,0,0,0);
-												this:SetWidth( 32 );
-												getglobal( this:GetName().."TextLabel" ):SetText( "ChatFrame#" );
+												self:SetTextInsets(4,0,0,0);
+												self:SetWidth( 32 );
+												getglobal( self:GetName().."TextLabel" ):SetText( "ChatFrame#" );
 											</OnLoad>
 										</Scripts>				
 									</EditBox>			
@@ -1804,11 +1802,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>								
-												aieCTA_SavedVariables.showOnMinimap = this:GetChecked();
+												aieCTA_SavedVariables.showOnMinimap = self:GetChecked();
 											</OnClick>
 											<OnLoad>
-												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
-												getglobal( this:GetName().."TextLabel" ):SetText( CTA_SHOW_ON_MINIMAP );
+												getglobal( self:GetName().."TextLabel" ):SetWidth( 500 );
+												getglobal( self:GetName().."TextLabel" ):SetText( CTA_SHOW_ON_MINIMAP );
 											</OnLoad>
 										</Scripts>							
 									</CheckButton>
@@ -1823,11 +1821,11 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnClick>								
-													aieCTA_SavedVariables.playSoundForNewResults = this:GetChecked();
+													aieCTA_SavedVariables.playSoundForNewResults = self:GetChecked();
 											</OnClick>
 											<OnLoad>
-												getglobal( this:GetName().."TextLabel" ):SetWidth( 500 );
-												getglobal( this:GetName().."TextLabel" ):SetText( CTA_PLAY_SOUND );
+												getglobal( self:GetName().."TextLabel" ):SetWidth( 500 );
+												getglobal( self:GetName().."TextLabel" ):SetText( CTA_PLAY_SOUND );
 											</OnLoad>
 										</Scripts>							
 									</CheckButton>		
@@ -1840,14 +1838,13 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						
 				</Frames>		
 			    <Scripts>
-			    <OnLoad>		    	
+			    <OnLoad>		
 			    	for i = 2, CTA_MAX_RESULTS_ITEMS do
 			    		getglobal( "CTA_NewItem"..i ):SetPoint( "TOP", "CTA_NewItem"..(i-1), "BOTTOM", 0, 0 );
 			    	end
 					CTA_RequestInviteButton:Disable();
-					
-					CTA_SearchFrame_Filters_GroupInternalFrameTitle:SetText( CTA_MORE_SEARCH_OPTIONS );
-					CTA_SearchFrame_Filters_PlayerInternalFrameTitle:SetText( CTA_SEARCH_FILTERS );
+					getglobal( "CTA_SearchFrame_Filters_GroupInternalFrameTitle" ):SetText( CTA_MORE_SEARCH_OPTIONS );
+					getglobal( "CTA_SearchFrame_Filters_PlayerInternalFrameTitle"):SetText( CTA_SEARCH_FILTERS );
 			    </OnLoad>
 			  </Scripts>		
 			</Frame>
@@ -2112,17 +2109,17 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								this:SetTextInsets(4,0,0,0);
+								self:SetTextInsets(4,0,0,0);
 							</OnLoad>
 							<OnEditFocusLost>
 								CTA_MyRaidInstantUpdate();
 							</OnEditFocusLost>	
 							<OnTabPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								CTA_MyRaidFrameMaxSizeEditBox:SetFocus();
 							</OnTabPressed>
 							<OnEnterPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								--CTA_MyRaidFrameMaxSizeEditBox:SetFocus();
 								if ( ChatFrameEditBox ) then
 									ChatFrameEditBox:Show();
@@ -2185,14 +2182,14 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 
 						<Scripts>
 							<OnEnter>
-								CTA_ShowTooltip(this);
+								CTA_ShowTooltip(self);
 							</OnEnter>
 							<OnLeave>
 								GameTooltip:Hide();
 							</OnLeave>
 							<OnLoad>
-								UIDropDownMenu_Initialize(this, CTA_RoleplayDropDown_Init );
-								UIDropDownMenu_SetWidth(100);	
+								UIDropDownMenu_Initialize(self, CTA_RoleplayDropDown_Init );
+								UIDropDownMenu_SetWidth(self, 100);	
 								UIDropDownMenu_SetSelectedID(CTA_RoleplayDropDown, 1);
 							</OnLoad>
 						</Scripts>
@@ -2211,17 +2208,17 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								this:SetTextInsets(4,0,0,0);
+								self:SetTextInsets(4,0,0,0);
 							</OnLoad>
 							<OnEditFocusLost>
 								CTA_MyRaidInstantUpdate();
 							</OnEditFocusLost>
 							<OnTabPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								CTA_MyRaidFrameMinLevelEditBox:SetFocus();
 							</OnTabPressed>
 							<OnEnterPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								--CTA_MyRaidFrameMinLevelEditBox:SetFocus();
 								if ( ChatFrameEditBox ) then
 									ChatFrameEditBox:Show();
@@ -2243,17 +2240,17 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								this:SetTextInsets(4,0,0,0);
+								self:SetTextInsets(4,0,0,0);
 							</OnLoad>
 							<OnEditFocusLost>
 								CTA_MyRaidInstantUpdate();
 							</OnEditFocusLost>	
 							<OnTabPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								CTA_MyRaidFramePasswordEditBox:SetFocus();
 							</OnTabPressed>
 							<OnEnterPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								--CTA_MyRaidFramePasswordEditBox:SetFocus();
 								if ( ChatFrameEditBox ) then
 									ChatFrameEditBox:Show();
@@ -2276,17 +2273,17 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								this:SetTextInsets(4,0,0,0);
+								self:SetTextInsets(4,0,0,0);
 							</OnLoad>
 							<OnEditFocusLost>
 								CTA_MyRaidInstantUpdate();
 							</OnEditFocusLost>	
 							<OnTabPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								CTA_MyRaidFrameDescriptionEditBox:SetFocus();
 							</OnTabPressed>
 							<OnEnterPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 								if ( ChatFrameEditBox ) then
 									ChatFrameEditBox:Show();
 									ChatFrameEditBox:SetFocus();
@@ -2314,7 +2311,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 					<Frame name="CTA_Acid7" inherits="CTA_AcidItemTemplate"></Frame>							
 					<Frame name="CTA_Acid8" inherits="CTA_AcidItemTemplate"></Frame>							
 					<Frame name="CTA_Acid9" inherits="CTA_AcidItemTemplate"></Frame>							
-
+					<Frame name="CTA_Acid10" inherits="CTA_AcidItemTemplate"></Frame>							
 					
 
 				
@@ -2352,6 +2349,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 							<CheckButton name="CTA_AcidClassCheckButton7" inherits="CTA_AbstractLabelCheckButton"/>
 							<CheckButton name="CTA_AcidClassCheckButton8" inherits="CTA_AbstractLabelCheckButton"/>
 							<CheckButton name="CTA_AcidClassCheckButton9" inherits="CTA_AbstractLabelCheckButton"/>
+							<CheckButton name="CTA_AcidClassCheckButton10" inherits="CTA_AbstractLabelCheckButton"/>
 						</Frames>
 						<Scripts>
 						    <OnLoad>
@@ -2370,7 +2368,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 								classes[7] = CTA_WARRIOR;
 								classes[8] = CTA_PALADIN;
 								classes[9] = CTA_SHAMAN;
-
+								classes[10] = CTA_DEATHKNIGHT;
+								
 								CTA_AcidEditDialog:SetHeight(CTA_AcidEditDialog:GetHeight()+25);
 						    	
 								CTA_AcidClassCheckButton1:SetPoint( "TOP", "CTA_AcidEditDialog", "TOP", -80, -64 );
@@ -2381,7 +2380,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 									getglobal( "CTA_AcidClassCheckButton"..i.."TextLabel" ):SetText( classes[i] );
 								end
 								
-								for i = 6, 9 do
+								for i = 6, 10 do
 									getglobal( "CTA_AcidClassCheckButton"..i ):SetPoint( "LEFT", "CTA_AcidClassCheckButton"..(i-5), "LEFT", 120, 0 );
 									getglobal( "CTA_AcidClassCheckButton"..i.."TextLabel" ):SetText( classes[i] );
 								end
@@ -2439,7 +2438,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnEnter>
-								CTA_ShowTooltip(this);
+								CTA_ShowTooltip(self);
 							</OnEnter>
 							<OnLeave>
 								GameTooltip:Hide();
@@ -2460,7 +2459,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnEnter>
-								CTA_ShowTooltip(this);
+								CTA_ShowTooltip(self);
 							</OnEnter>
 							<OnLeave>
 								GameTooltip:Hide();
@@ -2483,7 +2482,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 								end
 							</OnClick>
 							<OnLoad>
-								this:SetText( CTA_GO_OFFLINE );
+								self:SetText( CTA_GO_OFFLINE );
 								CTA_PublicStatusLabel:SetText( CTA_RAID_ONLINE_MESSAGE );
 								CTA_PublicStatusLabel:SetTextColor( 0.2, 1, 0.2, 1 );
 							</OnLoad>
@@ -2502,7 +2501,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnEnter>
-								CTA_ShowTooltip(this);
+								CTA_ShowTooltip(self);
 							</OnEnter>
 							<OnLeave>
 								GameTooltip:Hide();
@@ -2707,16 +2706,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								this:SetTextInsets(4,0,0,0);
+								self:SetTextInsets(4,0,0,0);
 							</OnLoad>
 							<OnEditFocusLost>
 								--CTA_MyRaidInstantUpdate();
 							</OnEditFocusLost>	
 							<OnTabPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 							</OnTabPressed>
 							<OnEnterPressed>
-								this:ClearFocus();
+								self:ClearFocus();
 							</OnEnterPressed>													
 						</Scripts>				
 					</EditBox>
@@ -2733,7 +2732,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnLoad>
-								this:SetChecked(1);
+								self:SetChecked(1);
 							</OnLoad>
 						</Scripts>			
 					</CheckButton>	
@@ -2750,7 +2749,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Anchors>
 						<Scripts>
 							<OnEnter>
-								CTA_ShowTooltip(this);
+								CTA_ShowTooltip(self);
 							</OnEnter>
 							<OnLeave>
 								GameTooltip:Hide();
@@ -3046,8 +3045,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										<FontString inherits="ChatFontNormal"/>
 										<Scripts>
 											<OnLoad>
-												this:SetTextInsets(4,0,0,0);
-												this:SetFocus();
+												self:SetTextInsets(4,0,0,0);
+												self:SetFocus();
 											</OnLoad>
 										</Scripts>				
 									</EditBox>
@@ -3189,7 +3188,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												<Scripts>
 													<OnClick>
 														PlaySound("igChatBottom");
-														this:GetParent():ScrollToBottom();
+														self:GetParent():ScrollToBottom();
 													</OnClick>
 												</Scripts>
 												<NormalTexture file="Interface\ChatFrame\UI-ChatIcon-ScrollEnd-Up"/>
@@ -3210,17 +3209,17 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														MessageFrameScrollButton_OnLoad();
+														MessageFrameScrollButton_OnLoad(self);
 													</OnLoad>
 													<OnUpdate>
-														MessageFrameScrollButton_OnUpdate(arg1);
+														MessageFrameScrollButton_OnUpdate(self, elapsed);
 													</OnUpdate>
 													<OnClick>
-														if ( this:GetButtonState() == "PUSHED" ) then
-															this.clickDelay = MESSAGE_SCROLLBUTTON_INITIAL_DELAY;
+														if ( self:GetButtonState() == "PUSHED" ) then
+															self.clickDelay = MESSAGE_SCROLLBUTTON_INITIAL_DELAY;
 														else
 															PlaySound("igChatScrollDown");
-															this:GetParent():ScrollDown();
+															self:GetParent():ScrollDown();
 														end
 													</OnClick>
 												</Scripts>
@@ -3238,17 +3237,17 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 												</Anchors>
 												<Scripts>
 													<OnLoad>
-														MessageFrameScrollButton_OnLoad();
+														MessageFrameScrollButton_OnLoad(self);
 													</OnLoad>
 													<OnUpdate>
-														MessageFrameScrollButton_OnUpdate(arg1);
+														MessageFrameScrollButton_OnUpdate(self, elapsed);
 													</OnUpdate>
 													<OnClick>
-														if ( this:GetButtonState() == "PUSHED" ) then
-															this.clickDelay = MESSAGE_SCROLLBUTTON_INITIAL_DELAY;
+														if ( self:GetButtonState() == "PUSHED" ) then
+															self.clickDelay = MESSAGE_SCROLLBUTTON_INITIAL_DELAY;
 														else
 															PlaySound("igChatScrollUp");
-															this:GetParent():ScrollUp();
+															self:GetParent():ScrollUp();
 														end
 													</OnClick>
 												</Scripts>
@@ -3282,7 +3281,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 						</Frames>
 						<Scripts>
 						    <OnLoad>	
-								CTA_LogFrameInternalFrameTitle:SetText( CTA_LOG_AND_MONITOR );
+								getglobal("CTA_LogFrameInternalFrameTitle"):SetText( CTA_LOG_AND_MONITOR );
 								CTA_LogFrameTitleLabel:SetText( CTA_CALL_TO_ARMS.." - "..CTA_LOG );
 						    </OnLoad>
 						</Scripts>								
@@ -3332,8 +3331,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Offset>
 									</Anchor>
 								</Anchors>	
-								<Frames>
-									<Slider name="CTA_MinimapArcSlider"  inherits="OptionsSliderTemplate">
+									<Frames>
+      						<Slider name="CTA_MinimapArcSlider"  inherits="OptionsSliderTemplate">
 										<Size>
 											<AbsDimension x="360" y="16"/>
 										</Size>
@@ -3346,16 +3345,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(this:GetName().."Text"):SetText(CTA_ICON.." - "..CTA_ADJUST_ANGLE);
-												getglobal(this:GetName().."High"):SetText("360");
-												getglobal(this:GetName().."Low"):SetText("0");
-												this:SetMinMaxValues(0,360);
-												this:SetValueStep(1);
+												getglobal(self:GetName().."Text"):SetText(CTA_ICON.." - "..CTA_ADJUST_ANGLE);
+												getglobal(self:GetName().."High"):SetText("360");
+												getglobal(self:GetName().."Low"):SetText("0");
+												self:SetMinMaxValues(0,360);
+												self:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												aieCTA_SavedVariables.MinimapArcOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapArcOffset = self:GetValue();
 												CTA_UpdateMinimapIcon();
-												CTA_IconMsg( floor(this:GetValue() ));								
+												CTA_IconMsg( floor(self:GetValue() ));								
 											</OnValueChanged>
 										</Scripts>
 									</Slider>
@@ -3372,16 +3371,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(this:GetName().."Text"):SetText(CTA_ICON.." - "..CTA_ADJUST_RADIUS);
-												getglobal(this:GetName().."High"):SetText("160");
-												getglobal(this:GetName().."Low"):SetText("0");
-												this:SetMinMaxValues(0,160);
-												this:SetValueStep(1);
+												getglobal(self:GetName().."Text"):SetText(CTA_ICON.." - "..CTA_ADJUST_RADIUS);
+												getglobal(self:GetName().."High"):SetText("160");
+												getglobal(self:GetName().."Low"):SetText("0");
+												self:SetMinMaxValues(0,160);
+												self:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												aieCTA_SavedVariables.MinimapRadiusOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapRadiusOffset = self:GetValue();
 												CTA_UpdateMinimapIcon();
-												CTA_IconMsg( floor(this:GetValue() ));								
+												CTA_IconMsg( floor(self:GetValue() ));								
 											</OnValueChanged>
 										</Scripts>
 									</Slider>
@@ -3399,16 +3398,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(this:GetName().."Text"):SetText(CTA_ICON_TEXT.." - "..CTA_ADJUST_ANGLE);
-												getglobal(this:GetName().."High"):SetText("360");
-												getglobal(this:GetName().."Low"):SetText("0");
-												this:SetMinMaxValues(0,360);
-												this:SetValueStep(1);
+												getglobal(self:GetName().."Text"):SetText(CTA_ICON_TEXT.." - "..CTA_ADJUST_ANGLE);
+												getglobal(self:GetName().."High"):SetText("360");
+												getglobal(self:GetName().."Low"):SetText("0");
+												self:SetMinMaxValues(0,360);
+												self:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												aieCTA_SavedVariables.MinimapMsgArcOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapMsgArcOffset = self:GetValue();
 												CTA_UpdateMinimapIcon();
-												CTA_IconMsg( floor(this:GetValue()) );
+												CTA_IconMsg( floor(self:GetValue()) );
 											</OnValueChanged>
 										</Scripts>
 									</Slider>
@@ -3425,16 +3424,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(this:GetName().."Text"):SetText(CTA_ICON_TEXT.." - "..CTA_ADJUST_RADIUS);
-												getglobal(this:GetName().."High"):SetText("160");
-												getglobal(this:GetName().."Low"):SetText("0");
-												this:SetMinMaxValues(0,160);
-												this:SetValueStep(1);
+												getglobal(self:GetName().."Text"):SetText(CTA_ICON_TEXT.." - "..CTA_ADJUST_RADIUS);
+												getglobal(self:GetName().."High"):SetText("160");
+												getglobal(self:GetName().."Low"):SetText("0");
+												self:SetMinMaxValues(0,160);
+												self:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												aieCTA_SavedVariables.MinimapMsgRadiusOffset = this:GetValue();
+												aieCTA_SavedVariables.MinimapMsgRadiusOffset = self:GetValue();
 												CTA_UpdateMinimapIcon();
-												CTA_IconMsg( floor(this:GetValue() ));								
+												CTA_IconMsg( floor(self:GetValue() ));								
 											</OnValueChanged>
 										</Scripts>
 									</Slider>	
@@ -3452,16 +3451,16 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(this:GetName().."Text"):SetText( CTA_ADJUST_TRANSPARENCY );
-												getglobal(this:GetName().."High"):SetText("100");
-												getglobal(this:GetName().."Low"):SetText("0");
-												this:SetMinMaxValues(0.1,1);
-												this:SetValueStep(0.002);
+												getglobal(self:GetName().."Text"):SetText( CTA_ADJUST_TRANSPARENCY );
+												getglobal(self:GetName().."High"):SetText("100");
+												getglobal(self:GetName().."Low"):SetText("0");
+												self:SetMinMaxValues(0.1,1);
+												self:SetValueStep(0.002);
 											</OnLoad>
 											<OnValueChanged>
-												aieCTA_SavedVariables.MainFrameTransparency = this:GetValue();
-												CTA_MainFrame:SetAlpha( this:GetValue() );
-												CTA_IconMsg( floor( 100 * this:GetValue() ));								
+												aieCTA_SavedVariables.MainFrameTransparency = self:GetValue();
+												CTA_MainFrame:SetAlpha( self:GetValue() );
+												CTA_IconMsg( floor( 100 * self:GetValue() ));								
 											</OnValueChanged>
 										</Scripts>
 									</Slider>										
@@ -3524,14 +3523,14 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 										</Anchors>
 										<Scripts>
 											<OnLoad>
-												getglobal(this:GetName().."Text"):SetText( CTA_ADJUST_FILTER_LEVEL );
-												getglobal(this:GetName().."High"):SetText("Max");
-												getglobal(this:GetName().."Low"):SetText("Min");
-												this:SetMinMaxValues(1,5);
-												this:SetValueStep(1);
+												getglobal(self:GetName().."Text"):SetText( CTA_ADJUST_FILTER_LEVEL );
+												getglobal(self:GetName().."High"):SetText("Max");
+												getglobal(self:GetName().."Low"):SetText("Min");
+												self:SetMinMaxValues(1,5);
+												self:SetValueStep(1);
 											</OnLoad>
 											<OnValueChanged>
-												aieCTA_SavedVariables.FilterLevel = this:GetValue();
+												aieCTA_SavedVariables.FilterLevel = self:GetValue();
 												CTA_FilterLevelSliderNote:SetText( 	CTA_FilterLevelNotes[ aieCTA_SavedVariables.FilterLevel ] );						
 											</OnValueChanged>
 										</Scripts>
@@ -3555,15 +3554,15 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Frames>	
 	    <Scripts>
 		    <OnDragStart>
-		      this:StartMoving();
+		      self:StartMoving();
 		    </OnDragStart>
 		    <OnDragStop>
-		      this:StopMovingOrSizing();
+		      self:StopMovingOrSizing();
 		    </OnDragStop>
 		    <OnLoad>		    	
-		      this:RegisterForDrag("LeftButton");
-		      tinsert(UISpecialFrames,this:GetName());
-		      this:SetAlpha( 0.85 );
+		      self:RegisterForDrag("LeftButton");
+		      tinsert(UISpecialFrames,self:GetName());
+		      self:SetAlpha( 0.85 );
 		    </OnLoad>
 	  	</Scripts>				
 	</Frame>
@@ -3632,7 +3631,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				<FontString inherits="CTA_ListItemFont" nonspacewrap="true"/>
 				<Scripts>
 					<OnLoad>
-						this:SetTextInsets(4,-4,-4,4);
+						self:SetTextInsets(4,-4,-4,4);
 					</OnLoad>
 				</Scripts>								
 			</EditBox>	
@@ -3646,7 +3645,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 				</Anchors>
 				<Scripts>
 					<OnClick>
-						this:GetParent():Hide();
+						self:GetParent():Hide();
 					</OnClick>				
 				</Scripts>
 			</Button>	
@@ -3669,14 +3668,14 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Anchors>	
 		<Scripts>
 			<OnLoad>
-				this:Show();
-				CTA_OnLoad();				
+				self:Show();
+				CTA_OnLoad(self);				
 			</OnLoad>
 			<OnEvent>
-				CTA_OnEvent(event);
+				CTA_OnEvent(self,event,...);
 			</OnEvent>	
 			<OnUpdate>
-				CTA_OnUpdate(arg1);
+				CTA_OnUpdate(self, elapsed);
 			</OnUpdate>	
 		</Scripts>
 	</Frame>
@@ -3695,20 +3694,20 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 		</Anchors>	
 		<Scripts>
 			<OnLoad>
-				this.ticker = 0;		
-				this.data = {};
+				self.ticker = 0;		
+				self.data = {};
 			</OnLoad>
 			<OnEvent>
 			</OnEvent>	
 			<OnUpdate>
-				this.ticker = this.ticker + arg1;
-				if( this.ticker > 5 ) then
-					this.ticker = 0;
-					if( this.data[1] ) then
-						CTA_SendP2PMessage( this.data[1], this.recipient );
-						table.remove( this.data, 1 );
+				self.ticker = self.ticker + arg1;
+				if( self.ticker > 5 ) then
+					self.ticker = 0;
+					if( self.data[1] ) then
+						CTA_SendP2PMessage( self.data[1], self.recipient );
+						table.remove( self.data, 1 );
 					else
-						this:Hide();
+						self:Hide();
 					end
 				end
 			</OnUpdate>	
@@ -3733,7 +3732,7 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 			</Frames>
 			<Scripts>
 			    <OnLoad>	
-					getglobal( this:GetName().."Title" ):SetText( "InternalFrame" );
+					getglobal( self:GetName().."Title" ):SetText( "InternalFrame" );
 			    </OnLoad>
 			</Scripts>								
 		</Frame>

@@ -36,6 +36,7 @@ CTA_Classes[6] = "ROGUE";
 CTA_Classes[7] = "WARRIOR";
 CTA_Classes[8] = "PALADIN";
 CTA_Classes[9] = "SHAMAN";
+CTA_Classes[10] = "DEATHKNIGHT";
 
 CTA_Classes[CTA_PRIEST] 	= { id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50 };
 CTA_Classes[CTA_MAGE] 		= { id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25 };
@@ -46,6 +47,7 @@ CTA_Classes[CTA_ROGUE] 		= { id=6, txMin=0.50, txMax=0.75, tyMin=0.00, tyMax=0.2
 CTA_Classes[CTA_WARRIOR] 	= { id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25 };
 CTA_Classes[CTA_PALADIN] 	= { id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75 };
 CTA_Classes[CTA_SHAMAN] 	= { id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };	
+CTA_Classes[CTA_DEATHKNIGHT] 	= { id=10, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };	
 
 CTA_Classes["PRIEST"]	 	= { localName=CTA_PRIEST, 	id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50, hex="ffffff" };
 CTA_Classes["MAGE"] 		= { localName=CTA_MAGE, 	id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25, hex="68ccef" };
@@ -56,7 +58,7 @@ CTA_Classes["ROGUE"] 		= { localName=CTA_ROGUE, 	id=6, txMin=0.50, txMax=0.75, t
 CTA_Classes["WARRIOR"]	 	= { localName=CTA_WARRIOR, 	id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25, hex="c69b6d" };
 CTA_Classes["PALADIN"]	 	= { localName=CTA_PALADIN, 	id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75, hex="f48cba" };
 CTA_Classes["SHAMAN"] 		= { localName=CTA_SHAMAN, 	id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50, hex="badb00" };	
-
+CTA_Classes["DEATHKNIGHT"] 		= { localName=CTA_DEATHKNIGHT, 	id=10, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50, hex="c41f3b" };	
 
 local trim;
 local getOps;
@@ -310,7 +312,7 @@ CTA_Util.logPrintln = function ( s, t )
 	if( not m ) then
 		m = "nil";
 	end
-	m = "["..CTA_Util.getTime().."] "..( m or "nil" );
+	m = "["..CTA_GetTime().."] "..( m or "nil" );
 	
 	if( not t ) then
 		CTA_Log:AddMessage( m, 1.0, 1.0, 0.5 );	
@@ -352,11 +354,14 @@ CTA_Util.sendChatMessage = function( message, messageType, channel, hidden )
 		language = CTA_ORCISH;
 	end
 	if( not hidden ) then
-		SendChatMessage( string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+		--SendChatMessage( string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+		ChatThrottleLib:SendChatMessage("NORMAL","CTA", string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
 	elseif( hidden == 1 ) then
-		SendChatMessage( "[CTA] "..string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+		--SendChatMessage( "[CTA] "..string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+		ChatThrottleLib:SendChatMessage("NORMAL","CTA", "[CTA] "..string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
 	else
-		SendChatMessage( "<CTA> "..string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+		--SendChatMessage( "<CTA> "..string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+		ChatThrottleLib:SendChatMessage("NORMAL","CTA","<CTA> "..string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
 	end
 end
 
@@ -682,11 +687,12 @@ CTA_Util.testRun = function ( start, stop )
 		if( score > 0 ) then
 			
 			-- Generate HHMM timestamp
-			local tim, minute = GetGameTime();
-			if( tim < 10 ) then tim = "0"..tim; end
-			if( minute < 10 ) then tim = tim.."0"; end
-			tim = tim..minute;	
-		
+			--local tim, minute = GetGameTime();
+			--if( tim < 10 ) then tim = "0"..tim; end
+			--if( minute < 10 ) then tim = tim.."0"; end
+			--tim = tim..minute;	
+		  local tim = CTA_GetGameTime();
+		  
 			-- CTA_Util.logPrintln( "Picked up lfx msg from "..author.."."); -- R10
 			-- /R7
 		
@@ -766,8 +772,10 @@ CTA_Util.rateResults = function ( msg, fLevel )
 	msgnew = string.gsub(msgnew, "\195\132", "\195\164")
 	msgnew = string.gsub(msgnew, "\195\156", "\195\188")
 	msgnew = string.gsub(msgnew, "[%p%s´`]", " ")	
-	local found = "" -- DEBUG
+	--msgnew = string.gsub(msgnew, "^|c%x+|H(.+)|h%[.*%]", " ")	
 	
+	local found = "" -- DEBUG
+	local sspam = ""
 	local lfx_score = 0
 	local goal_score = 0
 	local class_score = 0
@@ -780,12 +788,23 @@ CTA_Util.rateResults = function ( msg, fLevel )
 		for _ , word in pairs(CTA_TRIGGER_LIST.SPAM) do
 			if string.find(msgnew, word) then
 				spam_score = spam_score + 1
-				found = found .. " " ..word -- DEBUG
+				sspam = sspam .. " " ..word -- DEBUG
 			end
 		end
+		
+		--["message"] = "lf rogue to nlock  |cff1eff00|Hitem:43622:0:0:0:0:0:0:1348445084:72|h[Froststeel Lockbox]|h|r",
+		--string.gfind(str, "(%d*)|c(%x+)|Hitem:(%d+:%d+:%d+:%d+)|h%[(.-)%]|h|r")
+		--local found, _, itemString = string.find(itemLink, "^|c%x+|H(.+)|h%[.*%]")
+		local found, _, itemString = string.find(msg, "|c%x+|H(.+)|h%[.*%]")
+		if found then
+			CTA_Util.logPrintln("Rejected msg with links")
+			return spam_score, 0, "S";
+		end 
+		
 		if( spam_score > 0 ) then  -- Immediately return upon finding Spam and filtering is above 1
---			CTA_Util.logPrintln("Filtered message: ".. msg, "R")
-			return 0, "S";
+				--CTA_Util.logPrintln("Filtered message: ".. msg, "R")
+			CTA_Util.logPrintln("Rejected Spam: ".. sspam)
+			return spam_score, 0, "S";
 		end
 	end
 
@@ -813,20 +832,7 @@ CTA_Util.rateResults = function ( msg, fLevel )
 		end
 	end
 	
-	if( filterLevel == 1 ) then -- Sacha: Level 1 - No filtering
-		return 1, searchtype;
-	end
-	
-	if( filterLevel == 2 ) then -- Sacha: Level 2 - No spam only
-		if( spam_score == 0 ) then
-			return 1, searchtype;
-		else
-			CTA_Util.logPrintln( CTA_Util.formatChatMessage(  ) );
-			return 0, searchtype;
-		end
-	end
-	
-	----->> INSTANCE TRIGGERS <<-----
+		----->> INSTANCE TRIGGERS <<-----
 	for word in string.gmatch(msg, "%[%d+[+D]?]") do
     		goal_score = goal_score +1
     		lfx_score = lfx_score + 1
@@ -837,9 +843,17 @@ CTA_Util.rateResults = function ( msg, fLevel )
 				goal_score = goal_score + 1
 				found = found .. " " ..word -- DEBUG
 				sgoal_score = 1;
+				break;
 			end
 		end
+		-- lets optimize this loop, quit after one keyword is found
+		if sgoal_score == 1 then
+			break
+		end
 	end
+	
+	-- Do we really care about zones??!??  Get rid of them
+	--[[
 	for _ , instance in pairs(CTA_TRIGGER_LIST.ZONE) do
 		for _ , word in pairs(instance) do
 			if string.find(msgnew, word) then
@@ -849,7 +863,7 @@ CTA_Util.rateResults = function ( msg, fLevel )
 			end
 		end
 	end
-	
+	--]]
 
 	----->> CLASS TRIGGERS <<-----
 	for _ , class in pairs(CTA_TRIGGER_LIST.CLASSES) do
@@ -866,40 +880,63 @@ CTA_Util.rateResults = function ( msg, fLevel )
 	----->> LEVEL TRIGGERS <<-----
 	for word in string.gmatch(msgnew, "[^%d]%d%d[^%d]") do
 		word = string.sub(word, 2, 3) + 0
-		if word >= 10 and word <= 70 then
+		--CTA_Util.logPrintln("word: "..word .. "  type: "..type(word))
+		if word >= 10 and word <= 80 then
 			level_score = level_score +1
 		end
-  	end
+  end
 	
-	--CTA_Util.logPrintln("Found: ".. found)
+	if strlen(sspam) > 0 then
+		CTA_Util.logPrintln("SPAM!: ".. sspam)
+	end
 	
+	--[[
+	if strlen(found) > 0 then
+		CTA_Util.logPrintln("Found: ".. found)
+	end
+	--]]
 	
 	local weightedScore = WeightScore(slfx_score, sgoal_score, sclass_score, level_score)
+	--CTA_Util.logPrintln("wscore: "..weightedScore.."/"..filterLevel )
+	
+	
+	if( filterLevel == 1 ) then -- Sacha: Level 1 - No filtering
+		return spam_score, weightedScore, searchtype;
+	end
+	
+	if( filterLevel == 2 ) then -- Sacha: Level 2 - No spam only
+		if( spam_score == 0 ) then
+			return spam_score, weightedScore, searchtype;
+		else
+			CTA_Util.logPrintln( CTA_Util.formatChatMessage(  ) );
+			return spam_score, 0, searchtype;
+		end
+	end
 	
 	if( filterLevel == 3 ) then 
-		if( spam_score == 0 and weightedScore) then
-			return 1, searchtype;
+		if( spam_score == 0 and weightedScore >=1) then
+			return spam_score, weightedScore, searchtype;
 		else
 --			CTA_Util.logPrintln("Filtered message: ".. msg, "R")
-			return 0, searchType;
+			return spam_score, 0, searchType;
 		end
 	elseif( filterLevel == 4 ) then 
 		if( spam_score == 0 and weightedScore >= 2  ) then
-			return 1, searchtype;
+			return spam_score, weightedScore, searchtype;
 		else
 --			CTA_Util.logPrintln("Filtered message: ".. msg, "R")
-			return 0, searchType;
+			return spam_score, 0, searchType;
 		end
 	else 
 		if( spam_score == 0 and weightedScore >= 3  ) then
-			return 1, searchtype;
+			return spam_score, weightedScore, searchtype;
 		else
 --			CTA_Util.logPrintln("Filtered message: ".. msg, "R")
-			return 0, searchType;
+			return spam_score, 0, searchType;
 		end
 	end
 	
 	-- this line should never execute:
 	CTA_Util.chatPrintln( "Huh? how did this happen?" );
 
-end 
+end

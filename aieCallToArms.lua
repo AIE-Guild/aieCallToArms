@@ -1,19 +1,18 @@
 ﻿--[[		---------------------------------------------------------------
-		Call To Arms - Updated for TBC by Sylvanaar
+		Call To Arms - Updated for WotLK by ggman
 		---------------------------------------------------------------
-
+		@Author: 		Larry Lewis
 		@Author:		Sacha Beharry
 		@Author:		Eike Hanus (R10E)		
-        @Author:        Mark Rogaski (AIE)
 		@DateCreated: 	26th May 2005
-		@LastUpdate: 	10th June 2008
-		@Release:		R13.3_aie05
-		@Interface:		20400
+		@LastUpdate: 		5 December 2008
+		@Release:		WotLK
+		@Interface:		30000
 --]]
 
-		CTA_RELEASEVERSION 	= "R13.3.07";
-		CTA_RELEASENOTE 	= "R13.3.07";
-		CTA_THIS_VERSION	= 506;
+		CTA_RELEASEVERSION 	= "WotLK 3.0.3";
+		CTA_RELEASENOTE 	= "WotLK 3.0.3";
+		CTA_THIS_VERSION	= 303;
 	
 --[[	
 		E-Mail Eike Hanus:	Cantoria@Web.de	
@@ -79,7 +78,7 @@ local CTA_GENERAL				= "I";
 local CTA_GROUP_UPDATE			= "G";
 local CTA_BLOCK					= "X";
 local CTA_SEARCH				= "S";
-CTA_NUM_CLASSES           = 9
+CTA_NUM_CLASSES           = 10
 
 
 local CTA_MESSAGE_COLOURS = {
@@ -102,7 +101,8 @@ local CTA_HostingRaidGroup		= nil;
       CTA_InvitationRequests	= {};
 local CTA_OutstandingRequests	= 0;
 local CTA_RequestTimer			= 0;
-
+local CTA_myguild = nil;
+local CTA_myname = nil;
 
 CTA_PollBroadcast 				= nil;
 CTA_PollApplyFilters 			= nil;
@@ -124,7 +124,7 @@ CTA_MessageList						= {};
 local lfxChatMessageList			= {};
 CTA_AutoAnnounce					= nil;
 
-CTA_ForwardThrottle                 = 250
+CTA_ForwardThrottle                 = 10;		--250
 CTA_ForwardTimer					= CTA_ForwardThrottle;
 
 CTA_WhoFlag 						= nil;
@@ -147,6 +147,7 @@ CTA_ClassColors["Rogue"] 		= "fff468";
 CTA_ClassColors["Warrior"]	 	= "c69b6d";
 CTA_ClassColors["Paladin"]	 	= "f48cba";
 CTA_ClassColors["Shaman"] 		= "badb00";	
+CTA_ClassColors["Death Knight"] = "c41f3b";	
 
 CTA_ClassColors[CTA_PRIEST] 	= "ffffff"; --= { id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50 };
 CTA_ClassColors[CTA_MAGE] 		= "68ccef"; --= { id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25 };
@@ -157,6 +158,7 @@ CTA_ClassColors[CTA_ROGUE] 		= "fff468"; --= { id=6, txMin=0.50, txMax=0.75, tyM
 CTA_ClassColors[CTA_WARRIOR] 	= "c69b6d"; --= { id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25 };
 CTA_ClassColors[CTA_PALADIN] 	= "f48cba"; --= { id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75 };
 CTA_ClassColors[CTA_SHAMAN] 	= "badb00";	--= { id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };	
+CTA_ClassColors[CTA_DEATHKNIGHT] 	= "c41f3b";
 
 local CTA_MessageList					= nil;
 CTA_IsAllianceFactionUser		= nil;
@@ -208,22 +210,23 @@ end
 		---------------------------------------------------------------
 --]]
 
-function CTA_OnLoad()
+function CTA_OnLoad(self)
 
 	--Register Slash Command
 	SlashCmdList["CallToArmsCOMMAND"] = CTA_SlashHandler;
 	SLASH_CallToArmsCOMMAND1 = "/cta";
 	
 	--Register Event Listeners
-	this:RegisterEvent("CHAT_MSG_SYSTEM");
-	this:RegisterEvent("PARTY_MEMBERS_CHANGED");
-	this:RegisterEvent("PARTY_LEADER_CHANGED");
-	this:RegisterEvent("CHAT_MSG_WHISPER");
-	this:RegisterEvent("CHAT_MSG_CHANNEL");
-	this:RegisterEvent("RAID_ROSTER_UPDATE");
-	this:RegisterEvent("WHO_LIST_UPDATE");
-	this:RegisterEvent("VARIABLES_LOADED");
-	this:RegisterEvent("PLAYER_ENTERING_WORLD");
+	self:RegisterEvent("CHAT_MSG_SYSTEM");
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self:RegisterEvent("PARTY_LEADER_CHANGED");
+	self:RegisterEvent("CHAT_MSG_WHISPER");
+	self:RegisterEvent("CHAT_MSG_CHANNEL");
+	--self:RegisterEvent("CHAT_MSG_GUILD");
+	self:RegisterEvent("RAID_ROSTER_UPDATE");
+	self:RegisterEvent("WHO_LIST_UPDATE");
+	self:RegisterEvent("VARIABLES_LOADED");
+	self:RegisterEvent("PLAYER_ENTERING_WORLD");
 	
 	 
 	--Announce AddOn to user
@@ -238,6 +241,7 @@ function CTA_OnLoad()
 	CTA_Classes[7] = CTA_WARRIOR;
 	CTA_Classes[8] = CTA_PALADIN;
 	CTA_Classes[9] = CTA_SHAMAN;
+	CTA_Classes[10] = CTA_DEATHKNIGHT;
 
 	CTA_Classes[CTA_PRIEST] 	= 1;
 	CTA_Classes[CTA_MAGE] 		= 2;
@@ -248,15 +252,26 @@ function CTA_OnLoad()
 	CTA_Classes[CTA_WARRIOR] 	= 7;
 	CTA_Classes[CTA_PALADIN] 	= 8;
 	CTA_Classes[CTA_SHAMAN] 	= 9;	
+	CTA_Classes[CTA_DEATHKNIGHT] 	= 10;	
 
-
-	--Hook into ChatFrame to hide AddOn communication
-	local old_ChatFrame_OnEvent = ChatFrame_OnEvent;
-	function ChatFrame_OnEvent(event)
+	CTA_myguild = "<"..(GetGuildInfo("player") or "_")..">";
+	CTA_myname = UnitName("player")
+	print(CTA_myguild, CTA_myname)
+	
+local function myChatFilter(msg)
+		--If chatFilter returns true, the message is discarded.
+		--If chatFilter returns false the second parameter as non-false/nil, the current message text is replaced with your return
+		
 		if( aieCTA_SavedVariables.muteLFGChannel and ( arg9 or "?" ) == CTA_MONITOR_CHANNEL_NAME ) then
+			print("--MUTE--")
 			return;
 		end
-
+		
+		--print("filtering ", this and this:GetName() or "nil", arg2 or "nil", aieCTA_SavedVariables.muteLFGChannel or "nil")
+		--if (true) then
+		--	return false, msg
+		--end
+		
 		-- R5 : effectively makes blacklist an extended ignore list as well
 		if( arg2 and CTA_IgnoreBlacklisted and CTA_FindInList( arg2, CTA_BlackList ) ) then
 			--CTA_IconMsg( arg2, CTA_BLOCK ); -- left for testing, disabled for R7
@@ -267,38 +282,43 @@ function CTA_OnLoad()
 		if( strsub(event, 1, 16) == "CHAT_MSG_WHISPER" ) then
 			-- R11b7: back to hiding all auto-whispers until R12
 			--[[
-			if( arg1 and strsub(arg1, 1, 5) == "[CTA]" ) then --R11b5: visible to cta recipients as well
+			if( msg and strsub(msg, 1, 5) == "[CTA]" ) then --R11b5: visible to cta recipients as well
 				--CTA_IconMsg( arg2, CTA_MESSAGE );
 				if( arg2 == nil or arg2 ~= UnitName("player") ) then
-					CTA_LogMsg( ( arg2 or "nil" )..": "..arg1, CTA_MESSAGE );
+					CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
 					return; --R3
 				else
 					CTA_LogMsg( "Message was shown in chat, arg2 = "..arg2, CTA_MESSAGE );
 				end
 		  	end
 			--]]
-			if( arg1 and strsub(arg1, 2, 4) == "CTA" ) then
+			if( msg and strsub(msg, 2, 4) == "CTA" ) then
 				if( strlen(event) > 16 or arg2 == nil or arg2 == UnitName("player") ) then
-					CTA_LogMsg( ( arg2 or "nil" )..": "..arg1, CTA_MESSAGE );
+					CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
 					return;
                 end
 
-				CTA_LogMsg( ( arg2 or "nil" )..": "..arg1, CTA_MESSAGE );
+				CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
 		  	end
 			--
 			
 		end
 		
 		
-		if ( not arg1 or strsub(event, 1, 16) ~= "CHAT_MSG_WHISPER" or strsub(arg1, 1, 5) ~= "/cta " ) then -- not arg1: R3 bug fix
-			if( not arg1 or not CTA_MainFrame:IsVisible() or not string.find( arg1, CTA_AWAY_FROM_KEYBOARD) ) then -- not arg1: R3 bug fix
-				old_ChatFrame_OnEvent(event);
+		if ( not msg or strsub(event, 1, 16) ~= "CHAT_MSG_WHISPER" or strsub(msg, 1, 5) ~= "/cta " ) then -- not msg: R3 bug fix
+			if( not msg or not CTA_MainFrame:IsVisible() or not string.find( msg, CTA_AWAY_FROM_KEYBOARD) ) then -- not msg: R3 bug fix
+				return false, msg
 			end
 		end
-	end
+end 
+
+
+--ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", myChatFilter)
 
 	ScriptErrors:SetScript("OnShow", CTA_ScriptError );		
 end
+
+
 
 function CTA_ScriptError()
 	local message = ScriptErrors_Message:GetText();
@@ -469,256 +489,261 @@ end
 		@arg The time elapsed since the last call to this function
 --]]
 
-function CTA_OnUpdate( arg1 ) -- Called by XML on Update
-	CTAWM.onUpdate( arg1 );
-	CTA_UpdateTicker = CTA_UpdateTicker + arg1;
-	if( CTA_UpdateTicker >= 1 ) then
-	    if CTA_AutoLFGInit then
-	        autoLFG:Init()
-	        CTA_AutoLFGInit = false
-	    end
+function CTA_OnUpdate(self, elapsed ) -- Called by XML on Update
 	
-		if( CTA_AnnounceTimer > 0 ) then
-			CTA_AnnounceTimer = CTA_AnnounceTimer - 1;
+	CTA_UpdateTicker = CTA_UpdateTicker + elapsed;
+	CTAWM.onUpdate( self, elapsed );
+	if ( CTA_UpdateTicker < 1 ) then
+		return
+	end
+	
+	
+		--print("update: " ..CTA_UpdateTicker.." / "..CTA_ForwardTimer)
+    if CTA_AutoLFGInit then
+        autoLFG:Init()
+        CTA_AutoLFGInit = false
+    end
 
-			-- r7
-			if( CTA_AnnounceTimer == 0 and CTA_AutoAnnounce ) then	
-				if( CTA_PlayerIsAFK ) then
-					CTA_SlashHandler(CTA_AUTO_ANNOUNCE_OFF)
-					CTA_Println( CTA_AFK_ANNOUNCE_OFF );
-				elseif ( CTA_GetNumGroupMembers() > 1 and not CTA_MyRaid ) then
-					autoannouce = nil;
-					CTA_Println( CTA_JOIN_ANNOUNCE_OFF );
-				elseif( CTA_MyRaidIsOnline and CTA_MyRaid ) then
-					CTA_MyRaidInstantUpdate();
-					CTA_SendChatMessage( CTA_AcidSummary, "CHANNEL", CTA_MONITOR_CHANNEL_NAME );
-					CTA_LogMsg( "Sent to lfg channel: ".. CTA_AcidSummary );
-					CTA_AnnounceTimer = 300;
-					PlaySound("TellMessage");
-					CTA_IconMsg( CTA_ANNOUNCED_LFM );
-					CTA_Println( CTA_ANNOUNCED_LFM_EXT );
-				elseif( CTA_LGMPrefixLabel:GetText() and CTA_LFGDescriptionEditBox:GetText() ~= "" ) then
-					CTA_SendChatMessage( CTA_LGMPrefixLabel:GetText()..CTA_LFGDescriptionEditBox:GetText(), "CHANNEL", CTA_MONITOR_CHANNEL_NAME ); --CTA_AutoAnnounce );
-					CTA_LogMsg( "Sent to lfg channel: "..  CTA_LGMPrefixLabel:GetText()..CTA_LFGDescriptionEditBox:GetText() );
-					CTA_AnnounceTimer = 300;
-					PlaySound("TellMessage");
-					CTA_IconMsg( CTA_ANNOUNCED_LFG );
-					CTA_Println( CTA_ANNOUNCED_LFG_EXT );
-				else
-					CTA_SlashHandler(CTA_AUTO_ANNOUNCE_OFF);
-					CTA_Println( CTA_NOTHING_TO_ANNOUNCE );
-				end
+	if( CTA_AnnounceTimer > 0 ) then
+		CTA_AnnounceTimer = CTA_AnnounceTimer - 1;
+
+		-- r7
+		if( CTA_AnnounceTimer == 0 and CTA_AutoAnnounce ) then	
+			if( CTA_PlayerIsAFK ) then
+				CTA_SlashHandler(CTA_AUTO_ANNOUNCE_OFF)
+				CTA_Println( CTA_AFK_ANNOUNCE_OFF );
+			elseif ( CTA_GetNumGroupMembers() > 1 and not CTA_MyRaid ) then
+				autoannouce = nil;
+				CTA_Println( CTA_JOIN_ANNOUNCE_OFF );
+			elseif( CTA_MyRaidIsOnline and CTA_MyRaid ) then
+				CTA_MyRaidInstantUpdate();
+				CTA_SendChatMessage( CTA_AcidSummary, "CHANNEL", CTA_MONITOR_CHANNEL_NAME );
+				CTA_LogMsg( "Sent to lfg channel: ".. CTA_AcidSummary );
+				CTA_AnnounceTimer = 300;
+				PlaySound("TellMessage");
+				CTA_IconMsg( CTA_ANNOUNCED_LFM );
+				CTA_Println( CTA_ANNOUNCED_LFM_EXT );
+			elseif( CTA_LGMPrefixLabel:GetText() and CTA_LFGDescriptionEditBox:GetText() ~= "" ) then
+				CTA_SendChatMessage( CTA_LGMPrefixLabel:GetText()..CTA_LFGDescriptionEditBox:GetText(), "CHANNEL", CTA_MONITOR_CHANNEL_NAME ); --CTA_AutoAnnounce );
+				CTA_LogMsg( "Sent to lfg channel: "..  CTA_LGMPrefixLabel:GetText()..CTA_LFGDescriptionEditBox:GetText() );
+				CTA_AnnounceTimer = 300;
+				PlaySound("TellMessage");
+				CTA_IconMsg( CTA_ANNOUNCED_LFG );
+				CTA_Println( CTA_ANNOUNCED_LFG_EXT );
+			else
+				CTA_SlashHandler(CTA_AUTO_ANNOUNCE_OFF);
+				CTA_Println( CTA_NOTHING_TO_ANNOUNCE );
 			end
-			-- /r7
 		end
+		-- /r7
+	end
+
+	CTA_TimeSinceLastBroadcast = CTA_TimeSinceLastBroadcast + 1;
+	if( CTA_TimeSinceLastBroadcast > 30 ) then
+		CTA_TimeSinceLastBroadcast = 0;
+		
+		if( CTA_MyRaidIsOnline and CTA_MyRaid ) then
+			CTA_PollBroadcast = 1;
+		elseif( CTA_LFGCheckButton:GetChecked() and CTA_LGMPrefixLabel:GetText() and CTA_LFGDescriptionEditBox:GetText() ~= "" ) then
+			if( CTA_GetNumGroupMembers() > 1 ) then
+				CTA_LFGCheckButton:SetChecked( 0 );
+				CTA_Println( CTA_JOIN_STOP_LFG );
+			else
+				CTA_PollBroadcast = 3;
+			end
+		end
+		
+		--/r7
+	end
 	
-		CTA_TimeSinceLastBroadcast = CTA_TimeSinceLastBroadcast + 1;
-		if( CTA_TimeSinceLastBroadcast > 15 ) then
+	CTA_TimeSinceLastFilter = CTA_TimeSinceLastFilter + 1;
+	if( CTA_TimeSinceLastFilter > 10 ) then
+		CTA_TimeSinceLastFilter = 0;
+		CTA_PollApplyFilters = 1;
+	end
+
+	CTA_SpamTimer = CTA_SpamTimer + CTA_UpdateTicker;
+	if( CTA_SpamTimer > 7 ) then
+		CTA_ChannelSpam = {};
+		CTA_SpamTimer = 0;
+		
+          CTA_UpdateMinimapTexture()
+		
+		-- Ok, piggybacking 10s SpamTimer to implement 
+		-- Polled Broadcasting and
+		-- Auto Search Updates.
+		
+		if( CTA_PollApplyFilters ) then
+			CTA_TimeSinceLastFilter = 0;
+			CTA_ApplyFiltersToGroupList();
+		end
+		
+		
+		if( CTA_PollBroadcast and (not CTA_PlayerIsAFK) ) then
 			CTA_TimeSinceLastBroadcast = 0;
 			
-			if( CTA_MyRaidIsOnline and CTA_MyRaid ) then
-				CTA_PollBroadcast = 1;
-			elseif( CTA_LFGCheckButton:GetChecked() and CTA_LGMPrefixLabel:GetText() and CTA_LFGDescriptionEditBox:GetText() ~= "" ) then
-				if( CTA_GetNumGroupMembers() > 1 ) then
-					CTA_LFGCheckButton:SetChecked( 0 );
-					CTA_Println( CTA_JOIN_STOP_LFG );
-				else
-					CTA_PollBroadcast = 3;
-				end
-			end
+			if( CTA_PollBroadcast == 3 ) then --r7
+				if( CTA_LFGCheckButton:GetChecked() and CTA_LGMPrefixLabel:GetText() and CTA_LFGDescriptionEditBox:GetText() ~= "" ) then
 			
-			--/r7
-		end
-		
-		CTA_TimeSinceLastFilter = CTA_TimeSinceLastFilter + 1;
-		if( CTA_TimeSinceLastFilter > 10 ) then
-			CTA_TimeSinceLastFilter = 0;
-			CTA_PollApplyFilters = 1;
-		end
-
-		CTA_SpamTimer = CTA_SpamTimer + CTA_UpdateTicker;
-		if( CTA_SpamTimer > 7 ) then
-			CTA_ChannelSpam = {};
-			CTA_SpamTimer = 0;
-			
-            CTA_UpdateMinimapTexture()
-			
-			-- Ok, piggybacking 10s SpamTimer to implement 
-			-- Polled Broadcasting and
-			-- Auto Search Updates.
-			
-			if( CTA_PollApplyFilters ) then
-				CTA_TimeSinceLastFilter = 0;
-				CTA_ApplyFiltersToGroupList();
-			end
-			
-			
-			if( CTA_PollBroadcast and (not CTA_PlayerIsAFK) ) then
-				CTA_TimeSinceLastBroadcast = 0;
-				
-				if( CTA_PollBroadcast == 3 ) then --r7
-					if( CTA_LFGCheckButton:GetChecked() and CTA_LGMPrefixLabel:GetText() and CTA_LFGDescriptionEditBox:GetText() ~= "" ) then
-				
-						local tim, minute = GetGameTime();
-						if( tim < 10 ) then tim = "0"..tim; end
-						if( minute < 10 ) then tim = tim.."0"; end
-						tim = tim..minute;	
-						
-						local lfgT = CTA_LFGDescriptionEditBox:GetText();
-						
-						--
-						if string.find( lfgT, ":") then lfgT = string.gsub(lfgT, ":", "."); end;
-
-
-						CTA_SendChatMessage( "/cta B<"..tim..":"..lfgT..":"..CTA_RELEASEVERSION..">", "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
-					end
-					CTA_PollBroadcast = nil;
-				elseif( CTA_PollBroadcast == 2 ) then
-					CTA_SendChatMessage("/cta A<>", "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
-					CTA_PollBroadcast = nil;
-				elseif( CTA_MyRaidIsOnline and CTA_MyRaid ) then
-					CTA_BroadcastRaidInfo();
-				end
-			end				
-		end
-		
-		if( CTA_GraceTimer > 0  ) then
-			CTA_GraceTimer = CTA_GraceTimer - CTA_UpdateTicker;
-			--CTA_IconMsg( floor(CTA_GraceTimer) );
-			if( CTA_GraceTimer <= 0 ) then
-				if( CTA_MyRaid and not CTA_PlayerCanHostGroup() ) then
-					CTA_MyRaid = nil;
-				 	CTA_MyRaidIsOnline = nil;
-				 	CTA_HostingRaidGroup = nil;
-					CTA_SearchFrame:Show();
-					CTA_MyRaidFrame:Hide();
-					CTA_StartRaidFrame:Hide();		 	
-				else		
-					CTA_MyRaidInstantUpdate();
-				end		
-			end
-		end
-		
-		-- using new who system in r11b2 for results
-		CTA_RequestTimer = CTA_RequestTimer + CTA_UpdateTicker;
-		if( CTA_RequestTimer > 2 ) then
-			for i = 1, getn( CTA_MessageList ) do
-				if( not CTA_MessageList[i].who ) then
-					local name = CTA_MessageList[i].op or CTA_MessageList[i].author;
-					CTA_MessageList[i].whoAttempts = CTA_MessageList[i].whoAttempts or 0;
+					local tim = CTA_GetGameTime();
 					
-					CTA_MessageList[i].who = CTAWM.toOldFormat(name);
-					if( CTA_MessageList[i].who ) then
-						CTA_Util.logPrintln( "Got who info for ".. CLR:VALUE(name).." after ".. CLR:VALUE(CTA_MessageList[i].whoAttempts) .." attempts");
-						CTA_MessageList[i].whoAttempts = 0;
-					else
-						if( CTA_MessageList[i].whoAttempts < 5 ) then
-							if( CTAWM.getPositionInQueue( name ) == 0 ) then
-								CTA_MessageList[i].whoAttempts = CTA_MessageList[i].whoAttempts + 1;
-								CTA_Util.logPrintln( "Asking for who info for ".. CLR:VALUE(name) ..", attempt ".. CLR:VALUE(CTA_MessageList[i].whoAttempts) );
-								CTAWM.addNameToWhoQueue( name );
-							end
-						else
-							CTA_Util.logPrintln( "Could not get who info for "..CLR:VALUE(name) .." after 5 attempts; setting who info as blank" );
-							local entry = {};
-							entry.level = 0;				
-							CTA_MessageList[i].who = entry;								
-						end
-					end
+					
+					local lfgT = CTA_LFGDescriptionEditBox:GetText();
+					
+					--
+					if string.find( lfgT, ":") then lfgT = string.gsub(lfgT, ":", "."); end;
+
+
+					CTA_SendChatMessage( "/cta B<"..tim..":"..lfgT..":"..CTA_RELEASEVERSION..">", "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
+					CTA_LogMsg( "CTA Broadcast: "..tim..":"..lfgT..":"..CTA_RELEASEVERSION..">");
 				end
+				CTA_PollBroadcast = nil;
+			elseif( CTA_PollBroadcast == 2 ) then
+				CTA_SendChatMessage("/cta A<>", "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
+				CTA_PollBroadcast = nil;
+			elseif( CTA_MyRaidIsOnline and CTA_MyRaid ) then
+				CTA_BroadcastRaidInfo();
 			end
-			
-			-- R11B4: updating automatic invitations to use WhoManager
-			if( CTA_OutstandingRequests > 0 ) then
-				CTA_LogMsg( CTA_OutstandingRequests..CTA_INVITATION_REQUEST_OUTSTANDING );
-				for name, data in pairs(CTA_InvitationRequests) do
-					if( data.status == 1 ) then
-						local pdata = CTAWM.getInformation( name );
-						if( pdata ) then
-							CTA_LogMsg( CTA_VALIDATING_REQUEST_FROM..name );
-							--Data format: { time, level, race, class, guild }
-							local level, class = pdata[2], pdata[4];
-							CTA_OutstandingRequests = CTA_OutstandingRequests - 1;
-							if( CTA_MyRaid and level >= CTA_MyRaid.minLevel and string.find( CTA_GetClassString(CTA_MyRaid.classes),class) ) then
-								InviteUnit( name );
-								CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Valid player - Invitation sent" );	
-								
-								CTA_InvitationRequests[name].status = 2;
-								CTA_InvitationRequests[name].class = class;
-								CTA_InvitationRequests[name].level = level;
-											
-								CTA_IconMsg( CTA_INVITATION_SENT_TO.." "..name, CTA_GROUP_UPDATE );
-								CTA_SendAutoMsg( CTA_INVITATION_SENT_MESSAGE, name );
-								CTA_MyRaidInstantUpdate();
-							else
-								CTA_InvitationRequests[name] = nil;
-								CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Invalid player - request removed" );	
-								
-								CTA_SendAutoMsg( CTA_WRONG_LEVEL_OR_CLASS, name );	
-							end
-							
-						else
-							data.whoAttempts = data.whoAttempts or 0;
-							if( data.whoAttempts < 5 ) then
-								if( CTAWM.getPositionInQueue( name ) == 0 ) then
-									data.whoAttempts = data.whoAttempts + 1;
-									CTA_Util.logPrintln( "Asking for who info for ".. CLR:VALUE(name)..", attempt ".. data.whoAttempts ); -- R11B5: fixed bug
-									CTAWM.addNameToWhoQueue( name );
-								else
-									CTA_Util.logPrintln( "Who request for ".. CLR:VALUE(name).." is queued in position ".. CTAWM.getPositionInQueue( name ) );
-								end
-							else
-								CTA_Util.logPrintln( "Could not get who info for "..CLR:VALUE(name) .." after 5 attempts; removing request" );
-								--CTA_InvitationRequests[name] = nil;							
-								CTA_LogMsg( "Player "..name.." could not be found. Removing from requests list." );	
-								CTA_RemoveRequest(name); -- R11B5: fixed bug - was (CTA_WhoName)
-							end
-						end
-					end
-				end
-			end	
-			
-			CTA_RequestTimer = 0;
-		end		
-		--[[
-		CTA_RequestTimer = CTA_RequestTimer + CTA_UpdateTicker;
-		if( CTA_RequestTimer > 5 ) then
-			if( CTA_OutstandingRequests > 0 ) then
-				CTA_LogMsg( CTA_OutstandingRequests..CTA_INVITATION_REQUEST_OUTSTANDING );
-				for name, data in CTA_InvitationRequests do
-					if( data.status == 1 ) then
-						SetWhoToUI(1);
-						CTA_WhoName = name;
-						SendWho("n-"..name);
-						--SendWho(name);
-						CTA_LogMsg( CTA_VALIDATING_REQUEST_FROM..name );
-						break;
-					end
-				end
-			end
-			CTA_RequestTimer = 0;
-		end
-		--]]
-		CTA_ForwardTimer = CTA_ForwardTimer - 1;
-		if( CTA_ForwardTimer == 0 ) then
-			if( lfxChatMessageList[getn(lfxChatMessageList)] ) then
-				--CTA_Util.sendChatMessage( lfxChatMessageList[getn(lfxChatMessageList)].message, "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
-				--CTA_Util.chatPrintln( ">>"..lfxChatMessageList[getn(lfxChatMessageList)].message );
-				local name = lfxChatMessageList[getn(lfxChatMessageList)].author;
-				table.remove( lfxChatMessageList, getn(lfxChatMessageList) );
-				CTA_Util.logPrintln( "WOULD Forward msg from <"..CLR:VALUE(name)..">, pending relay count: "..getn(lfxChatMessageList) );
-			end
-			CTA_ForwardTimer = CTA_ForwardThrottle;
-			
-		end						
-		CTA_UpdateTicker = 0;
+		end				
 	end
+	
+	if( CTA_GraceTimer > 0  ) then
+		CTA_GraceTimer = CTA_GraceTimer - CTA_UpdateTicker;
+		--CTA_IconMsg( floor(CTA_GraceTimer) );
+		if( CTA_GraceTimer <= 0 ) then
+			if( CTA_MyRaid and not CTA_PlayerCanHostGroup() ) then
+				CTA_MyRaid = nil;
+			 	CTA_MyRaidIsOnline = nil;
+			 	CTA_HostingRaidGroup = nil;
+				CTA_SearchFrame:Show();
+				CTA_MyRaidFrame:Hide();
+				CTA_StartRaidFrame:Hide();		 	
+			else		
+				CTA_MyRaidInstantUpdate();
+			end		
+		end
+	end
+	
+	-- using new who system in r11b2 for results
+	CTA_RequestTimer = CTA_RequestTimer + CTA_UpdateTicker;
+	if( CTA_RequestTimer > 2 ) then
+		for i = 1, getn( CTA_MessageList ) do
+			if( not CTA_MessageList[i].who ) then
+				local name = CTA_MessageList[i].op or CTA_MessageList[i].author;
+				CTA_MessageList[i].whoAttempts = CTA_MessageList[i].whoAttempts or 0;
+				
+				CTA_MessageList[i].who = CTAWM.toOldFormat(name);
+				if( CTA_MessageList[i].who ) then
+					--CTA_Util.logPrintln( "Got who info for ".. CLR:VALUE(name).." after ".. CLR:VALUE(CTA_MessageList[i].whoAttempts) .." attempts");
+					CTA_MessageList[i].whoAttempts = 0;
+				else
+					if( CTA_MessageList[i].whoAttempts < 5 ) then
+						if( CTAWM.getPositionInQueue( name ) == 0 ) then
+							CTA_MessageList[i].whoAttempts = CTA_MessageList[i].whoAttempts + 1;
+							--CTA_Util.logPrintln( "Asking for who info for ".. CLR:VALUE(name) ..", attempt ".. CLR:VALUE(CTA_MessageList[i].whoAttempts) );
+							CTAWM.addNameToWhoQueue( name );
+						end
+					else
+						CTA_Util.logPrintln( "Could not get who info for "..CLR:VALUE(name) .." after 5 attempts; setting who info as blank" );
+						local entry = {};
+						entry.level = 0;				
+						CTA_MessageList[i].who = entry;								
+					end
+				end
+			end
+		end
+		
+		-- R11B4: updating automatic invitations to use WhoManager
+		if( CTA_OutstandingRequests > 0 ) then
+			CTA_LogMsg( CTA_OutstandingRequests..CTA_INVITATION_REQUEST_OUTSTANDING );
+			for name, data in pairs(CTA_InvitationRequests) do
+				if( data.status == 1 ) then
+					local pdata = CTAWM.getInformation( name );
+					if( pdata ) then
+						CTA_LogMsg( CTA_VALIDATING_REQUEST_FROM..name );
+						--Data format: { time, level, race, class, guild }
+						local level, class = pdata[2], pdata[4];
+						CTA_OutstandingRequests = CTA_OutstandingRequests - 1;
+						if( CTA_MyRaid and level >= CTA_MyRaid.minLevel and string.find( CTA_GetClassString(CTA_MyRaid.classes),class) ) then
+							InviteUnit( name );
+							CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Valid player - Invitation sent" );	
+							
+							CTA_InvitationRequests[name].status = 2;
+							CTA_InvitationRequests[name].class = class;
+							CTA_InvitationRequests[name].level = level;
+										
+							CTA_IconMsg( CTA_INVITATION_SENT_TO.." "..name, CTA_GROUP_UPDATE );
+							CTA_SendAutoMsg( CTA_INVITATION_SENT_MESSAGE, name );
+							CTA_MyRaidInstantUpdate();
+						else
+							CTA_InvitationRequests[name] = nil;
+							CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Invalid player - request removed" );	
+							
+							CTA_SendAutoMsg( CTA_WRONG_LEVEL_OR_CLASS, name );	
+						end
+						
+					else
+						data.whoAttempts = data.whoAttempts or 0;
+						if( data.whoAttempts < 5 ) then
+							if( CTAWM.getPositionInQueue( name ) == 0 ) then
+								data.whoAttempts = data.whoAttempts + 1;
+								--CTA_Util.logPrintln( "Asking for who info for ".. CLR:VALUE(name)..", attempt ".. data.whoAttempts ); -- R11B5: fixed bug
+								CTAWM.addNameToWhoQueue( name );
+							else
+								CTA_Util.logPrintln( "Who request for ".. CLR:VALUE(name).." is queued in position ".. CTAWM.getPositionInQueue( name ) );
+							end
+						else
+							CTA_Util.logPrintln( "Could not get who info for "..CLR:VALUE(name) .." after 5 attempts; removing request" );
+							--CTA_InvitationRequests[name] = nil;							
+							CTA_LogMsg( "Player "..name.." could not be found. Removing from requests list." );	
+							CTA_RemoveRequest(name); -- R11B5: fixed bug - was (CTA_WhoName)
+						end
+					end
+				end
+			end
+		end	
+		
+		CTA_RequestTimer = 0;
+	end		
+	--[[
+	CTA_RequestTimer = CTA_RequestTimer + CTA_UpdateTicker;
+	if( CTA_RequestTimer > 5 ) then
+		if( CTA_OutstandingRequests > 0 ) then
+			CTA_LogMsg( CTA_OutstandingRequests..CTA_INVITATION_REQUEST_OUTSTANDING );
+			for name, data in CTA_InvitationRequests do
+				if( data.status == 1 ) then
+					SetWhoToUI(1);
+					CTA_WhoName = name;
+					SendWho("n-"..name);
+					--SendWho(name);
+					CTA_LogMsg( CTA_VALIDATING_REQUEST_FROM..name );
+					break;
+				end
+			end
+		end
+		CTA_RequestTimer = 0;
+	end
+	--]]
+	CTA_ForwardTimer = CTA_ForwardTimer - 1;
+	if( CTA_ForwardTimer == 0 ) then
+		if( lfxChatMessageList[getn(lfxChatMessageList)] ) then
+			CTA_Util.sendChatMessage( lfxChatMessageList[getn(lfxChatMessageList)].message, "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
+			--CTA_Util.chatPrintln( ">>"..lfxChatMessageList[getn(lfxChatMessageList)].message );
+			local name = lfxChatMessageList[getn(lfxChatMessageList)].author;
+			table.remove( lfxChatMessageList, getn(lfxChatMessageList) );
+			CTA_Util.logPrintln( "Forwarded msg from <"..CLR:VALUE(name)..">, pending relay count: "..getn(lfxChatMessageList) );
+		end
+		CTA_ForwardTimer = CTA_ForwardThrottle;
+		
+	end						
+	
+	CTA_UpdateTicker = 0;
 end
 
 
 
 function CTA_ForwardMessage(msg)
-    table.insert(lfxChatMessageList, 1, msg)
+   table.insert(lfxChatMessageList, 1, msg)
 	CTA_ForwardTimer = CTA_ForwardThrottle;
 end
 
@@ -780,7 +805,7 @@ function autoLFG:Toggle()
 end
 
 
-function autoLFG:OnEvent(event)
+function autoLFG:OnEvent(self, event, ...)
     if not self.State then
         return
     end
@@ -816,91 +841,9 @@ end
 		@arg The event to be handled
 --]]
 
-function CTA_OnEvent( event ) -- Called by XML on Event
+function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 	if(event == "PLAYER_ENTERING_WORLD" and CTA_Reload ) then --"VARIABLES_LOADED") then
-		CTA_MinimapArcSlider:SetValue( aieCTA_SavedVariables.MinimapArcOffset );
-		CTA_MinimapRadiusSlider:SetValue( aieCTA_SavedVariables.MinimapRadiusOffset );
-		CTA_MinimapMsgArcSlider:SetValue( aieCTA_SavedVariables.MinimapMsgArcOffset );
-		CTA_MinimapMsgRadiusSlider:SetValue( aieCTA_SavedVariables.MinimapMsgRadiusOffset );
-		CTA_UpdateMinimapIcon();	
-		CTA_AddGreyToBlack();
-		CTA_ImportIgnoreListToGreyList();	
-		if( not aieCTA_SavedVariables.runCount or aieCTA_SavedVariables.runCount == 0 ) then
-			aieCTA_SavedVariables.runCount = 0;
-			CTA_MainFrame:Show();
-			CTA_SearchFrame:Hide();
-			CTA_MoreFeaturesFrame:Show();
-			--CTA_MyRaidFrame:Hide();
-			--CTA_StartRaidFrame:Hide();
-			CTA_SettingsFrame:Show();
-			--CTA_GreyListFrame:Hide();
-			--CTA_LogFrame:Hide();
-		end
-		aieCTA_SavedVariables.runCount = aieCTA_SavedVariables.runCount + 1;
-		
-		CTA_FrameTransparencySlider:SetValue( ( aieCTA_SavedVariables.MainFrameTransparency or 0.85 ) );
-		CTA_MainFrame:SetAlpha( CTA_FrameTransparencySlider:GetValue() );
-			
-		CTA_MuteLFGChannelCheckButton:SetChecked( aieCTA_SavedVariables.muteLFGChannel );
-		CTA_ShowOnMinimapCheckButton:SetChecked( aieCTA_SavedVariables.showOnMinimap );
-		CTA_ShowFilteredMessagesInChatCheckButton:SetChecked( aieCTA_SavedVariables.showFilteredChat );
-		CTA_PlaySoundOnNewResultCheckButton:SetChecked( aieCTA_SavedVariables.playSoundForNewResults );
-				
-		aieCTA_SavedVariables.FilterLevel = aieCTA_SavedVariables.FilterLevel or 4;
-		if( not aieCTA_SavedVariables.version or aieCTA_SavedVariables.version < CTA_THIS_VERSION ) then
-			CTA_MinimapMessageFrame2:AddMessage( CTA_RESETTING_LFX, 1, 1, 1 );
-			CTA_LogMsg( CTA_RESETTING_LFX );
-			aieCTA_SavedVariables.version = CTA_THIS_VERSION;
-			aieCTA_SavedVariables.FilterLevel = 4;
-			aieCTA_SavedVariables.messageList = {};
-			--if( GetLocale() == "frFR" ) then
-			--	aieCTA_SavedVariables.FilterLevel = 1;
-			--end
-		else
-			aieCTA_SavedVariables.messageList = aieCTA_SavedVariables.messageList or {};	
-		end
-		
-		--aieCTA_SavedVariables.userChannelName = aieCTA_SavedVariables.userChannelName or CTA_MONITOR_CHANNEL_NAME;
-		
-		aieCTA_SavedVariables.messageList[GetRealmName()] = aieCTA_SavedVariables.messageList[GetRealmName()] or {};
-		aieCTA_SavedVariables.messageList[GetRealmName()][1] = aieCTA_SavedVariables.messageList[GetRealmName()][1] or {};
-		aieCTA_SavedVariables.messageList[GetRealmName()][2] = aieCTA_SavedVariables.messageList[GetRealmName()][2] or {};
-		
-		CTA_MessageList = nil;
-		if( (UnitFactionGroup("player")) == "Alliance" ) then
-			CTA_IsAllianceFactionUser = 1;
-			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][1];
-			CTA_LogMsg( CTA_SHOWING_ALLIANCE_LFX ); 
-		else
-			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][2];
-			CTA_LogMsg( CTA_SHOWING_HORDE_LFX ); 
-		end	
-		
-		aieCTA_SavedVariables.timeLastMsgAdded = aieCTA_SavedVariables.timeLastMsgAdded or 0;
-		if( time() - aieCTA_SavedVariables.timeLastMsgAdded > 900 ) then
-			CTA_MinimapMessageFrame2:AddMessage( CTA_CLEAR_OLD_MSGS, 1, 1, 1 ); 
-			CTA_LogMsg( CTA_CLEAR_OLD_MSGS );
-			CTA_MessageList = {};
-		end
-		
-		CTA_FilterLevelSlider:SetValue( aieCTA_SavedVariables.FilterLevel );
-		CTA_FilterLevelSliderNote:SetText( 	CTA_FilterLevelNotes[ aieCTA_SavedVariables.FilterLevel ] );						
-		
-		aieCTA_SavedVariables.chatFrameNum = aieCTA_SavedVariables.chatFrameNum or 1;
-		CTA_ChatFrameNumberEditBox:SetText( aieCTA_SavedVariables.chatFrameNum );
-		
-		CTAWM.onEventVariablesLoaded(event);	
-		
-		
-		
-		CTA_UpdateGreyListItems(); 
-		CTA_UpdateResults();
-		CTA_Reload = nil;
-		
-		CTA_MinimapMessageFrame:AddMessage( CTA_CALL_TO_ARMS, 1, 0.85, 0 );
-		CTA_LogMsg( CTA_CALL_TO_ARMS );
-		--CTA_MinimapMessageFrame2:AddMessage( CTA_CALL_TO_ARMS_LOADED, 1, 1, 1 );
-		--CTA_Println( CTA_CALL_TO_ARMS_LOADED );
+		CTA_InitWorld(self,event,...)
 	end
 	
 	if ( event == "LFG_UPDATE" or event == "MEETINGSTONE_CHANGED" ) then
@@ -932,7 +875,7 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 	end	
 
 	-- Listen for Invitation requests
-  	if ( event == "CHAT_MSG_WHISPER" ) then
+  if ( event == "CHAT_MSG_WHISPER" ) then
 		if( CTA_MyRaidIsOnline and string.lower( strsub(arg1, 1, 8) ) == CTA_INVITE_MAGIC_WORD ) then
   			if( not CTA_FindInList( arg2, CTA_BlackList ) ) then -- R2
 	  			if( CTA_ChannelSpam[arg2] == nil ) then
@@ -962,18 +905,22 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 	
 	-- Listen for LFG Channel messages
 		
-  	if ( event == "CHAT_MSG_CHANNEL" ) then  	
-					
+  if ( event == "CHAT_MSG_CHANNEL" ) then  	
+		--arg1 = message, arg2 = sender, arg3 = language, arg4 = channelString
+		--arg6  = flags, arg8 = channel#, arg9 = channelName
+		
+		--print("chat msg from: "..arg2)			
 		if( not CTA_JoinedChannel ) then
-			CTA_Util.joinChannel( CTA_MONITOR_CHANNEL_NAME );		
-			-- Use channel event to delay joining of aieCTAChannel 
-			CTA_Util.joinChannel( CTA_CommunicationChannel );
-			CTA_JoinedChannel = 1;
+				CTA_Util.joinChannel( CTA_MONITOR_CHANNEL_NAME );		
+				-- Use channel event to delay joining of aieCTAChannel 
+				CTA_Util.joinChannel( CTA_CommunicationChannel );
+				CTA_JoinedChannel = 1;
 		end 
 		
 
+		-- CTA channel relay msgs
 		if( arg9 == CTA_CommunicationChannel ) then
-   -- 		CTA_Util.logPrintln( "CTA-RELAY: <"..arg1.."> from <"..arg2..">" );
+   	-- 		CTA_Util.logPrintln( "CTA-RELAY: <"..arg1.."> from <"..arg2..">" );
 			
 			--R7 > Trusted CTA Channel Messages
 			
@@ -990,11 +937,11 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 			end
 		
 			for code, com, opt in string.gmatch( arg1, "/cta A<(%d+):(.+):(.+)>" ) do 	
-				local tim = string.sub( code,  1,  4 );
-				local cla = tonumber( string.sub( code,  5,  7 ) );
-				local siz = tonumber( string.sub( code,  8,  9 ) );
-				local max = tonumber( string.sub( code, 10, 11 ) );
-				local min = tonumber( string.sub( code, 12, 13 ) );
+				local tim = string.sub( code,  1,  6 );
+				local cla = tonumber( string.sub( code,  7,  8 ) );
+				local siz = tonumber( string.sub( code,  9,  10 ) );
+				local max = tonumber( string.sub( code, 11, 12 ) );
+				local min = tonumber( string.sub( code, 13, 14 ) );
 				local pro = 0;
 				local typ = CTA_RAID_TYPE_PVE;
 				
@@ -1084,99 +1031,116 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 			end
 	
 	
-		for code, opname, com, opt in string.gmatch( arg1, "/cta C<(%d+):(.+):(.+):(.+)>" ) do 	
-		--[[ Removed for beta 4 tests
-			if( CTA_Util.search( com, aieCTA_SavedVariables.lfmTrigger ) > 0 ) then
-		--]]
-
-				for i = 1, getn(lfxChatMessageList) do
-					local name = lfxChatMessageList[i].author or "?";
-					if( name == opname ) then
-						table.remove( lfxChatMessageList, i );
-						CTA_Util.logPrintln( "Rx cta forward msg re: <"..CLR:VALUE(opname).."> from <"..CLR:VALUE(arg2).."> - Removed monitor entry" );
-						break;
+			for code, opname, com, opt in string.gmatch( arg1, "/cta C<(%d+):(.+):(.+):(.+)>" ) do 	
+			--[[ Removed for beta 4 tests
+				if( CTA_Util.search( com, aieCTA_SavedVariables.lfmTrigger ) > 0 ) then
+			--]]
+	
+					-- remove this msg from our forward list
+					for i = 1,#lfxChatMessageList do
+						local name = lfxChatMessageList[i].author or "?";
+						if( name == opname ) then
+							table.remove( lfxChatMessageList, i );
+							CTA_Util.logPrintln( "Rx cta forward msg re: <"..CLR:VALUE(opname).."> from <"..CLR:VALUE(arg2).."> - Removed monitor entry" );
+							break;
+						end
 					end
-				end
-
-				local whoData = nil;
-
-				for i = 1, getn( CTA_MessageList ) do
-					local name = CTA_MessageList[i].op or "?";
-					if( name == opname ) then
-						whoData = CTA_MessageList[i].who;
-						table.remove( CTA_MessageList , i );
-						break;
+	
+					local whoData = nil;
+	
+					-- Ignore broadcast from myself
+					if (CTA_myname == arg2) then
+						return;
 					end
-				end
-
-	--			CTA_Util.logPrintln( "MSG-C <"..com.."> from <"..arg2.."> op <"..opname..">" );
-				
-				local entry = {};
-				entry.ctaType = "C";
-				entry.author = arg2;
-				entry.message = com;
-				entry.time = code;
-				entry.options = opt;
-				entry.who = whoData;
-				
-				entry.op = opname;
-				
-				table.insert( CTA_MessageList, 1, entry );								
-				CTA_PollApplyFilters = 1;
-		--[[ Removed for beta 4 tests
-			end
-		--]]
-			return;
-		end
-		
-		for code, opname, com, opt in string.gmatch( arg1, "/cta D<(%d+):(.+):(.+):(.+)>" ) do 	
-
-		--[[ Removed for beta 4 tests
-			if( CTA_Util.search( com, aieCTA_SavedVariables.lfgTrigger ) > 0 ) then
-		--]]
-			
-				for i = 1, getn(lfxChatMessageList) do
-					local name = lfxChatMessageList[i].author or "?";
-					if( name == opname ) then
-						table.remove( lfxChatMessageList, i );
-						CTA_Util.logPrintln( "Rx cta forward msg re: "..CLR:VALUE(opname).." from "..CLR:VALUE(arg2).." - Removed monitor entry" );
-						break;
-					end
-				end
-
-				local whoData = nil;
-
-				for i = 1, getn( CTA_MessageList ) do
-					local name = CTA_MessageList[i].op or "?";
-					if( name == opname ) then
-						whoData = CTA_MessageList[i].who;
-						table.remove( CTA_MessageList , i );
-						break;
-					end
-				end
-				
-				local entry = {};
-				entry.ctaType = "D";
-				entry.author = arg2;
-				entry.message = com;
-				entry.time = code;
-				entry.options = opt;
-				entry.who = whoData;
-				
-				entry.op = opname;
-				
-				table.insert( CTA_MessageList, 1, entry );								
-				CTA_PollApplyFilters = 1;
-		--[[ Removed for beta 4 tests
-			end
-		--]]
-			return;
-		end	
 					
-		elseif (string.lower( arg9 ) == string.lower( CTA_MONITOR_CHANNEL_NAME ))
-		    or (type(arg7) == "number" and arg7 > 0) then  -- Server Channel
+					-- Does this guy already have an entry in our message list?  If so remove.
+					for i = 1, #CTA_MessageList  do
+						local name = CTA_MessageList[i].op or "?";
+						if( name == opname ) then
+							whoData = CTA_MessageList[i].who;
+							table.remove( CTA_MessageList , i );
+							break;
+						end
+					end
+	
+		--			CTA_Util.logPrintln( "MSG-C <"..com.."> from <"..arg2.."> op <"..opname..">" );
+					
+					local entry = {};
+					entry.ctaType = "C";
+					entry.author = arg2;
+					entry.message = com;
+					entry.time = code;
+					entry.options = opt;
+					entry.who = whoData;
+					
+					entry.op = opname;
+					
+					table.insert( CTA_MessageList, 1, entry );								
+					CTA_PollApplyFilters = 1;
+					--]]
+			--[[ Removed for beta 4 tests
+				end
+			--]]
+				return;
+			end
+		
+			for code, opname, com, opt in string.gmatch( arg1, "/cta D<(%d+):(.+):(.+):(.+)>" ) do 	
+	
+			--[[ Removed for beta 4 tests
+				--if( CTA_Util.search( com, aieCTA_SavedVariables.lfgTrigger ) > 0 ) then
+			--]]
+				
+					for i = 1, getn(lfxChatMessageList) do
+						local name = lfxChatMessageList[i].author or "?";
+						if( name == opname ) then
+							table.remove( lfxChatMessageList, i );
+							CTA_Util.logPrintln( "Rx cta forward msg re: "..CLR:VALUE(opname).." from "..CLR:VALUE(arg2).." - Removed monitor entry" );
+							break;
+						end
+					end
+	
+					local whoData = nil;
+	
+						-- Ignore broadcast from myself
+					if (CTA_myname == arg2) then
+						return;
+					end
+					
+					-- Does this guy already have an entry in our message list?  If so remove.
+					for i = 1, getn( CTA_MessageList ) do
+						local name = CTA_MessageList[i].op or "?";
+						if( name == opname ) then
+							whoData = CTA_MessageList[i].who;
+							table.remove( CTA_MessageList , i );
+							CTA_Util.logPrintln( "Removed entry: "..CLR:VALUE(opname).." from "..CLR:VALUE(arg2) );
+							break;
+						end
+					end
+					
+					local entry = {};
+					entry.ctaType = "D";
+					entry.author = arg2;
+					entry.message = com;
+					entry.time = code;
+					entry.options = opt;
+					entry.who = whoData;
+					
+					entry.op = opname;
+					--print("--rcvd msg from "..opname)			
+					--ignore messages from myself!
+					if (CTA_myname ~= arg2) then
+						table.insert( CTA_MessageList, 1, entry );								
+						CTA_PollApplyFilters = 1;
+					end
+			--[[ Removed for beta 4 tests
+				--end
+			--]]
+				return;
+			end	
+					
+		elseif (string.lower( arg9 ) == string.lower( CTA_MONITOR_CHANNEL_NAME )) then -- or (type(arg7) == "number" and arg7 > 0) then  -- Server Channel
 
-            local global_chan = string.lower( arg9 ) == string.lower( CTA_MONITOR_CHANNEL_NAME )
+      local global_chan = string.lower( arg9 ) == string.lower( CTA_MONITOR_CHANNEL_NAME )	--LookingForGroup channel
 			local channel = arg8 or "?";
 			local author = arg2 or " ";
 
@@ -1185,11 +1149,11 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 
 			-- INSERT SCORING ALGORITHM HERE! ----->
 			
-			local score, mtype = CTA_Util.rateResults( msg, aieCTA_SavedVariables.FilterLevel );
+			local spamscore, score, mtype = CTA_Util.rateResults( msg, aieCTA_SavedVariables.FilterLevel );
 			
 			-- <----- INSERT SCORING ALGORITHM HERE!
 
-
+			--CTA_Util.logPrintln("score="..score.."  mtype="..mtype)
 			local mCol = "ffff3333";
 			if( mtype == "U" ) then
 				mCol = "ffcccccc";
@@ -1197,11 +1161,17 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 				mCol = "ffccffcc";
 			elseif( mtype == "C" ) then
 				mCol = "ffccccff";
+			
 			end
 			
-			CTA_Util.logPrintln( "[|cffffffff|Hplayer:"..author.."|h"..author.. "|h|r]: ".. score .." : |c"..mCol..msg.. "|r" );
+			if spamscore > 0 or score > 0 then
+				CTA_Util.logPrintln( "[|cffffffff|Hplayer:"..author.."|h"..author.. "|h|r]: ".. score .." : |c"..mCol..msg.. "|r" );
+			end
 			
 			if ( score == 0 ) then
+				--if( not aieCTA_SavedVariables.muteLFGChannel) then
+				--	DEFAULT_CHAT_FRAME:AddMessage( "*["..author.."]: "..msg, 1, 0.8, 0 );
+				--end
 				return;
 			end
 		
@@ -1213,16 +1183,19 @@ function CTA_OnEvent( event ) -- Called by XML on Event
 				end
 			end
 			
-			-- Generate HHMM timestamp
-			local tim, minute = GetGameTime();
-			if( tim < 10 ) then tim = "0"..tim; end
-			if( minute < 10 ) then tim = tim.."0"; end
-			tim = tim..minute;	
+			-- Generate HHMMSS timestamp
+			local tim = CTA_GetGameTime();
+			--local tim, minute = GetGameTime();
+			--if( tim < 10 ) then tim = "0"..tim; end
+			--if( minute < 10 ) then tim = tim.."0"; end
+			--tim = tim..minute;	
 
 			
 
-
-            if global_chan then 					
+			-- if LookingForGroup channel-------------------------------------
+       if global_chan then 	
+       		-- got this message in the LFG channel
+       		-- add this message to the list		
         		local whoData = nil;
         
         		for i = 1, getn( CTA_MessageList ) do
@@ -1248,6 +1221,49 @@ function CTA_OnEvent( event ) -- Called by XML on Event
     			aieCTA_SavedVariables.timeLastMsgAdded = time();
     			CTA_PollApplyFilters = 1;
     		else
+    				-- Forward this message across CTA channel
+    				
+    				-- Only forward msgs with no spam and score >= 3
+    				-- otherwise we forwarding too many messages and getting D/C'd
+    				--print("scores: ",spamscore, score)
+    				
+    				CTA_Util.logPrintln( "Picked up lfx msg in <"..CLR:VALUE(arg9).."> from <"..CLR:VALUE(author)..">");		
+    				
+    				if (spamscore > 0) or (score < 3) then
+    					return;
+    				end 
+    			
+    			--CTA_Util.logPrintln("msg added")
+					-- Add to our message list right now    			
+					-- begin add msg
+						for i = 1, getn( CTA_MessageList ) do
+        			local name = CTA_MessageList[i].op or "?";
+        			if( name == author ) then
+        				whoData = CTA_MessageList[i].who;
+        				table.remove( CTA_MessageList , i );
+        				break;
+        			end
+        		end
+
+       		local entry = {};
+    			entry.ctaType = mtype;
+    			entry.author = ""
+    			entry.message = msg;
+    			entry.time = tim;
+    			entry.options = "x";
+    			entry.who = whoData;
+    					
+    			entry.op = author;
+
+    			table.insert( CTA_MessageList, 1, entry );		
+    			aieCTA_SavedVariables.timeLastMsgAdded = time();
+    			CTA_PollApplyFilters = 1;
+					
+					-- end add msg
+					
+    			
+    			
+    			-- Forward to other CTA users
         		for i = 1, getn(lfxChatMessageList) do
         			local name = lfxChatMessageList[i].author or "?";
         			if( name == author ) then
@@ -1263,106 +1279,18 @@ function CTA_OnEvent( event ) -- Called by XML on Event
         		entry.message = "/cta "..mtype.."<"..tim..":"..author..":"..msg..":x>";
         		CTA_ForwardMessage( entry );	
         		
-        		CTA_Util.logPrintln( "Picked up lfx msg in <"..CLR:VALUE(arg9).."> from <"..CLR:VALUE(author)..">, pending relay count: "..getn(lfxChatMessageList) );		
-            end				
+        		--CTA_Util.logPrintln( "Relaying msg, count: "..#lfxChatMessageList );		
+        end				-- end if global_chan
 		
 			
-            return			
-			--[[ R11B3 moved to CTA_ApplyFiltersToGroupList()
-			-- B8
-			local info = ChatTypeInfo[ "CHANNEL"..arg8 ];
-			local r, g, b = 0.8, 0.8, 0.8;
-			if( info ) then
-				r = info.r;
-				g = info.g;
-				b = info.b;
-			end
+      return			
 			
-			if( aieCTA_SavedVariables.showFilteredChat ) then
-				if( entry.who and entry.who.level ~= 0 ) then
-					DEFAULT_CHAT_FRAME:AddMessage( "[LFG][|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ).."|Hplayer:"..author.."|h"..author.. ", "..entry.who.level.." " .. entry.who.class .. "|h|r]:|c"..mCol..msg .. "|r", r, g, b );
-				else
-					DEFAULT_CHAT_FRAME:AddMessage( "[LFG][|cffdddddd|Hplayer:"..author.."|h"..author.. "|h|r]:|c"..mCol..msg .. "|r", r, g, b );
-				end
-			end
-
-			-- R10: Show new messages in minimap icon text
-			if( aieCTA_SavedVariables.showOnMinimap ) then 
-				--R11: return to R5 features
-				-- B8: improved
-				if( entry.who and entry.who.level ~= 0 ) then
-					CTA_MinimapMessageFrame:AddMessage( "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ).."|Hplayer:"..author.."|h"..author.. ", "..entry.who.level.." " .. entry.who.class .. "|h|r: "..msg, r, g, b );
-				else
-					CTA_MinimapMessageFrame:AddMessage( "|cffdddddd|Hplayer:"..author.."|h"..author.. "|h|r: "..msg, r, g, b );
-				end
-			end	
-			--]]
-    	--[[elseif( true ) then 
---    	elseif( CTA_MonitorChatCheckButton:GetChecked() ) then
-    	--	if( not aieCTA_SavedVariables.lfmTrigger or strlen( aieCTA_SavedVariables.lfmTrigger ) < 3 ) then return; end
-    
-    		-- R7
-    
-    		local channel = arg8 or "?";
-    		local author = arg2 or " ";
-    
-    		local ok = 0;
-    		for word in string.gmatch(author, "%w+") do
-    			ok = ok + 1;
-    		end
-    		if( ok > 1 ) then return; end
-    		
-    		local msg = arg1 or "?";
-    		local type = "C"
-    
-    		local score = CTA_Util.search( msg, aieCTA_SavedVariables.lfmTrigger );
-    		if( score == 0 ) then
-    			score = CTA_Util.search( msg, aieCTA_SavedVariables.lfgTrigger );
-    			type = "D"
-    		end
-    		
-    		if( score == 0 ) then
-    			return;
-    		end
- 
-		-- is a spam by another cta user
-    		for i = 1, getn( CTA_MessageList ) do
-    			local name = CTA_MessageList[i].author or "?";
-    			if( name == author and not CTA_MessageList[i].op ) then
-    				return;
-    			end
-
-    		end
-    		
-    		local tim, minute = GetGameTime();
-    		if( tim < 10 ) then tim = "0"..tim; end
-    		if( minute < 10 ) then tim = tim.."0"; end
-    		tim = tim..minute;	
-    
-    		for i = 1, getn(lfxChatMessageList) do
-    			local name = lfxChatMessageList[i].author or "?";
-    			if( name == author ) then
-    				table.remove( lfxChatMessageList, i );
-    				break;
-    			end
-    		end
-    		
-    		--
-    		if string.find( msg, ":") then msg = string.gsub(msg, ":", "."); end;
-    		
-    		local entry = {};
-    		entry.author = author;
-    		entry.message = "/cta "..type.."<"..tim..":"..author..":"..msg..":x>";
-    		table.insert( lfxChatMessageList, 1, entry );	
-    		
-    		CTA_Util.logPrintln( "Picked up lfx msg in <"..(arg9 or "").."> from <"..author..">, pending relay count: "..getn(lfxChatMessageList) );
-    		--]]
-    	end			
+    end			
 	end 
 			
 	-- Listen for Who information -- NEEDS WORK
 	if ( event == "WHO_LIST_UPDATE" ) then
-		CTAWM.onEventWhoListUpdated(event);
+		CTAWM.onEventWhoListUpdated(this,event,...);
 	end  
 			
 	-- Group update
@@ -1372,9 +1300,96 @@ function CTA_OnEvent( event ) -- Called by XML on Event
   		
   	-- Autojoining of LFG
   	if ( autoLfg ) then
-  	    autoLfg:OnEvent(event)
+  	    autoLfg:OnEvent(this,event,...)
   	end
 end
+
+
+function CTA_InitWorld(self,event,...)
+	CTA_MinimapArcSlider:SetValue( aieCTA_SavedVariables.MinimapArcOffset );
+		CTA_MinimapRadiusSlider:SetValue( aieCTA_SavedVariables.MinimapRadiusOffset );
+		CTA_MinimapMsgArcSlider:SetValue( aieCTA_SavedVariables.MinimapMsgArcOffset );
+		CTA_MinimapMsgRadiusSlider:SetValue( aieCTA_SavedVariables.MinimapMsgRadiusOffset );
+		CTA_UpdateMinimapIcon();	
+		CTA_AddGreyToBlack();
+		CTA_ImportIgnoreListToGreyList();	
+		if( not aieCTA_SavedVariables.runCount or aieCTA_SavedVariables.runCount == 0 ) then
+			aieCTA_SavedVariables.runCount = 0;
+			CTA_MainFrame:Show();
+			CTA_SearchFrame:Hide();
+			CTA_MoreFeaturesFrame:Show();
+			--CTA_MyRaidFrame:Hide();
+			--CTA_StartRaidFrame:Hide();
+			CTA_SettingsFrame:Show();
+			--CTA_GreyListFrame:Hide();
+			--CTA_LogFrame:Hide();
+		end
+		aieCTA_SavedVariables.runCount = aieCTA_SavedVariables.runCount + 1;
+		
+		CTA_FrameTransparencySlider:SetValue( ( aieCTA_SavedVariables.MainFrameTransparency or 0.85 ) );
+		CTA_MainFrame:SetAlpha( CTA_FrameTransparencySlider:GetValue() );
+			
+		CTA_MuteLFGChannelCheckButton:SetChecked( aieCTA_SavedVariables.muteLFGChannel );
+		CTA_ShowOnMinimapCheckButton:SetChecked( aieCTA_SavedVariables.showOnMinimap );
+		CTA_ShowFilteredMessagesInChatCheckButton:SetChecked( aieCTA_SavedVariables.showFilteredChat );
+		CTA_PlaySoundOnNewResultCheckButton:SetChecked( aieCTA_SavedVariables.playSoundForNewResults );
+				
+		aieCTA_SavedVariables.FilterLevel = aieCTA_SavedVariables.FilterLevel or 4;
+		if( not aieCTA_SavedVariables.version or aieCTA_SavedVariables.version < CTA_THIS_VERSION ) then
+			CTA_MinimapMessageFrame2:AddMessage( CTA_RESETTING_LFX, 1, 1, 1 );
+			CTA_LogMsg( CTA_RESETTING_LFX );
+			aieCTA_SavedVariables.version = CTA_THIS_VERSION;
+			aieCTA_SavedVariables.FilterLevel = 4;
+			aieCTA_SavedVariables.messageList = {};
+			--if( GetLocale() == "frFR" ) then
+			--	aieCTA_SavedVariables.FilterLevel = 1;
+			--end
+		else
+			aieCTA_SavedVariables.messageList = aieCTA_SavedVariables.messageList or {};	
+		end
+		
+		--aieCTA_SavedVariables.userChannelName = aieCTA_SavedVariables.userChannelName or CTA_MONITOR_CHANNEL_NAME;
+		
+		aieCTA_SavedVariables.messageList[GetRealmName()] = aieCTA_SavedVariables.messageList[GetRealmName()] or {};
+		aieCTA_SavedVariables.messageList[GetRealmName()][1] = aieCTA_SavedVariables.messageList[GetRealmName()][1] or {};
+		aieCTA_SavedVariables.messageList[GetRealmName()][2] = aieCTA_SavedVariables.messageList[GetRealmName()][2] or {};
+		
+		CTA_MessageList = nil;
+		if( (UnitFactionGroup("player")) == "Alliance" ) then
+			CTA_IsAllianceFactionUser = 1;
+			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][1];
+			CTA_LogMsg( CTA_SHOWING_ALLIANCE_LFX ); 
+		else
+			CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][2];
+			CTA_LogMsg( CTA_SHOWING_HORDE_LFX ); 
+		end	
+		
+		aieCTA_SavedVariables.timeLastMsgAdded = aieCTA_SavedVariables.timeLastMsgAdded or 0;
+		if( time() - aieCTA_SavedVariables.timeLastMsgAdded > 900 ) then
+			CTA_MinimapMessageFrame2:AddMessage( CTA_CLEAR_OLD_MSGS, 1, 1, 1 ); 
+			CTA_LogMsg( CTA_CLEAR_OLD_MSGS );
+			CTA_MessageList = {};
+		end
+		
+		CTA_FilterLevelSlider:SetValue( aieCTA_SavedVariables.FilterLevel );
+		CTA_FilterLevelSliderNote:SetText( 	CTA_FilterLevelNotes[ aieCTA_SavedVariables.FilterLevel ] );						
+		
+		aieCTA_SavedVariables.chatFrameNum = aieCTA_SavedVariables.chatFrameNum or 1;
+		CTA_ChatFrameNumberEditBox:SetText( aieCTA_SavedVariables.chatFrameNum );
+		
+		CTAWM.onEventVariablesLoaded(event);	
+		
+				
+		CTA_UpdateGreyListItems(); 
+		CTA_UpdateResults();
+		CTA_Reload = nil;
+		
+		CTA_MinimapMessageFrame:AddMessage( CTA_CALL_TO_ARMS, 1, 0.85, 0 );
+		CTA_LogMsg( CTA_CALL_TO_ARMS );
+		--CTA_MinimapMessageFrame2:AddMessage( CTA_CALL_TO_ARMS_LOADED, 1, 1, 1 );
+		--CTA_Println( CTA_CALL_TO_ARMS_LOADED );
+
+end  -- end function CTA_InitWorld(self,event,...)
 
 
 --[[		---------------------------------------------------------------
@@ -1461,7 +1476,8 @@ function CTA_SendChatMessage( message, messageType, channel )
 	--	CTA_Util.chatPrintln( "Sent: "..message .. " to " .. channel);
 
 	--]]
-	SendChatMessage( string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+	--SendChatMessage( string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
+	ChatThrottleLib:SendChatMessage("NORMAL","CTA", string.gsub( message, "|c(%w+)|H(%w+):(.+)|h(.+)|h|r", "%4" ), messageType, language, channel );
 end
 
 
@@ -1591,7 +1607,7 @@ function CTA_BroadcastRaidInfo()
 	CTA_PollBroadcast = nil;	
 
 	if( CTA_MyRaidIsOnline == nil ) then return; end -- short circuit hack for push changeover in R5
-
+	
 	local myName = UnitName( CTA_PLAYER );
 	local myRaid = CTA_MyRaid;
 	--local com = CTA_GetGroupType()..": [CTA R3 Pre-release Test Group] "..myRaid.comment;
@@ -1604,11 +1620,12 @@ function CTA_BroadcastRaidInfo()
 	local pro = myRaid.passwordProtected;
 	local opt = myRaid.options;		
 	--local tim = myRaid.creationTime; ListChannelByName
-	local hour, minute = GetGameTime();
-	local tim = hour;
-	if( hour < 10 ) then tim = "0"..tim; end
-	if( minute < 10 ) then tim = tim.."0"; end
-	tim = tim..minute;	
+	--local hour, minute = GetGameTime();
+	--local tim = hour;
+	--if( hour < 10 ) then tim = "0"..tim; end
+	--if( minute < 10 ) then tim = tim.."0"; end
+	--tim = tim..minute;	
+	local tim = CTA_GetGameTime();
 	
 	if( typ == CTA_RAID_TYPE_PVP ) then
 		siz = siz + 40;
@@ -1637,6 +1654,7 @@ function CTA_BroadcastRaidInfo()
 	if string.find( com, ":") then com = string.gsub(com, ":", "."); end;
 
 	CTA_SendChatMessage("/cta A<"..code..":"..com..":"..opt..">", "CHANNEL", GetChannelName( CTA_CommunicationChannel ) ); -- MARKER
+	CTA_LogMsg( "CTA Raid Broadcast: /cta A<"..code..":"..com..":"..opt..">");
 	--CTA_IconMsg( "Broadcast Sent" );
 end
 
@@ -1668,8 +1686,8 @@ function CTA_ApplyFiltersToGroupList()
 
 	local keywords = CTA_UI.getString( CTA_SearchFrameDescriptionEditBox, "*" );
 	local playerClass = CTA_UI.getString( CTA_PlayerClassDropDownText, CTA_ANY_CLASS );
-	local playerMinLevel = CTA_UI.getNumber( CTA_PlayerMinLevelEditBox,  0, 1, 70 );
-	local playerMaxLevel = CTA_UI.getNumber( CTA_PlayerMaxLevelEditBox, 70, 1, 70 );
+	local playerMinLevel = CTA_UI.getNumber( CTA_PlayerMinLevelEditBox,  0, 1, 80 );
+	local playerMaxLevel = CTA_UI.getNumber( CTA_PlayerMaxLevelEditBox, 80, 1, 80 );
 
 	
 	CTA_RequestInviteButton:Disable();
@@ -1678,7 +1696,7 @@ function CTA_ApplyFiltersToGroupList()
 	
 	local oldListSize = 0;
 	if( CTA_FilteredResultsList ) then
-		oldListSize = getn( CTA_FilteredResultsList );
+		oldListSize = #CTA_FilteredResultsList;
 	end
 		
 	
@@ -1693,8 +1711,8 @@ function CTA_ApplyFiltersToGroupList()
 	-- R11B4
 	local entryToShowInChatAndOrMinimap = nil;
 	--
-	
-	for i=1, getn( CTA_MessageList ) do
+	--CTA_Util.logPrintln( "#msglist = "..#CTA_MessageList );		
+	for i=1, #CTA_MessageList  do
 		local data = CTA_MessageList[i];
 		if( data ) then
 			
@@ -1718,7 +1736,7 @@ function CTA_ApplyFiltersToGroupList()
 				playerMinLevel = tonumber( CTA_PlayerMinLevelEditBox:GetText() );
 			end
 			if( strlen(CTA_PlayerMaxLevelEditBox:GetText()) == 0 ) then
-				playerMaxLevel = 70;
+				playerMaxLevel = 80;
 			else
 				playerMaxLevel = tonumber( CTA_PlayerMaxLevelEditBox:GetText() );
 			end
@@ -1755,13 +1773,13 @@ function CTA_ApplyFiltersToGroupList()
 				if ( data.who and data.who.level ~= 0 ) then
 					if( playerClass ~= CTA_ANY_CLASS and data.who.class ~= playerClass ) then ok = nil; end
 					if( data.who.level < playerMinLevel or data.who.level > playerMaxLevel ) then ok = nil; end
-				elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 70 ) then
+				elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 80 ) then
 					ok = nil;
 				end
 				
 			elseif( data.ctaType == "C" ) then
 	
-				if( dmn > 15 ) then
+				if( dmn > 16 ) then
 					table.remove( CTA_MessageList , i );
 					pruneCount = pruneCount + 1;
 					ok = nil;
@@ -1771,13 +1789,13 @@ function CTA_ApplyFiltersToGroupList()
 				if ( data.who and data.who.level ~= 0 ) then
 					if( playerClass ~= CTA_ANY_CLASS and data.who.class ~= playerClass ) then ok = nil; end
 					if( data.who.level < playerMinLevel or data.who.level > playerMaxLevel ) then ok = nil; end
-				elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 70 ) then
+				elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 80 ) then
 					ok = nil;
 				end
 		
 			elseif( data.ctaType == "D" ) then
 	
-				if( dmn > 15 ) then
+				if( dmn > 16 ) then
 					table.remove( CTA_MessageList , i );
 					pruneCount = pruneCount + 1;
 					ok = nil;
@@ -1787,7 +1805,7 @@ function CTA_ApplyFiltersToGroupList()
 				if ( data.who and data.who.level ~= 0 ) then
 					if( playerClass ~= CTA_ANY_CLASS and data.who.class ~= playerClass ) then ok = nil; end
 					if( data.who.level < playerMinLevel or data.who.level > playerMaxLevel ) then ok = nil; end
-				elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 70 ) then
+				elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 80 ) then
 					ok = nil;
 				end
 			
@@ -1815,9 +1833,9 @@ function CTA_ApplyFiltersToGroupList()
 		end
 	end	
 	
-	if( pruneCount > 0 ) then
-		CTA_LogMsg( CTA_REMOVED_OLD_RESULT_ITEMS[1]..pruneCount..CTA_REMOVED_OLD_RESULT_ITEMS[2] );
-	end
+	--if( pruneCount > 0 ) then
+		--CTA_LogMsg( CTA_REMOVED_OLD_RESULT_ITEMS[1]..pruneCount..CTA_REMOVED_OLD_RESULT_ITEMS[2] );	-- "Removed n old result items" message
+	--end
 	
 	if ( oldListSize < getn( CTA_FilteredResultsList ) and aieCTA_SavedVariables.playSoundForNewResults ) then
 		PlaySoundFile( "Sound\\Interface\\PickUp\\PutDownRing.wav" );
@@ -1873,8 +1891,7 @@ end
 function CTA_UpdateResults()
 	local index = 1;
 	local groupListLength = getn( CTA_FilteredResultsList );
-	
-	
+		
 		
 	if( groupListLength ~= 0 ) then
 		CTA_MinimapIconTextLabel:SetText( groupListLength );
@@ -1901,6 +1918,7 @@ function CTA_UpdateResults()
 	
 	while( index < CTA_MAX_RESULTS_ITEMS + 1 ) do
 		local c = "CTA_NewItem"..index;
+		local isguildie = false;
 		if( getglobal( c ) ) then
 			if( index+CTA_ResultsListOffset <= groupListLength ) then 
 				local entry = CTA_FilteredResultsList[index+CTA_ResultsListOffset];
@@ -1950,27 +1968,25 @@ function CTA_UpdateResults()
 				elseif( entry.ctaType== "B" ) then
 
 --					mainText = entry.author..": "..entry.message;
-                    if (entry.who) then
-					    mainText = "|cff" .. CTA_ClassColors[entry.who.class] 
-                            .. entry.author .. "|r: " .. entry.message;
-                        if (entry.who.level ~= 0) then
-                            if( entry.who.guild == "<>" ) then
-                                moreText = "Level "..entry.who.level.." "..entry.who.class;
-                            else
-                                moreText = "Level "..entry.who.level.." "..entry.who.class..", "..entry.who.guild;
-                            end
-                            --[[
-                            if( entry.grouped == "yes" ) then
-                                moreText = moreText.." - In a group at tiem of message ";
-                            else
-                                moreText = moreText.." (not in a group)";
-                            end
-                            ]]
-                        end
-                    else
-					    mainText = "|cffffffff" .. entry.author .. "|r: " 
-                            .. entry.message;
-                    end
+					mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.author.."|r: "..entry.message;
+					if( entry.who and entry.who.level ~= 0 ) then
+						if( entry.who.guild == "<>" ) then
+							moreText = "Level "..entry.who.level.." "..entry.who.class;
+						else
+							if (entry.who.guild == CTA_myguild) then
+								isguildie = true;
+								mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.author.."|r: |cff33ff33"..entry.message.."|r";
+							end
+							moreText = "Level "..entry.who.level.." "..entry.who.class..", "..entry.who.guild;
+						end
+						--[[
+						if( entry.grouped == "yes" ) then
+							moreText = moreText.." - In a group at time of message ";
+						else
+							moreText = moreText.." (not in a group)";
+						end
+						]]
+					end
 --			rightText = "forwarded by "..entry.author.." "..rightText;
 				rightText = CTA_PLAYER_LAST_UPDATE.. rightText;
 						
@@ -1982,14 +1998,21 @@ function CTA_UpdateResults()
 							moreText = "Level "..entry.who.level.." "..entry.who.class;
 						else
 							moreText = "Level "..entry.who.level.." "..entry.who.class..", "..entry.who.guild;
+							if (entry.who.guild == CTA_myguild) then
+								isguildie = true
+							end
 						end
-						mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.op.."|r: "..entry.message;
+						if (isguildie) then
+							mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.op.."|r: |cff33ff33"..entry.message.."|r";
+						else
+							mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.op.."|r: "..entry.message;
+						end
 					end
 					if entry.author == UnitName("player") or strlen(entry.author) <= 1 then
-    					rightText = CTA_TIME_LEFT..rightText;
-                    else
-                		rightText = "Forwarded by "..entry.author.." "..rightText;
-                    end
+    				rightText = CTA_TIME_LEFT..rightText;
+          else
+      			rightText = "Forwarded by "..entry.author.." "..rightText;
+          end
 					
 				elseif( entry.ctaType== "D" or entry.ctaType== "U"  ) then
 					mainText = entry.op..": "..entry.message;
@@ -1998,15 +2021,22 @@ function CTA_UpdateResults()
 							moreText = "Level "..entry.who.level.." "..entry.who.class;
 						else
 							moreText = "Level "..entry.who.level.." "..entry.who.class..", "..entry.who.guild;
+							if (entry.who.guild == CTA_myguild) then
+								isguildie = true
+							end
 						end
-						mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" )..entry.op.."|r: "..entry.message;
+						if (isguildie) then
+							mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" )..entry.op.."|r: |cff33ff33"..entry.message.."|r";
+						else
+							mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" )..entry.op.."|r: "..entry.message;
+						end
 					end
 					
 					if entry.author == UnitName("player") or strlen(entry.author) <= 1 then
-    					rightText = CTA_TIME_LEFT..rightText;
-                    else
-                		rightText = "Forwarded by "..entry.author.." "..rightText;
-                    end
+    				rightText = CTA_TIME_LEFT..rightText;
+          else
+      		rightText = "Forwarded by "..entry.author.." "..rightText;
+          end
 				end
 				
 				
@@ -2040,7 +2070,7 @@ end
 		calls the <func>CTA_UpdateResults()</func> afterwards.
 --]]
 
-function CTA_ListItem_OnMouseUp() -- Called by XML
+function CTA_ListItem_OnMouseUp(self, button) -- Called by XML
 	local value = string.gsub( this:GetName(), "CTA_NewItem(%d+)", "%1" ); 
 	if( CTA_SelectedResultListItem == CTA_ResultsListOffset + value ) then
 		CTA_SelectedResultListItem = 0;
@@ -2103,8 +2133,10 @@ function CTA_ListItemAuxLeft_ShowTooltip() -- Called by XML
 	GameTooltip:AddLine( ( entry.op or entry.author ) );
 	GameTooltip:AddLine( entry.message, 0.9, 0.9, 1.0, 1, 1 );
 	--GameTooltip:AddLine( entry.elapsed or "0", 1, 0.85, 0, 1, 1 );
+	GameTooltip:AddLine( entry.ctaType or "-", 1, 0.85, 0, 1, 1 );
 	GameTooltip:Show();
 end
+
 
 function CTA_ListItemAuxRight_ShowTooltip()
 
@@ -2132,6 +2164,7 @@ function CTA_ListItemAuxRight_ShowTooltip()
 		classes[7] = CTA_WARRIOR;
 		classes[8] = CTA_PALADIN;
 		classes[9] = CTA_SHAMAN;
+		classes[10] = CTA_DEATHKNIGHT;
 
 		local groupClasses, ctaVersion, ctaExtra = CTA_DecodeGroupClasses( raid.options );
 		if( groupClasses and ctaVersion ) then
@@ -2298,9 +2331,11 @@ function CTA_MyRaidInstantUpdate()
 		classes[7] = CTA_WARRIOR;
 		classes[8] = CTA_PALADIN;
 		classes[9] = CTA_SHAMAN;
+		classes[10] = CTA_DEATHKNIGHT;
 		
 		local num = 0;
-		while( num <= CTA_NUM_CLASSES) do
+			while( num <= CTA_NUM_CLASSES) do
+			
 			local item = getglobal( "CTA_Acid"..num );
 			local class = getglobal( "CTA_Acid"..num.."ClassNameLabel" );
 			
@@ -2376,7 +2411,7 @@ function CTA_MyRaidInstantUpdate()
 	--if( myMaxSize ~= myOldMax ) then
 		local num = 0;
 		local cval = 0;
-		while( num < 9 ) do	
+		while( num < 10 ) do	
 			local item = getglobal( "CTA_Acid"..num );
 			local ratio = item.val/myOldMax;
 			item.val = floor(myMaxSize*ratio);
@@ -2387,7 +2422,7 @@ function CTA_MyRaidInstantUpdate()
 			CTA_Acid0.val = CTA_Acid0.val + (myMaxSize-cval);
 		end
 		num = 0;
-		while( num < 9 and cval > myMaxSize ) do
+		while( num < 10 and cval > myMaxSize ) do
 			local item = getglobal( "CTA_Acid"..num );
 			if( item.val > 0 ) then
 				item.val = item.val - 1;
@@ -2678,7 +2713,7 @@ function CTA_MyRaidInstantUpdate()
 	-- ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID 
 	-- ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID 
 	
-	local myMinLevel = CTA_SafeSetNumber( CTA_MyRaidFrameMinLevelEditBox:GetText(), 1, 70 ); 
+	local myMinLevel = CTA_SafeSetNumber( CTA_MyRaidFrameMinLevelEditBox:GetText(), 1, 80 ); 
 	if( not myMinLevel ) then
 		CTA_MyRaidFrameMinLevelEditBox:SetText( CTA_MyRaid.minLevel );
 		myMinLevel = CTA_MyRaid.minLevel;
@@ -2743,7 +2778,7 @@ end
 
 
 
-function CTA_AcidItemButton_OnClick() -- Called by XML
+function CTA_AcidItemButton_OnClick(self, button, down) -- Called by XML
 	local item = getglobal( this:GetParent():GetName() );
 	
 	if( string.find( this:GetName(), "Delete" ) ) then
@@ -3478,7 +3513,7 @@ end
 		Called by all tab buttons under the main frame. 
 --]]
 
-function CTA_Tab_OnCLick() -- Called by XML
+function CTA_Tab_OnClick(self, button, down) -- Called by XML
 	PlaySound("igCharacterInfoTab");
 	CTA_SearchFrame:Hide();
 	CTA_StartRaidFrame:Hide();
@@ -3529,7 +3564,7 @@ end
 		Handles all 'Ok button' events generated by dialogs. 
 --]]
 
-function CTA_DialogOKButton_OnCLick() -- Called by XML
+function CTA_DialogOKButton_OnClick(self, button, down) -- Called by XML
 	local item = this:GetParent();
 	if( item:GetName() == "CTA_AddPlayerFrame" ) then
 		local name = CTA_AddPlayerFrameEditBox:GetText();
@@ -3634,15 +3669,34 @@ end
 -- 	Returns a String representation of the current time
 --	String ( eg. "14:40" )
 function CTA_GetTime()
+	-- returns HH:MM:SS
 	local hour, minute = GetGameTime();
 	local t = hour;
 	if( hour < 10 ) then t = "0"..t; end
 	t = t..":";
 	if( minute < 10 ) then t = t.."0"; end
 	t = t..minute;
+	-- add second to the time
+	t = t..":";
+	local second = floor(GetTime() % 60)
+	if (second < 10) then t = t.."0"; end
+	t = t..second
 	return t;
 end
 
+function CTA_GetGameTime()
+	-- returns HHMMSS
+	local hour, minute = GetGameTime();
+	local t = hour;
+	if( hour < 10 ) then t = "0"..t; end
+	if( minute < 10 ) then t = t.."0"; end
+	t = t..minute;
+	-- add second to the time
+	local second = floor(GetTime() % 60)
+	if (second < 10) then t = t.."0"; end
+	t = t..second
+	return t;
+end
 
 --	Returns a String from the specified textfield (uiVal)
 --	If the String is Nil, then (defaultVal) is returned
@@ -3703,7 +3757,8 @@ function CTA_GetClassCode( name )
 	classes[CTA_WARRIOR] = 7;
 	classes[CTA_PALADIN] = 8;
 	classes[CTA_SHAMAN] = 9;
-
+	classes[CTA_DEATHKNIGHT] = 10;
+	
 	return classes[name];
 end
 
@@ -3745,6 +3800,7 @@ function CTA_GetClassString( classSet )
 	classes[7] = CTA_WARRIOR;
 	classes[8] = CTA_PALADIN;
 	classes[9] = CTA_SHAMAN;
+	classes[10] = CTA_DEATHKNIGHT;
 	
 	while( c > 0 ) do
 		local d = mod(c, 2);
@@ -3975,6 +4031,7 @@ function CTA_GetGroupClassesCode()
 	groupClasses[7] = 0;
 	groupClasses[8] = 0;
 	groupClasses[9] = 0;
+	groupClasses[10] = 0;
 	
 	local name, level, class;
 	for num = 1, 40 do
@@ -4005,12 +4062,13 @@ function CTA_DecodeGroupClasses( code )
 	classes[7] = CTA_WARRIOR;
 	classes[8] = CTA_PALADIN;
 	classes[9] = CTA_SHAMAN;
+	classes[10] = CTA_DEATHKNIGHT;
 	
 	--local retVal;
 	local retVal2;
 	local extra2 = {};
 	
-	for priest, mage, warlock, druid, hunter, rogue, warrior, paladin, shaman, version, extra in string.gmatch( code, "(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),([^,]+),([^,]+)" ) do
+	for priest, mage, warlock, druid, hunter, rogue, warrior, paladin, shaman, deathknight, version, extra in string.gmatch( code, "(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),([^,]+),([^,]+)" ) do
 		--[[ 																   
 			extra is now coding for strings which are separated by ";" note that the strings may NOT contain any ":" or "," 
 			it generates a table of strings which is returned
@@ -4027,6 +4085,7 @@ function CTA_DecodeGroupClasses( code )
 		classes[7] = warrior;
 		classes[8] = paladin;
 		classes[9] = shaman;
+		classes[10] = deathknight;
 		
 		retVal2 = version;
 		if extra then
@@ -4116,6 +4175,7 @@ function CTA_InitClassTable()
 	CTA_Classes[7] = CTA_WARRIOR;
 	CTA_Classes[8] = CTA_PALADIN;
 	CTA_Classes[9] = CTA_SHAMAN;
+	CTA_Classes[10] = CTA_DEATHKNIGHT;
 
 	CTA_Classes[CTA_PRIEST] 	= 1;
 	CTA_Classes[CTA_MAGE] 		= 2;
@@ -4126,6 +4186,7 @@ function CTA_InitClassTable()
 	CTA_Classes[CTA_WARRIOR] 	= 7;
 	CTA_Classes[CTA_PALADIN] 	= 8;
 	CTA_Classes[CTA_SHAMAN] 	= 9;	
+	CTA_Classes[CTA_DEATHKNIGHT] 	= 10;	
 end
 
 

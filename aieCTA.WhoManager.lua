@@ -45,16 +45,17 @@ CTAWM.onEventVariablesLoaded = function( event )
 	SendWho = CTAWM.hookedSendWho;
 
 	CTAWM.preHookFriendsFrame_OnEvent = FriendsFrame_OnEvent;
-	FriendsFrame_OnEvent =  CTAWM.hookedFriendsFrame_OnEvent;
+  FriendsFrame_OnEvent =  CTAWM.hookedFriendsFrame_OnEvent;
 	
-	CTAWM.preHookSetItemRef = SetItemRef;
-	SetItemRef = CTAWM.hookedSetItemRef;
+	-- LSL remove HookItem dealio
+	--CTAWM.preHookSetItemRef = SetItemRef;
+	--SetItemRef = CTAWM.hookedSetItemRef;
 	
 	CTAWM.dbg = 0;
 end
 
-CTAWM.onEventWhoListUpdated = function( event )
-	--CTAWM.println( "Caught \'WhoListUpdated\' event", CTA_Util.logPrintln, CTAWM.dbg );		
+CTAWM.onEventWhoListUpdated = function(this, event, ... )
+	CTAWM.println( "Caught \'WhoListUpdated\' event", CTA_Util.logPrintln, CTAWM.dbg );		
 
 	if( CTAWM.request ) then
 		local numWhos, totalCount = GetNumWhoResults();
@@ -63,7 +64,7 @@ CTAWM.onEventWhoListUpdated = function( event )
 		for i=1, totalCount do
 			name, guild, level, race, class, zone, group = GetWhoInfo(i);
 			if( name == CTAWM.request ) then
-				CTAWM.println( "Saving who information for "..CTAWM.request, CTA_Util.logPrintln, CTAWM.dbg );		
+				CTAWM.println( "Saving who information for "..CTAWM.request.." ("..totalCount..")", CTA_Util.logPrintln, CTAWM.dbg );		
 				CTAWM.whoTable[name] = { time(), level, race, class, guild };
 				ok = 1;
 				break;
@@ -85,6 +86,7 @@ CTAWM.onEventWhoListUpdated = function( event )
 		for i=1, totalCount do
 			name, guild, level, race, class, zone, group = GetWhoInfo(i);
 			if( CTAWM.whoTable[name] ) then
+				CTAWM.println( "Save who information for "..CTAWM.urgentRequest.." ("..totalCount..")", CTA_Util.logPrintln, CTAWM.dbg );		
 				CTAWM.whoTable[name] = { time(), level, race, class, guild, zone, group };
 			end
 		end
@@ -92,21 +94,33 @@ CTAWM.onEventWhoListUpdated = function( event )
 	end
 end
 
-CTAWM.onUpdate = function( elapsed ) 
+CTAWM.onUpdate = function( self, elapsed ) 
+	
 	ticker = ticker + elapsed;
+	timeSinceLastWhoSent = timeSinceLastWhoSent + elapsed;
+	timeSinceLastPruning = timeSinceLastPruning + elapsed;
+	--if ticker < 1 then
+	--	return
+	--end
+	
+	--ticker = 0
 	if( ticker > 5 ) then
 		--CTAWM_Label1:SetText( "Who table size: "..CTAWM.getLength( CTAWM.whoTable ) );
 		--CTAWM_Label2:SetText( "queue size: "..CTAWM.getLength( whoQueue ) );
 		--CTAWM_Label3:SetText( "Urgent queue size: "..CTAWM.getLength( urgentWhoQueue ) );
-		ticker = 0;
+		--CTAWM.println("Who table size: "..CTAWM.getLength( CTAWM.whoTable ), CTA_Util.logPrintln, CTAWM.dbg );
+		--CTAWM.println("queue size: "..CTAWM.getLength( whoQueue ), CTA_Util.logPrintln, CTAWM.dbg );
+		--CTAWM.println("Urgent queue size: "..CTAWM.getLength( urgentWhoQueue ), CTA_Util.logPrintln, CTAWM.dbg );
+		--ticker = 0;
 	end
-	timeSinceLastWhoSent = timeSinceLastWhoSent + elapsed;
-	timeSinceLastPruning = timeSinceLastPruning + elapsed;
-	if( timeSinceLastWhoSent > CTAWM_WHO_COOL_DOWN_TIME ) then
 	
+		
+	if( timeSinceLastWhoSent > CTAWM_WHO_COOL_DOWN_TIME ) then
+		--print("CTAWM Update: ",GetTime())
 		-- if urgent requests present, then send them first		
 		if( urgentWhoQueue[1] ) then
 			CTAWM.println( "Sending urgent who request: "..urgentWhoQueue[1], CTA_Util.logPrintln, CTAWM.dbg );
+			--CTA_Util.logPrintln("Sending urgent who request: "..urgentWhoQueue[1])
 			CTAWM.request = nil;
 			CTAWM.urgentRequest = urgentWhoQueue[1];
 			SetWhoToUI(0);
@@ -141,7 +155,9 @@ CTAWM.onUpdate = function( elapsed )
 					--FriendsFrame:UnregisterEvent("WHO_LIST_UPDATE");
 					CTAWM.request = whoQueue[1];
 					SetWhoToUI(1);
-					SendWho( "n-"..CTAWM.request );
+					--SendWho( "n-"..CTAWM.request );
+					SendWho( CTAWM.request );
+					--CTA_Util.logPrintln("Sending who request: "..whoQueue[1]);
 					CTAWM.println( "Sending who request: "..whoQueue[1], CTA_Util.logPrintln, CTAWM.dbg );
 					table.remove( whoQueue, 1 );
 				end			
@@ -269,13 +285,21 @@ CTAWM.hookedSendWho = function( ... )
 	--end
 end
 
-CTAWM.hookedFriendsFrame_OnEvent = function( event ) 
-	if( event ~= "WHO_LIST_UPDATE" and CTAWM.request == nil ) then
+-- Fix bug where friends/guild frame doesnt work properly
+-- pass along all arguments to this function:  self, event, ...
+CTAWM.hookedFriendsFrame_OnEvent = function( self, event, ... ) 
+	if( WhoFrame:IsVisible() ) then 
+		CTAWM.preHookFriendsFrame_OnEvent( self, event, ... );
+	elseif( event ~= "WHO_LIST_UPDATE" and CTAWM.request == nil ) then
 	--	CTAWM.onEventWhoListUpdated( event );
 	--else
 	--if( event ~= "WHO_LIST_UPDATE" or ( whoQueue[1] == nil and CTAWM.request == nil ) ) then
-		CTAWM.preHookFriendsFrame_OnEvent( event );
+		--print("CTAWM: OnEvent forward: "..event)
+		CTAWM.preHookFriendsFrame_OnEvent( self, event, ... );
+	else
+		--print("CTAWM: OnEvent ignored: "..event.." : "..(arg1 or "nil"))	
 	end
+	
 end
 
 
@@ -287,7 +311,8 @@ CTAWM.hookedSetItemRef = function(...)
 			if ( IsShiftKeyDown() ) then
 				if ( timeSinceLastWhoSent <= CTAWM_WHO_COOL_DOWN_TIME ) then
 					CTA_Util.chatPrintln( CTA_GETTING_WHO_INFO.." "..name.."..." );
-					CTAWM.addNameToUrgentWhoQueue( "n-"..name );
+					--CTAWM.addNameToUrgentWhoQueue( "n-"..name );
+					CTAWM.addNameToUrgentWhoQueue( name );
 					return;
 				end
 			end

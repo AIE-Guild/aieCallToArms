@@ -19,15 +19,16 @@ CTA_ILLEGAL_CHANNEL_WORDS 		= "Local Defense World Trade General";
 -- Classes --
 
 CTA_PRIEST				= "Priest";
-CTA_MAGE		    		= "Mage";
-CTA_WARLOCK	       			= "Warlock";
-CTA_DRUID				= "Druid";
+CTA_MAGE		    	= "Mage";
+CTA_WARLOCK	      = "Warlock";
+CTA_DRUID				  = "Druid";
 CTA_HUNTER				= "Hunter";
-CTA_ROGUE				= "Rogue";
-CTA_WARRIOR	       			= "Warrior";
-CTA_PALADIN	       			= "Paladin";
+CTA_ROGUE				  = "Rogue";
+CTA_WARRIOR	      = "Warrior";
+CTA_PALADIN	      = "Paladin";
 CTA_SHAMAN				= "Shaman";
-CTA_ANY_CLASS 				= "Any class";
+CTA_DEATHKNIGHT		= "Death Knight";
+CTA_ANY_CLASS 		= "Any class";
 
 -- User interface --
 
@@ -61,7 +62,7 @@ CTA_MAXIMUM_PLAYERS 			= "Maximum players:";
 CTA_MAXIMUM_PLAYERS_HELP 		= "6 - 40";
 CTA_MAXIMUM_PLAYERS_HELP2 		= "For more than 5 members you must convert the party to a raid";
 CTA_MINIMUM_LEVEL 			= "Minimum level:";
-CTA_MINIMUM_LEVEL_HELP			= "1 - 70";
+CTA_MINIMUM_LEVEL_HELP			= "1 - 80";
 CTA_PASSWORD 				= "Password:";
 CTA_PASSWORD_HELP 			= "No spaces in password, leave blank for none";
 CTA_CLASS_DISTRIBUTION 			= "Class distribution:";
@@ -165,7 +166,7 @@ CTA_CLASS_TOOLTIP			= "The minimum number of players of this class allowed to jo
 
 CTA_STATUS_LFG_ON = CTA_CALL_TO_ARMS.." (Not looking for group)"
 CTA_STATUS_LFG_OFF = CTA_CALL_TO_ARMS.." (Looking for group"
-CTA_MINIMAP_TEXT = "Call To Arms"
+CTA_MINIMAP_TEXT = "AIE Call To Arms"
 
 CTA_GenTooltips = {
 	
@@ -241,6 +242,14 @@ CTA_GenTooltips = {
 		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
 	},
 	CTA_Acid8DeleteButton = {
+		tooltip1 		= "Add/Edit class rule",
+		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+	},
+	CTA_Acid9DeleteButton = {
+		tooltip1 		= "Add/Edit class rule",
+		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+	},
+	CTA_Acid10DeleteButton = {
 		tooltip1 		= "Add/Edit class rule",
 		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
 	},
@@ -390,7 +399,7 @@ CTA_ABOUT_CTA_MESSAGE			= "The \'CallToArms\' LFG mod makes it very easy to form
 
 -- R7 BETA 4
 
-BINDING_HEADER_CALL_TO_ARMS		= "Call To Arms";
+BINDING_HEADER_CALL_TO_ARMS		= "AIE Call To Arms";
 BINDING_NAME_CTA_SHOW_FRAME		= "Show main window";
 
 CTA_CHANNEL_MONITORING			= "Channel Monitoring and Forwarding";
@@ -507,7 +516,7 @@ CTA_CLEAR_OLD_MSGS	 		= "Clearing old messages";
 CTA_TRIGGER_LIST = {
 	["LFM"] = 	{ "lf ", "lf%d*m", "looking for more", "need %d* more", "need ", },
 	
-	["LFG"] = {	"lfg", "looking for group",  },
+	["LFG"] = {	"lfg", "looking for group", "lfgroup", "anyone" },
 	
 	["CLASSES"] = {
 		["DRUID"] = 	{ "druid", "drood", "dr00d", "driud", },
@@ -519,18 +528,65 @@ CTA_TRIGGER_LIST = {
 		["SHAMAN"] = 	{ "shaman", "shammy", },
 		["WARLOCK"] = 	{ "lock", "warlock", },
 		["WARRIOR"] = 	{ "warrior", "warr?", },
-		["HEALER"] = 	{ "healer", },
+		["HEALER"] = 	{ "healer", "heals", },
 		["TANK"] = 		{ "tank", " tanks", },
+		["DEATHKNIGHT"] = 		{ "deathknight", "death knight", "dk", "DK", },
 		["DAMAGE"] = 	{ "damage", "dps", "dmg", },
 		["RANDOM"] = 	{ "random", },
 	},
 	
 	["SPAM"] = 	{ "channel", "lol", "chuck", "norris", "lmao", "lmfao", "rofl", 
-				"guild", "wts", "wtb", "stfu", "ignore", "enchant", "noob", 
-				"nub", "n00b", "vin", "recruit", "trogdoor"
+				"guild", "wts", "wtb", "stfu", "ignore", "chant", "noob", "mats", " jc ","inscript",
+				"nub", "n00b", "vin", "recruit", "trogdoor", " ah ", "open ","unlock", " make ", "price check", "bank", "lock box", "lockbox",
 	},
-	
+
+-- move WotLk instances to beginning of this list...to speed up search	
 	["GOAL"] = {
+		["QUEST"] = 	{ "quest", },
+		["INSTANCE"] = 	{ " instan[zc]", " run ", },
+		["ANYTHING"] = 	{ "anything", },
+		["HEROIC"] = 	{ "heroic", },
+		
+		["UTGARDEKEEP"] = {"uk", "keep", "utk"},
+		["THENEXUS"] = {"nex", "nexus"},
+		["AZJOLNERUB"] = {" an", "nerub"},
+		["AHNKAHET"] = {"ak", "kahet", "old kingdom", " ok", "akok"},
+		["DRAKTHARON"] = {"dtk","drak","tharon" },
+		["VIOLETHOLD"] = {"vh","violet" },
+		["GUNDRAK"] = {"gun","gundrak"},
+		["HALLSOFSTONE"] = {"hos",},
+		["UTGARDEPINNACLE"] = {"up", "pinn", "utp","utgarde"},
+		["THEOCULUS"] = {"ocu", "oculus"},
+		["HALLSOFLIGHTNING"] = {"hol"},
+		["OBSIDIANSANCTUM"] = {"os","sanctum"},
+		["EYEOFETERNITY"] = {"eoe", "maly", "malygos"},
+		["VAULTOFARCHAVON"] = {"voa"},
+		["ICECROWNCITADEL"] = {"icc", "icecrown","citadel"},
+		["CULLINGOFSTRAT"] = {"costrat", "old strat", "cotstrat", "culling"},
+		["WINTERGRASP"] = 	{ "wintergrasp", " wg " },
+		
+		["SHATTEREDH"] = { "sh", "shatt?ered halls", "s?halls" },
+		["HELLRAMP"] = { "ramparts", "hfr", "ramp", "ramps" },
+		["HELLBLOODF"] = { "furnace", "bf", "blood furnace", "blood" },
+		["COTDURN"] = { "durn", "cot", "old hillsbrad", "hillsbrad", "durnholde", "durnholde keep" },
+		["COTDARKP"] = { "dark ?portal", "cot", "black morass?", "bm", "morass", "dp" },
+		["MANATOMBS"] = { "tombs", "mana ?tombs", "tomb", "auch" },
+		["CRYPTS"] = { "crypt", "crypts" },
+		["SHADOWLABS"] = { "sl", "shadow lab%a*", "labs?", "murmur", "lab%a*" },
+		["STEAMVAULT"] = { "sv", "vaults", "steam ?vaults" },
+		["SLAVEPENS"] = { "sp", "slave ?pen%a?", "pens" },
+		["UNDERBOG"] = { "underbog", "bog", "ub" },
+		["ARCATRAZ"] = { "arch?", "arcatraz", "alcatraz", "tempest", "arc" },
+		["MECHANAR"] = { "mech", "mecha?nar", "tempest" },
+		["BOTANICA"] = { "bot", "botanica" },
+		["BLACKTEMPLE"] = {"bt"},
+		
+		["ZULAMAN"] = {"za"},
+		["MAGISTERSTERRACE"] = {"mgt","mt"},
+		["SUNWELLPLATEAU"] = {"sp"},
+		
+		["KARAHZAN"] = { "kara%a*" , "mt"},
+				
 		["AHNQUIRAJ"] = { "aq", "aq20",  "aq40", "ahn", "quiraj", },
 		["ALTERAC"] = 	{ " alterac", "av ", },
 		["ARATHI"] = 	{" arathi", "ab " },
@@ -539,9 +595,9 @@ CTA_TRIGGER_LIST = {
 		["BLACKWING"] = { "bwl", "blackwing", },
 		["DEADMINES"] = { "dead ?mines", "death ?mines", "dm", "vc", "vancleef", },
 		["DIREMAUL"] = 	{ "dm", "dm .*north", "dm .*west", "dm .*est", "dm .*east", " dire ?maul ", },
-		["GNOMEREGAN"] ={ "gnomeregan", " gnome", "gg", },
+		["GNOMEREGAN"] ={ "gnomeregan", " gnome", "gg", "gnomer" },
 		["LBRS"] = 		{ "lower .*spire", "lower .*blackrock", "lbrs", },
-		["MARAUDON"] = 	{ "mau?rau?don", "mara", "maar", },
+		["MARAUDON"] = 	{ "mau?rau?don", "mara", "maru", },
 		["MOLTENCORE"] ={ "mc", "molten ?core", "ragnaros", "rag", },
 		["MONASTERY"] = { "scarlet monastery", "monastery", "sm", "armory", "cathedral", "mograine", },
 		["NAXXRAMAS"] = { "naxxramas", "naxx", },
@@ -551,7 +607,7 @@ CTA_TRIGGER_LIST = {
 		["SCHOLOMANCE"] = { " scholo", " scholomance", },
 		["SHADOWFANG"] ={ "shadowfang", "sfk", },
 		["STOCKADE"] = 	{ "stockade", "dextren", "kam", "targor", "basil", },
-		["STRATHOLME"] ={ " strath", " starth ", " baron", "bastion", " strat ", },
+		["STRATHOLME"] ={ " strath", " starth ", " baron", "bastion", " strat", },
 		["SUNKENTEMPLE"] = { "st", "sunken temple", },
 		["UBRS"] = 		{ "upper *.spire", "upper *.blackrock", "ubrs", "urbs", },
 		["ULDAMAN"] = 	{ " ulda", "uldaman", },
@@ -559,30 +615,7 @@ CTA_TRIGGER_LIST = {
 		["WARSONG"] = 	{ "gulch ", "ws", " warsong", "wsg", },
 		["ZULFARRAK"] = { " zul [^g]", "zf", "farr?ak ", " mallet", " zul f", },
 		["ZULGURUB"] = 	{ " zul g", "zg", "gurub", "hakkar", },
-		["PVP"] = 		{ " horde ", },
-		["QUEST"] = 	{ "quest", },
-		["INSTANCE"] = 	{ " instan[zc]", " run ", },
-		["ANYTHING"] = 	{ "anything", },
-		
-
-		["SHATTEREDH"] = { "sh", "shatt?ered halls", "s?halls" },
-		["HELLRAMP"] = { "ramparts", "hfr", "ramp" },
-		["HELLBLOODF"] = { "furnace", "bf", "blood furnace", "blood" },
-		
-		["COTDURN"] = { "durn", "cot", "old hillsbrad", "hillsbrad", "durnholde", "durnholde keep" },
-		["COTDARKP"] = { "dark ?portal", "cot", "black morass?", "bm", "morass", "dp" },
-		["MANATOMBS"] = { "tombs", "mana ?tombs", "tomb", "auch" },
-		["CRYPTS"] = { "crypt", "crypts" },
-		["SHADOWLABS"] = { "sl", "shadow lab%a*", "labs?", "murmur", "lab%a*" },
-		["STEAMVAULT"] = { "sv", "vaults", "steam ?vaults" },
-		["SLAVEPENS"] = { "sp", "slave ?pen%a?", "pens" },
-		["UNDERBOG"] = { "underbog", "bog", "ub" },
-		["ARCATRAZ"] = { "arch?", "arcatraz", "alcatraz", "tempest" },
-		["MECHANAR"] = { "mech", "mecha?nar", "tempest" },
-		["BOTANICA"] = { "bot", "botanica" },
-		
-		["KARAHZAN"] = { "kara%a*" },
-		
+				
 	},
 		
 	["ZONE"] = {
@@ -609,7 +642,24 @@ CTA_TRIGGER_LIST = {
 		["BLADESEDGE"] = { "BEM", "blades", "blades edge" },
 		["ZANGARMARSH"] = { "zanger", "zm", "zangermarsh", "zangar", "zangarmarsh", "marsh" },
 		["NETHERSTORM"] = { "NS", "netherstorm", "nether storm" },
+		["AZUREMYSTISLE"] = 	{ "azuremyst" },
+		["BLOODMYSTISLE"] = 	{ "bloodmyst" },
+		["EVERSONGWOODS"] = 	{ "eversong" },
+		["GHOSTLANDS"] = 	{ "ghostlands" },
+		["SCARLETENCLAVE"] = 	{ "scarlet enclave" },
+		["ISLEOFQUELDANAS"] = 	{ "queldanas", "ioq" },
+		["BOREANTUNDRA"] = 	{ "tundra", "borean" },
+		["HOWLINGFJORD"] = 	{ "howling", "fjord" },
+		["DRAGONBLIGHT"] = 	{ "dragonblight" },
+		["GRIZZLYHILLS"] = 	{ "grizzlyhills" },
+		["CRYSTALSONGFOREST"] = 	{ "crystalsong" },
+		["ZULDRAK"] = 	{ "zuldrak" },
+		["SHOLAZARBASIN"] = 	{ "sholazar" },
+		["STORMPEAKS"] = 	{ "storm peaks" },
+		["WINTERGRASP"] = 	{ "wintergrasp" },
+		
 	},
+	
 	
 	["CAT"] = {
 		{	

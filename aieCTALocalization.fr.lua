@@ -5,10 +5,10 @@ if( GetLocale() == "frFR" ) then
 	-- 
 	-- French By : Sasmira ( Cosmos Team )
 	-- 
-	-- $Id: CTALocalization.fr.lua,v 1.1.1.1 2008/06/03 16:06:46 stigg Exp $
-	-- $Rev$ R7
+	-- $Id$
+	-- $Rev: 29171 $ R7
 	-- $LastChangedBy$ IDispatch
-	-- $Date: 2008/06/03 16:06:46 $ 2005/10/11
+	-- $Date: 2007-02-27 15:30:00 -0500 (Tue, 27 Feb 2007) $ 2005/10/11
 	--
 	--]]
 	
@@ -326,7 +326,7 @@ if( GetLocale() == "frFR" ) then
 	
 	-- R7 BETA 4
 
-	BINDING_HEADER_CALL_TO_ARMS				 	= "Call To Arms";
+	BINDING_HEADER_CALL_TO_ARMS				 	= "AIE Call To Arms";
 	BINDING_NAME_CTA_SHOW_FRAME					= "Montrer la fen\195\170tre principale";
 	
 	CTA_CHANNEL_MONITORING						= "Surveillance de canal et transmission";
