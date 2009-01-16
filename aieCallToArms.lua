@@ -876,7 +876,17 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
 	-- Listen for Invitation requests
   if ( event == "CHAT_MSG_WHISPER" ) then
-		if( CTA_MyRaidIsOnline and string.lower( strsub(arg1, 1, 8) ) == CTA_INVITE_MAGIC_WORD ) then
+		-- CTA_Util.logPrintln( "Received Whisper: <"..arg1.."> from <"..arg2..">" );
+		
+		-- If the identity mod is on (and a lot of people in AIE use it),
+		-- strip out the added on text before processing arg1
+		local the_arg1 = arg1
+		for msg in string.gmatch( the_arg1, "%(.*%): (.*)" ) do
+			the_arg1 = msg
+		end
+		-- CTA_Util.logPrintln( "New the_arg1: "..the_arg1.."" );
+		
+		if( CTA_MyRaidIsOnline and string.lower( strsub(the_arg1, 1, 8) ) == CTA_INVITE_MAGIC_WORD ) then
   			if( not CTA_FindInList( arg2, CTA_BlackList ) ) then -- R2
 	  			if( CTA_ChannelSpam[arg2] == nil ) then
 	  				CTA_ChannelSpam[arg2] = 0;
@@ -888,16 +898,16 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 	  				CTA_IconMsg( arg2.." "..CTA_WAS_BLACKLISTED, CTA_BLOCK );
 	  				CTA_AddPlayer( arg2, CTA_BLACKLISTED_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, CTA_BlackList )
 				else
-					CTA_ReceiveRaidInvitationRequest( arg1, arg2 );	
+					CTA_ReceiveRaidInvitationRequest( the_arg1, arg2 );	
 	  			end
   			end	
 		end	
 
-		if( CTA_MyRaidIsOnline and CTA_AcidDetails and string.lower( strsub(arg1, 1, 7) ) == "details" ) then
+		if( CTA_MyRaidIsOnline and CTA_AcidDetails and string.lower( strsub(the_arg1, 1, 7) ) == "details" ) then
 			CTA_SendAutoMsg( CTA_AcidDetails, arg2 )
 		end
 
-		if( string.lower( strsub(arg1, 1, 4) ) == "cta?" ) then
+		if( string.lower( strsub(the_arg1, 1, 4) ) == "cta?" ) then
 			CTA_SendAutoMsg( CTA_ABOUT_CTA_MESSAGE, arg2 )		
 		end	
 
@@ -1654,7 +1664,7 @@ function CTA_BroadcastRaidInfo()
 	if string.find( com, ":") then com = string.gsub(com, ":", "."); end;
 
 	CTA_SendChatMessage("/cta A<"..code..":"..com..":"..opt..">", "CHANNEL", GetChannelName( CTA_CommunicationChannel ) ); -- MARKER
-	CTA_LogMsg( "CTA Raid Broadcast: /cta A<"..code..":"..com..":"..opt..">");
+	--CTA_LogMsg( "CTA Raid Broadcast: /cta A<"..code..":"..com..":"..opt..">");
 	--CTA_IconMsg( "Broadcast Sent" );
 end
 
