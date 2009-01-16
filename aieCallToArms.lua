@@ -894,8 +894,8 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 		end	
 
 		if( CTA_MyRaidIsOnline and CTA_AcidDetails and string.lower( strsub(arg1, 1, 7) ) == "details" ) then
-			CTA_SendAutoMsg( CTA_AcidDetails, arg2 )		
-		end	
+			CTA_SendAutoMsg( CTA_AcidDetails, arg2 )
+		end
 
 		if( string.lower( strsub(arg1, 1, 4) ) == "cta?" ) then
 			CTA_SendAutoMsg( CTA_ABOUT_CTA_MESSAGE, arg2 )		
@@ -920,7 +920,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
 		-- CTA channel relay msgs
 		if( arg9 == CTA_CommunicationChannel ) then
-   	-- 		CTA_Util.logPrintln( "CTA-RELAY: <"..arg1.."> from <"..arg2..">" );
+			-- CTA_Util.logPrintln( "CTA-RELAY: <"..arg1.."> from <"..arg2..">" );
 			
 			--R7 > Trusted CTA Channel Messages
 			
@@ -938,10 +938,10 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 		
 			for code, com, opt in string.gmatch( arg1, "/cta A<(%d+):(.+):(.+)>" ) do 	
 				local tim = string.sub( code,  1,  6 );
-				local cla = tonumber( string.sub( code,  7,  8 ) );
-				local siz = tonumber( string.sub( code,  9,  10 ) );
-				local max = tonumber( string.sub( code, 11, 12 ) );
-				local min = tonumber( string.sub( code, 13, 14 ) );
+				local cla = tonumber( string.sub( code,  7,  9 ) );
+				local siz = tonumber( string.sub( code,  10,  11 ) );
+				local max = tonumber( string.sub( code, 12, 13 ) );
+				local min = tonumber( string.sub( code, 14, 15 ) );
 				local pro = 0;
 				local typ = CTA_RAID_TYPE_PVE;
 				
