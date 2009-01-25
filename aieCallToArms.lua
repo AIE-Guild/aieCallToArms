@@ -10,8 +10,8 @@
 		@Interface:		30000
 --]]
 
-		CTA_RELEASEVERSION 	= "aieCTA 3.0.3.1";
-		CTA_RELEASENOTE 	= "aieCTA 3.0.3.1";
+		CTA_RELEASEVERSION 	= "aieCTA 3.0.3.2";
+		CTA_RELEASENOTE 	= "aieCTA 3.0.3.2";
 		CTA_THIS_VERSION	= 303;
 	
 --[[	
@@ -1977,8 +1977,12 @@ function CTA_UpdateResults()
 					rightText = CTA_GROUP_LAST_UPDATE.. rightText;
 				elseif( entry.ctaType== "B" ) then
 
---					mainText = entry.author..": "..entry.message;
-					mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.author.."|r: "..entry.message;
+					mainText = entry.author..": "..entry.message;
+					if (entry.who != nil) then
+						mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.author.."|r: "..entry.message;
+					else
+						mainText = "|cffffffff"..entry.author.."|r: "..entry.message;
+					end
 					if( entry.who and entry.who.level ~= 0 ) then
 						if( entry.who.guild == "<>" ) then
 							moreText = "Level "..entry.who.level.." "..entry.who.class;
