@@ -1978,10 +1978,10 @@ function CTA_UpdateResults()
 				elseif( entry.ctaType== "B" ) then
 
 					mainText = entry.author..": "..entry.message;
-					if (entry.who != nil) then
-						mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.author.."|r: "..entry.message;
-					else
+					if (entry.who == nil) then
 						mainText = "|cffffffff"..entry.author.."|r: "..entry.message;
+					else
+						mainText = "|cff".. ( CTA_ClassColors[entry.who.class] or "ffffff" ) ..entry.author.."|r: "..entry.message;
 					end
 					if( entry.who and entry.who.level ~= 0 ) then
 						if( entry.who.guild == "<>" ) then
