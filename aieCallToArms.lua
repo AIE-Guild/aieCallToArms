@@ -10,8 +10,8 @@
 		@Interface:		30000
 --]]
 
-		CTA_RELEASEVERSION 	= "aieCTA 3.0.3.2";
-		CTA_RELEASENOTE 	= "aieCTA 3.0.3.2";
+		CTA_RELEASEVERSION 	= "aieCTA 3.0.3.3";
+		CTA_RELEASENOTE 	= "aieCTA 3.0.3.3";
 		CTA_THIS_VERSION	= 303;
 	
 --[[	
@@ -315,13 +315,13 @@ end
 
 --ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", myChatFilter)
 
-	ScriptErrors:SetScript("OnShow", CTA_ScriptError );		
+	BasicScriptErrors:SetScript("OnShow", CTA_ScriptError );		
 end
 
 
 
 function CTA_ScriptError()
-	local message = ScriptErrors_Message:GetText();
+	local message = BasicScriptErrorsText:GetText();
 	if (not message or not string.find( message, "CallToArms" ) ) then 
 		--CTA_Println( "No CallToArms error found" );
 		return; 
