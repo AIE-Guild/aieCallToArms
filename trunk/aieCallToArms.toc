@@ -1,0 +1,9 @@
+﻿## Interface: 30200
+## Title: aieCallToArms
+## DefaultState: Enabled
+## Notes: LFG AddOn for Alea Iacta Est on Earthen Ring
+## LoadOnDemand: 0
+## SavedVariables: aieCTA_SavedVariables
+aieCallToArms.xml
+Bindings.xml
+ChatThrottleLib.lua
