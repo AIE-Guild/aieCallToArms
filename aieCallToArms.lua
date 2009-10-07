@@ -754,7 +754,7 @@ local autoLFG = autoLFG or {  }
 
 local function OpenLFGChannel()
     if (GetNumPartyMembers()==0) then
-      SetLFGType(3,5);
+      -- SetLFGType(3,5);
       SetLookingForGroup(3, 5, 1);
       SetLFGComment("LFG-Channel enabled by CTA");
       autoLFG:ClearAutoJoin();
