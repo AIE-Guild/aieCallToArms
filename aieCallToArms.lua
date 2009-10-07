@@ -10,8 +10,8 @@
 		@Interface:		30000
 --]]
 
-		CTA_RELEASEVERSION 	= "aieCTA 3.0.3.4";
-		CTA_RELEASENOTE 	= "aieCTA 3.0.3.4";
+		CTA_RELEASEVERSION 	= "aieCTA 3.0.3.5";
+		CTA_RELEASENOTE 	= "aieCTA 3.0.3.5";
 		CTA_THIS_VERSION	= 303;
 	
 --[[	
