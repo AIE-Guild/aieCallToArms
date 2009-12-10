@@ -104,11 +104,6 @@ CTA_HELP 				= "help";
 
 CTA_TOGGLE 				= "toggle";
 
-CTA_AUTO_LFG = "autolfg"
-CTA_AUTO_LFG_MINIMAP = "Autojoined LFG Channel"
-CTA_AUTO_LFG_HELP = "autojoin LFG by using a dummy entry in the LFG tool"
-CTA_AUTO_LFG_IS = "AutoLFG joining is set to"
-
 CTA_DEFAULT_CHANNEL 			= "default channel";
 CTA_SET_CHANNEL 			= "set channel";
 CTA_CHANNEL_NAME 			= "channelName";

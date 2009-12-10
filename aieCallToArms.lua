@@ -10,9 +10,9 @@
         @Interface:		30000
 --]]
 
-        CTA_RELEASEVERSION 	= "aieCTA 3.0.3.5";
-        CTA_RELEASENOTE 	= "aieCTA 3.0.3.5";
-        CTA_THIS_VERSION	= 303;
+        CTA_RELEASEVERSION 	= "aieCTA 3.0.4.0";
+        CTA_RELEASENOTE 	= "aieCTA 3.0.4.0";
+        CTA_THIS_VERSION	= 304;
 
 --[[
         E-Mail Eike Hanus:	Cantoria@Web.de
@@ -32,8 +32,8 @@ CTA_MAX_RESULTS_ITEMS			= 20;
 CTA_MAX_BLACKLIST_ITEMS			= 15;
 CTA_ALLIANCE	    			= "Alliance";
 CTA_HORDE						= "Horde";
-CTA_DEFAULT_LFM_TRIGGER					= "lf%d?m";
-CTA_DEFAULT_LFG_TRIGGER					= "lfg";
+CTA_DEFAULT_LFM_TRIGGER			= "lf%d?m";
+CTA_DEFAULT_LFG_TRIGGER			= "lfg";
 
 aieCTA_SavedVariables = {
     version						= 0,
@@ -53,7 +53,6 @@ aieCTA_SavedVariables = {
     messageList 				= {},
     FilterLevel					= 5,
     timeLastMsgAdded			= 0,
-    autoLFG                     = true,
 };
 
 CTA_CommunicationChannel 		= "aieCTAChannel";
@@ -115,7 +114,6 @@ CTA_AnnounceTimer				= 0;
 
 CTA_WhoName						= nil;
 
-CTA_AutoLFGInit                 = nil;
 -- Search
 CTA_MessageList						= {};
 
@@ -343,8 +341,6 @@ function CTA_ScriptError()
     CTA_ErrorReportingFrame:Show();
 end
 
--- Forward definition
-local autoLFG = {  }
 
 --[[		CTA_SlashHandler(com)
         ---------------------------------------------------------------
@@ -357,7 +353,7 @@ function CTA_SlashHandler(com)
         CTA_Println( CTA_CALL_TO_ARMS.." "..CTA_RELEASEVERSION );
         CTA_Println( CTA_COMMANDS..": "..CTA_HELP.." | "..CTA_TOGGLE.." | "..CTA_ANNOUNCE_GROUP.." |  "..CTA_DISSOLVE_RAID);
 
-        CTA_Println( CTA_COMMANDS..": "..CTA_TOGGLE_MINIMAP.." |  "..CTA_AUTO_LFG  );
+        CTA_Println( CTA_COMMANDS..": "..CTA_TOGGLE_MINIMAP );
 
         --CTA_Println( "Beta commands:" );
         --CTA_Println( "/error: starts CTA error reporting function. Only works if an error has already occurred." );
@@ -368,7 +364,6 @@ function CTA_SlashHandler(com)
         CTA_Println( CTA_TOGGLE..": "..CTA_TOGGLE_HELP );
         CTA_Println( CTA_ANNOUNCE_GROUP..": "..CTA_ANNOUNCE_GROUP_HELP );
         CTA_Println( CTA_DISSOLVE_RAID..": "..CTA_DISSOLVE_RAID_HELP );
-        CTA_Println( CTA_AUTO_LFG..": "..CTA_AUTO_LFG_HELP );
         return;
     end
 
@@ -388,10 +383,6 @@ function CTA_SlashHandler(com)
             CTA_MinimapIcon:Show();
         end
         return;
-    end
-
-    if (com==CTA_AUTO_LFG) then
-        autoLFG:Toggle()
     end
 
     if( com==CTA_DISSOLVE_RAID ) then
@@ -497,12 +488,6 @@ function CTA_OnUpdate(self, elapsed ) -- Called by XML on Update
         return
     end
 
-
-        --print("update: " ..CTA_UpdateTicker.." / "..CTA_ForwardTimer)
-    if CTA_AutoLFGInit then
-        autoLFG:Init()
-        CTA_AutoLFGInit = false
-    end
 
     if( CTA_AnnounceTimer > 0 ) then
         CTA_AnnounceTimer = CTA_AnnounceTimer - 1;
@@ -748,78 +733,9 @@ function CTA_ForwardMessage(msg)
 end
 
 
--- Adaptation of autoLFG by Klimax
-
-local autoLFG = autoLFG or {  }
-
-local function OpenLFGChannel()
-    if (GetNumPartyMembers()==0) then
-      -- SetLFGType(3,5);
-      SetLookingForGroup(3, 5, 1);
-      SetLFGComment("LFG-Channel enabled by CTA");
-      autoLFG:ClearAutoJoin();
-    else
-      if (UnitIsPartyLeader("player")==1) then
-        SetLookingForMore(5, 1);
-        SetLFGComment("LFG-Channel enabled by CTA");
-      end
-    end
-
-    CTA_MinimapMessageFrame2:AddMessage( CTA_AUTO_LFG_MINIMAP, 1, 0.85, 0 )
-    CTA_LogMsg( CTA_AUTO_LFG_MINIMAP );
-
-
-    autoLFG.CHAT_MSG_CHANNEL_NOTICE = nil
-    autoLFG.State = true;
-end
-
-function autoLFG:Init()
-    self.State = aieCTA_SavedVariables.autoLFG
-    if self.State then
-        self.CHAT_MSG_CHANNEL_NOTICE = OpenLFGChannel
-    end
-end
-
-function autoLFG:ClearAutoJoin()
-    LFG_AUTO_JOIN = nil;
-    ClearLFGAutojoin();
-    if AutoJoinCheckButton then AutoJoinCheckButton:SetChecked(LFG_AUTO_JOIN); end
-end
-
-
-
-function autoLFG:Toggle()
-  if (self.State) then
-    self.PARTY_MEMBERS_CHANGED = nil
-    self.State = false;
-    SetLookingForGroup(3, 1);
-  else
-    self.PARTY_MEMBERS_CHANGED = OpenLFGChannel
-    OpenLFGChannel();
-  end
-
-
-  CTA_Println( CTA_AUTO_LFG_IS..": "..(autoLFG.State and CTA_YES or CTA_NO) );
-  CTA_UpdateMinimapTexture()
-  aieCTA_SavedVariables.autoLFG = self.State
-end
-
-
-function autoLFG:OnEvent(self, event, ...)
-    if not self.State then
-        return
-    end
-
-    if self[event] then
-        self[event](self)
-        return
-    end
-end
-
-
 function CTA_MinimapIconOnClick(button)
     if button == "RightButton" then
-        autoLFG:Toggle()
+        -- no op
     else
         CTA_ToggleMainFrame()
     end
@@ -827,6 +743,7 @@ end
 
 
 function CTA_UpdateMinimapTexture()
+    --[[
     local _, _, _, _, _, _, _, _, _, _, lfgStatus, lfmStatus = GetLookingForGroup();
 
     if lfgStatus or lfmStatus then
@@ -834,7 +751,10 @@ function CTA_UpdateMinimapTexture()
     else
          SetDesaturation(CTA_MinimapIconBgTexture, true)
     end
+    --]]
+    SetDesaturation(CTA_MinimapIconBgTexture, false)
 end
+
 --[[		CTA_OnEvent()
         ---------------------------------------------------------------
         Event handler.
@@ -844,16 +764,6 @@ end
 function CTA_OnEvent(self, event,... ) -- Called by XML on Event
     if(event == "PLAYER_ENTERING_WORLD" and CTA_Reload ) then --"VARIABLES_LOADED") then
         CTA_InitWorld(self,event,...)
-    end
-
-    if ( event == "LFG_UPDATE" or event == "MEETINGSTONE_CHANGED" ) then
-        CTA_UpdateMinimapTexture()
-    end
-
-    if ( event == "CHAT_MSG_CHANNEL_NOTICE" ) then
-        if CTA_AutoLFGInit == nil then
-           CTA_AutoLFGInit = true
-        end
     end
 
     -- for R2 to see if we can tell when a player does not accept your invitation to join the group
@@ -1308,10 +1218,6 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
         CTA_GraceTimer = 2;
     end
 
-    -- Autojoining of LFG
-    if ( autoLfg ) then
-        autoLfg:OnEvent(this,event,...)
-    end
 end
 
 
