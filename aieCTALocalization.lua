@@ -1,13 +1,13 @@
---[[ 
-	Author: 	Sacha Beharry
-	Date Created: 	11th June 2005
-	Last Update: 	09th July 2006
-	
-	Version: 	See CallToArms.lua
+--[[
+    Author: 	Sacha Beharry
+    Date Created: 	11th June 2005
+    Last Update: 	09th July 2006
 
-	Project Name: 	Call To Arms
+    Version: 	See CallToArms.lua
 
-	Description:	Localized Text Resource
+    Project Name: 	Call To Arms
+
+    Description:	Localized Text Resource
 ]]
 
 -- Chat --
@@ -169,113 +169,113 @@ CTA_STATUS_LFG_OFF = CTA_CALL_TO_ARMS.." (Looking for group"
 CTA_MINIMAP_TEXT = "AIE Call To Arms"
 
 CTA_GenTooltips = {
-	
-	CTA_SearchFrameShowClassCheckButton = { 
-		tooltip1 		= "Show all classes", 
-		tooltip2 		= "When checked, results will include groups that are looking for more players of classes other than your own." 
-	},
-	
-	CTA_SearchFrameShowPVPCheckButton = { 
-		tooltip1 		= "Show player vs player groups", 
-		tooltip2 		= "When checked, results will include groups for player versus player combat." 
-	},
-	
-	CTA_SearchFrameShowPVECheckButton = { 
-		tooltip1 		= "Show player vs environment groups", 
-		tooltip2 		= "When checked, results will include player versus environment and quest related groups." 
-	},
-	
-	CTA_SearchFrameShowFullCheckButton = { 
-		tooltip1 		= "Show full groups", 
-		tooltip2 		= "When checked, results will include groups which are full and do not need any more players." 
-	},
-	
-	CTA_SearchFrameShowEmptyCheckButton = { 
-		tooltip1 		= "Show empty groups", 
-		tooltip2 		= "When checked, results will include groups which are \'empty\' and do not have more than one player." 
-	},
-	
-	CTA_SearchFrameShowPasswordCheckButton = { 
-		tooltip1 		= "Show groups which require a password", 
-		tooltip2 		= "When checked, results will include groups which require a password to join." 
-	},
-	
-	CTA_SearchFrameShowLevelCheckButton = { 
-		tooltip1 		= "Show groups above my level", 
-		tooltip2 		= "When checked, results will include groups which require players to have a level higher that your own." 
-	},
-	
-	CTA_SearchFrameDescriptionEditBox = { 
-		tooltip1 		= "Search descriptions", 
-		tooltip2 		= "Many groups have a short description created by the group leader. If keywords are entered in this box, only groups with matches in the description will be included in the results." 
-	},
-	CTA_RoleplayDropDown = {
-		tooltip1 		= "Degree of roleplaying",
-		tooltip2 		= "Choose the degree of roleplay wanted for this group:\n|cFF00FF00No RP|r: No roleplaying is expected from the players\n|cFF00FF00Low RP|r: Some roleplay expected. OOC should be reduced.\n|cFF00FF00High RP|r: No OOC if possible. Much use of the \'say\' channel. Active RP participation.\n|cFF00FF00Full RP|r: No OOC and no use of the \'party\' channel. Active RP participation."
-	},
-	CTA_Acid1DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid2DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid3DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid4DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid5DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid6DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid7DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid8DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid9DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_Acid10DeleteButton = {
-		tooltip1 		= "Add/Edit class rule",
-		tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
-	},
-	CTA_AnnounceToLFGButton = {
-		tooltip1 		= "Announce",
-		tooltip2 		= "Announces your group to the global aieLFG channel and automatically repeats this every 5 minutes"
-	},
-	CTA_AnnounceToLFGButton2 = {
-		tooltip1 		= "Announce",
-		tooltip2 		= "Announces your group to the global aieLFG channel and automatically repeats this every 5 minutes"
-	},
-	CTA_ToggleViewableButton = {
-		tooltip1 		= "Online/Offline",
-		tooltip2 		= "Toggles if other players are able to view your Group"
-	},
-	CTA_StopHostingButton = {
-		tooltip1 		= "Stop Hosting",
-		tooltip2 		= "Declares you are not anymore hosting a group and leaves this screen"
-	},
-	CTA_MinimapIcon = { 
-		tooltip1 		= "Call To Arms", 
-		tooltip2 		= "Left-click to open\r\nRight-click to toggle auto-lfg", 
-		anchor			= "TOPRIGHT",
-		relativePoint	= "TOPLEFT"
-	}
-		
+
+    CTA_SearchFrameShowClassCheckButton = {
+        tooltip1 		= "Show all classes",
+        tooltip2 		= "When checked, results will include groups that are looking for more players of classes other than your own."
+    },
+
+    CTA_SearchFrameShowPVPCheckButton = {
+        tooltip1 		= "Show player vs player groups",
+        tooltip2 		= "When checked, results will include groups for player versus player combat."
+    },
+
+    CTA_SearchFrameShowPVECheckButton = {
+        tooltip1 		= "Show player vs environment groups",
+        tooltip2 		= "When checked, results will include player versus environment and quest related groups."
+    },
+
+    CTA_SearchFrameShowFullCheckButton = {
+        tooltip1 		= "Show full groups",
+        tooltip2 		= "When checked, results will include groups which are full and do not need any more players."
+    },
+
+    CTA_SearchFrameShowEmptyCheckButton = {
+        tooltip1 		= "Show empty groups",
+        tooltip2 		= "When checked, results will include groups which are \'empty\' and do not have more than one player."
+    },
+
+    CTA_SearchFrameShowPasswordCheckButton = {
+        tooltip1 		= "Show groups which require a password",
+        tooltip2 		= "When checked, results will include groups which require a password to join."
+    },
+
+    CTA_SearchFrameShowLevelCheckButton = {
+        tooltip1 		= "Show groups above my level",
+        tooltip2 		= "When checked, results will include groups which require players to have a level higher that your own."
+    },
+
+    CTA_SearchFrameDescriptionEditBox = {
+        tooltip1 		= "Search descriptions",
+        tooltip2 		= "Many groups have a short description created by the group leader. If keywords are entered in this box, only groups with matches in the description will be included in the results."
+    },
+    CTA_RoleplayDropDown = {
+        tooltip1 		= "Degree of roleplaying",
+        tooltip2 		= "Choose the degree of roleplay wanted for this group:\n|cFF00FF00No RP|r: No roleplaying is expected from the players\n|cFF00FF00Low RP|r: Some roleplay expected. OOC should be reduced.\n|cFF00FF00High RP|r: No OOC if possible. Much use of the \'say\' channel. Active RP participation.\n|cFF00FF00Full RP|r: No OOC and no use of the \'party\' channel. Active RP participation."
+    },
+    CTA_Acid1DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid2DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid3DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid4DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid5DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid6DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid7DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid8DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid9DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_Acid10DeleteButton = {
+        tooltip1 		= "Add/Edit class rule",
+        tooltip2 		= "Create or edit a class rule. Select class(es) you want to fill a certain role and after that select how many players you need to fill this role."
+    },
+    CTA_AnnounceToLFGButton = {
+        tooltip1 		= "Announce",
+        tooltip2 		= "Announces your group to the global aieLFG channel and automatically repeats this every 5 minutes"
+    },
+    CTA_AnnounceToLFGButton2 = {
+        tooltip1 		= "Announce",
+        tooltip2 		= "Announces your group to the global aieLFG channel and automatically repeats this every 5 minutes"
+    },
+    CTA_ToggleViewableButton = {
+        tooltip1 		= "Online/Offline",
+        tooltip2 		= "Toggles if other players are able to view your Group"
+    },
+    CTA_StopHostingButton = {
+        tooltip1 		= "Stop Hosting",
+        tooltip2 		= "Declares you are not anymore hosting a group and leaves this screen"
+    },
+    CTA_MinimapIcon = {
+        tooltip1 		= "Call To Arms",
+        tooltip2 		= "Left-click to open\r\nRight-click to toggle auto-lfg",
+        anchor			= "TOPRIGHT",
+        relativePoint	= "TOPLEFT"
+    }
+
 };
 
 
@@ -412,7 +412,7 @@ CTA_ADJUST_TRANSPARENCY			= "Adjust window transparency";
 CTA_CTA_GROUP_FILTERS			= "CallToArms Group Filters";
 CTA_OTHER_FILTERS			= "Other Filters";
 CTA_PLAYER_FILTERS			= "Player Filters";
-CTA_UPDATE_LFX				= "Apply";	
+CTA_UPDATE_LFX				= "Apply";
 CTA_ERROR_REPORT			= "- Error Report -\nCopy the text below and include it when reporting this error.";
 
 -- R10
@@ -466,11 +466,11 @@ CTA_JOINED_GROUP_REQUEST_REMOVED	= " has joined the group - request removed"
 CTA_MAX_PLAYERS_REACHED			="Your group has the desired number of players. LFM Auto announce OFF"
 
 CTA_RPLEVEL				= {
-	[1] = "No RP",
-	[2] = "Some RP",
-	[3] = "High RP",
-	[4] = "Full RP",
-	}
+    [1] = "No RP",
+    [2] = "Some RP",
+    [3] = "High RP",
+    [4] = "Full RP",
+    }
 CTA_ROLEPLAY				= "Roleplay"
 CTA_STILL_LOOKING_FOR			= "Still looking for "
 CTA_EXPECTING				= " Expecting "
@@ -507,199 +507,199 @@ CTA_CLEAR_OLD_MSGS	 		= "Clearing old messages";
 
 
 --[[
-	FILTER TABLE
-	--------------------------------------------------------------------------------------------------------------------------------
-	Localized strings in the CTA_TRIGGER_LIST table are used to categorize and filter messages from
-	the aieLFG channel.
+    FILTER TABLE
+    --------------------------------------------------------------------------------------------------------------------------------
+    Localized strings in the CTA_TRIGGER_LIST table are used to categorize and filter messages from
+    the aieLFG channel.
 --]]
 
 CTA_TRIGGER_LIST = {
-	["LFM"] = 	{ "lf ", "lf%d*m", "looking for more", "need %d* more", "need ", },
-	
-	["LFG"] = {	"lfg", "looking for group", "lfgroup", "anyone" },
-	
-	["CLASSES"] = {
-		["DRUID"] = 	{ "druid", "drood", "dr00d", "driud", },
-		["HUNTER"] = 	{ "hunter", "hutner", },
-		["MAGE"] = 		{ "mage", "caster", },
-		["PALADIN"] = 	{ "paladin", "pally", "paly", "pallie", "healadin", },
-		["PRIEST"] = 	{ "priest", "preist", },
-		["ROGUE"] = 	{ "rogue", "rouge", },
-		["SHAMAN"] = 	{ "shaman", "shammy", },
-		["WARLOCK"] = 	{ "lock", "warlock", },
-		["WARRIOR"] = 	{ "warrior", "warr?", },
-		["HEALER"] = 	{ "healer", "heals", },
-		["TANK"] = 		{ "tank", " tanks", },
-		["DEATHKNIGHT"] = 		{ "deathknight", "death knight", "dk", "DK", },
-		["DAMAGE"] = 	{ "damage", "dps", "dmg", },
-		["RANDOM"] = 	{ "random", },
-	},
-	
-	["SPAM"] = 	{ "channel", "lol", "chuck", "norris", "lmao", "lmfao", "rofl", 
-				"guild", "wts", "wtb", "stfu", "ignore", "chant", "noob", "mats", " jc ","inscript",
-				"nub", "n00b", "vin", "recruit", "trogdoor", " ah ", "open ","unlock", " make ", "price check", "bank", "lock box", "lockbox",
-	},
+    ["LFM"] = 	{ "lf ", "lf%d*m", "looking for more", "need %d* more", "need ", },
 
--- move WotLk instances to beginning of this list...to speed up search	
-	["GOAL"] = {
-		["QUEST"] = 	{ "quest", },
-		["INSTANCE"] = 	{ " instan[zc]", " run ", },
-		["ANYTHING"] = 	{ "anything", },
-		["HEROIC"] = 	{ "heroic", },
-		
-		["UTGARDEKEEP"] = {"uk", "keep", "utk"},
-		["THENEXUS"] = {"nex", "nexus"},
-		["AZJOLNERUB"] = {" an", "nerub"},
-		["AHNKAHET"] = {"ak", "kahet", "old kingdom", " ok", "akok"},
-		["DRAKTHARON"] = {"dtk","drak","tharon" },
-		["VIOLETHOLD"] = {"vh","violet" },
-		["GUNDRAK"] = {"gun","gundrak"},
-		["HALLSOFSTONE"] = {"hos",},
-		["UTGARDEPINNACLE"] = {"up", "pinn", "utp","utgarde"},
-		["THEOCULUS"] = {"ocu", "oculus"},
-		["HALLSOFLIGHTNING"] = {"hol"},
-		["OBSIDIANSANCTUM"] = {"os","sanctum"},
-		["EYEOFETERNITY"] = {"eoe", "maly", "malygos"},
-		["VAULTOFARCHAVON"] = {"voa"},
-		["ICECROWNCITADEL"] = {"icc", "icecrown","citadel"},
-		["CULLINGOFSTRAT"] = {"costrat", "old strat", "cotstrat", "culling"},
-		["WINTERGRASP"] = 	{ "wintergrasp", " wg " },
-		
-		["SHATTEREDH"] = { "sh", "shatt?ered halls", "s?halls" },
-		["HELLRAMP"] = { "ramparts", "hfr", "ramp", "ramps" },
-		["HELLBLOODF"] = { "furnace", "bf", "blood furnace", "blood" },
-		["COTDURN"] = { "durn", "cot", "old hillsbrad", "hillsbrad", "durnholde", "durnholde keep" },
-		["COTDARKP"] = { "dark ?portal", "cot", "black morass?", "bm", "morass", "dp" },
-		["MANATOMBS"] = { "tombs", "mana ?tombs", "tomb", "auch" },
-		["CRYPTS"] = { "crypt", "crypts" },
-		["SHADOWLABS"] = { "sl", "shadow lab%a*", "labs?", "murmur", "lab%a*" },
-		["STEAMVAULT"] = { "sv", "vaults", "steam ?vaults" },
-		["SLAVEPENS"] = { "sp", "slave ?pen%a?", "pens" },
-		["UNDERBOG"] = { "underbog", "bog", "ub" },
-		["ARCATRAZ"] = { "arch?", "arcatraz", "alcatraz", "tempest", "arc" },
-		["MECHANAR"] = { "mech", "mecha?nar", "tempest" },
-		["BOTANICA"] = { "bot", "botanica" },
-		["BLACKTEMPLE"] = {"bt"},
-		
-		["ZULAMAN"] = {"za"},
-		["MAGISTERSTERRACE"] = {"mgt","mt"},
-		["SUNWELLPLATEAU"] = {"sp"},
-		
-		["KARAHZAN"] = { "kara%a*" , "mt"},
-				
-		["AHNQUIRAJ"] = { "aq", "aq20",  "aq40", "ahn", "quiraj", },
-		["ALTERAC"] = 	{ " alterac", "av ", },
-		["ARATHI"] = 	{" arathi", "ab " },
-		["BLACKFATHOM"] = { " blackfa", "mtiefen? ", "bfd",},
-		["BLACKROCKDEPTHS"] = { " blackrock", "brd", "imperator", "windsor", },
-		["BLACKWING"] = { "bwl", "blackwing", },
-		["DEADMINES"] = { "dead ?mines", "death ?mines", "dm", "vc", "vancleef", },
-		["DIREMAUL"] = 	{ "dm", "dm .*north", "dm .*west", "dm .*est", "dm .*east", " dire ?maul ", },
-		["GNOMEREGAN"] ={ "gnomeregan", " gnome", "gg", "gnomer" },
-		["LBRS"] = 		{ "lower .*spire", "lower .*blackrock", "lbrs", },
-		["MARAUDON"] = 	{ "mau?rau?don", "mara", "maru", },
-		["MOLTENCORE"] ={ "mc", "molten ?core", "ragnaros", "rag", },
-		["MONASTERY"] = { "scarlet monastery", "monastery", "sm", "armory", "cathedral", "mograine", },
-		["NAXXRAMAS"] = { "naxxramas", "naxx", },
-		["ONYXIA"] = 	{ "onyxia", "ony", },
-		["RAGEFIRE"] = 	{ "ragefire", "rfc", },
-		["RAZORFEN"] = 	{ "razorfen", "kraul", "downs", "rfd", "rfk", },
-		["SCHOLOMANCE"] = { " scholo", " scholomance", },
-		["SHADOWFANG"] ={ "shadowfang", "sfk", },
-		["STOCKADE"] = 	{ "stockade", "dextren", "kam", "targor", "basil", },
-		["STRATHOLME"] ={ " strath", " starth ", " baron", "bastion", " strat", },
-		["SUNKENTEMPLE"] = { "st", "sunken temple", },
-		["UBRS"] = 		{ "upper *.spire", "upper *.blackrock", "ubrs", "urbs", },
-		["ULDAMAN"] = 	{ " ulda", "uldaman", },
-		["WAILINGCAVES"] = { "wailing cave%a?", "wc", },
-		["WARSONG"] = 	{ "gulch ", "ws", " warsong", "wsg", },
-		["ZULFARRAK"] = { " zul [^g]", "zf", "farr?ak ", " mallet", " zul f", },
-		["ZULGURUB"] = 	{ " zul g", "zg", "gurub", "hakkar", },
-				
-	},
-		
-	["ZONE"] = {
-		["ARATHIHIGHLANDS"] = { "arathi highlands", },
-		["BARRENS"] = 	{ "barrens", },
-		["DUSKWOOD"] = 	{ "duskwood", },
-		["DESOLACE"] = 	{ "desolace", },
-		["EASTPLAGUE"] = { "eastern? plaguelands", "ep ", },
-		["ELWYN"] = 	{ "hogger", "elwyn", },
-		["HILLSBRAD"] = { "southshore", },
-		["HINTERLANDS"] = {"hinterland", },
-		["REDRIDGE"] = 	{ "red ridge", "stonewatch", "lakeshire", "rr", },
-		["SEARINGGORGE"] = { "searing gorge", },
-		["STRANGLE"] = 	{ "stranglethorn", "stv", },
-		["TANARIS"] = 	{ "tanaris", },
-		["WESTFALL"] = 	{ "westfall", "wf", },
-		["WESTPLAGUE"] = { "western plaguelands", "wp ", },
-		["WETLANDS"] = 	{ "wetlands?", },
-		["WINTERSPRING"] = { "winterspring", },
-		["HELLFIRE"] = { "hellfire", "hellfire peninsula" },
-		["NAGRAND"] = { "nagrand" },
-		["TEROKKAR"] = { "terrokar forrest", "Terokkar Forest", "terrokar" },
-		["SHADOWMOON"] = { "smv", "shadowmoon", "shadowmoon valley" },
-		["BLADESEDGE"] = { "BEM", "blades", "blades edge" },
-		["ZANGARMARSH"] = { "zanger", "zm", "zangermarsh", "zangar", "zangarmarsh", "marsh" },
-		["NETHERSTORM"] = { "NS", "netherstorm", "nether storm" },
-		["AZUREMYSTISLE"] = 	{ "azuremyst" },
-		["BLOODMYSTISLE"] = 	{ "bloodmyst" },
-		["EVERSONGWOODS"] = 	{ "eversong" },
-		["GHOSTLANDS"] = 	{ "ghostlands" },
-		["SCARLETENCLAVE"] = 	{ "scarlet enclave" },
-		["ISLEOFQUELDANAS"] = 	{ "queldanas", "ioq" },
-		["BOREANTUNDRA"] = 	{ "tundra", "borean" },
-		["HOWLINGFJORD"] = 	{ "howling", "fjord" },
-		["DRAGONBLIGHT"] = 	{ "dragonblight" },
-		["GRIZZLYHILLS"] = 	{ "grizzlyhills" },
-		["CRYSTALSONGFOREST"] = 	{ "crystalsong" },
-		["ZULDRAK"] = 	{ "zuldrak" },
-		["SHOLAZARBASIN"] = 	{ "sholazar" },
-		["STORMPEAKS"] = 	{ "storm peaks" },
-		["WINTERGRASP"] = 	{ "wintergrasp" },
-		
-	},
-	
-	
-	["CAT"] = {
-		{	
-			["name"] = "Ahn'Qiraj",
-			["keys"] = { "aq", "ahn", "qiraj", "quiraj", },
-		},
-		
-		{	
-			["name"] = "Alterac Valley",
-			["keys"] = { "alterac", "av", },
-		},
-		
-		{	
-			["name"] = "Arathi Basin",
-			["keys"] = { "arathi", "ab", },
-		},
-		
-		{	
-			["name"] = "Arathi Highlands",
-			["keys"] = { "arathi highlands", },
-		},
-		
-		{	
-			["name"] = "The Barrens",
-			["keys"] = { "barrens", },
-		},
-		
-		{},
-		{},	
-	},
-	
+    ["LFG"] = {	"lfg", "looking for group", "lfgroup", "anyone" },
+
+    ["CLASSES"] = {
+        ["DRUID"] = 	{ "druid", "drood", "dr00d", "driud", },
+        ["HUNTER"] = 	{ "hunter", "hutner", },
+        ["MAGE"] = 		{ "mage", "caster", },
+        ["PALADIN"] = 	{ "paladin", "pally", "paly", "pallie", "healadin", },
+        ["PRIEST"] = 	{ "priest", "preist", },
+        ["ROGUE"] = 	{ "rogue", "rouge", },
+        ["SHAMAN"] = 	{ "shaman", "shammy", },
+        ["WARLOCK"] = 	{ "lock", "warlock", },
+        ["WARRIOR"] = 	{ "warrior", "warr?", },
+        ["HEALER"] = 	{ "healer", "heals", },
+        ["TANK"] = 		{ "tank", " tanks", },
+        ["DEATHKNIGHT"] = 		{ "deathknight", "death knight", "dk", "DK", },
+        ["DAMAGE"] = 	{ "damage", "dps", "dmg", },
+        ["RANDOM"] = 	{ "random", },
+    },
+
+    ["SPAM"] = 	{ "channel", "lol", "chuck", "norris", "lmao", "lmfao", "rofl",
+                "guild", "wts", "wtb", "stfu", "ignore", "chant", "noob", "mats", " jc ","inscript",
+                "nub", "n00b", "vin", "recruit", "trogdoor", " ah ", "open ","unlock", " make ", "price check", "bank", "lock box", "lockbox",
+    },
+
+-- move WotLk instances to beginning of this list...to speed up search
+    ["GOAL"] = {
+        ["QUEST"] = 	{ "quest", },
+        ["INSTANCE"] = 	{ " instan[zc]", " run ", },
+        ["ANYTHING"] = 	{ "anything", },
+        ["HEROIC"] = 	{ "heroic", },
+
+        ["UTGARDEKEEP"] = {"uk", "keep", "utk"},
+        ["THENEXUS"] = {"nex", "nexus"},
+        ["AZJOLNERUB"] = {" an", "nerub"},
+        ["AHNKAHET"] = {"ak", "kahet", "old kingdom", " ok", "akok"},
+        ["DRAKTHARON"] = {"dtk","drak","tharon" },
+        ["VIOLETHOLD"] = {"vh","violet" },
+        ["GUNDRAK"] = {"gun","gundrak"},
+        ["HALLSOFSTONE"] = {"hos",},
+        ["UTGARDEPINNACLE"] = {"up", "pinn", "utp","utgarde"},
+        ["THEOCULUS"] = {"ocu", "oculus"},
+        ["HALLSOFLIGHTNING"] = {"hol"},
+        ["OBSIDIANSANCTUM"] = {"os","sanctum"},
+        ["EYEOFETERNITY"] = {"eoe", "maly", "malygos"},
+        ["VAULTOFARCHAVON"] = {"voa"},
+        ["ICECROWNCITADEL"] = {"icc", "icecrown","citadel"},
+        ["CULLINGOFSTRAT"] = {"costrat", "old strat", "cotstrat", "culling"},
+        ["WINTERGRASP"] = 	{ "wintergrasp", " wg " },
+
+        ["SHATTEREDH"] = { "sh", "shatt?ered halls", "s?halls" },
+        ["HELLRAMP"] = { "ramparts", "hfr", "ramp", "ramps" },
+        ["HELLBLOODF"] = { "furnace", "bf", "blood furnace", "blood" },
+        ["COTDURN"] = { "durn", "cot", "old hillsbrad", "hillsbrad", "durnholde", "durnholde keep" },
+        ["COTDARKP"] = { "dark ?portal", "cot", "black morass?", "bm", "morass", "dp" },
+        ["MANATOMBS"] = { "tombs", "mana ?tombs", "tomb", "auch" },
+        ["CRYPTS"] = { "crypt", "crypts" },
+        ["SHADOWLABS"] = { "sl", "shadow lab%a*", "labs?", "murmur", "lab%a*" },
+        ["STEAMVAULT"] = { "sv", "vaults", "steam ?vaults" },
+        ["SLAVEPENS"] = { "sp", "slave ?pen%a?", "pens" },
+        ["UNDERBOG"] = { "underbog", "bog", "ub" },
+        ["ARCATRAZ"] = { "arch?", "arcatraz", "alcatraz", "tempest", "arc" },
+        ["MECHANAR"] = { "mech", "mecha?nar", "tempest" },
+        ["BOTANICA"] = { "bot", "botanica" },
+        ["BLACKTEMPLE"] = {"bt"},
+
+        ["ZULAMAN"] = {"za"},
+        ["MAGISTERSTERRACE"] = {"mgt","mt"},
+        ["SUNWELLPLATEAU"] = {"sp"},
+
+        ["KARAHZAN"] = { "kara%a*" , "mt"},
+
+        ["AHNQUIRAJ"] = { "aq", "aq20",  "aq40", "ahn", "quiraj", },
+        ["ALTERAC"] = 	{ " alterac", "av ", },
+        ["ARATHI"] = 	{" arathi", "ab " },
+        ["BLACKFATHOM"] = { " blackfa", "mtiefen? ", "bfd",},
+        ["BLACKROCKDEPTHS"] = { " blackrock", "brd", "imperator", "windsor", },
+        ["BLACKWING"] = { "bwl", "blackwing", },
+        ["DEADMINES"] = { "dead ?mines", "death ?mines", "dm", "vc", "vancleef", },
+        ["DIREMAUL"] = 	{ "dm", "dm .*north", "dm .*west", "dm .*est", "dm .*east", " dire ?maul ", },
+        ["GNOMEREGAN"] ={ "gnomeregan", " gnome", "gg", "gnomer" },
+        ["LBRS"] = 		{ "lower .*spire", "lower .*blackrock", "lbrs", },
+        ["MARAUDON"] = 	{ "mau?rau?don", "mara", "maru", },
+        ["MOLTENCORE"] ={ "mc", "molten ?core", "ragnaros", "rag", },
+        ["MONASTERY"] = { "scarlet monastery", "monastery", "sm", "armory", "cathedral", "mograine", },
+        ["NAXXRAMAS"] = { "naxxramas", "naxx", },
+        ["ONYXIA"] = 	{ "onyxia", "ony", },
+        ["RAGEFIRE"] = 	{ "ragefire", "rfc", },
+        ["RAZORFEN"] = 	{ "razorfen", "kraul", "downs", "rfd", "rfk", },
+        ["SCHOLOMANCE"] = { " scholo", " scholomance", },
+        ["SHADOWFANG"] ={ "shadowfang", "sfk", },
+        ["STOCKADE"] = 	{ "stockade", "dextren", "kam", "targor", "basil", },
+        ["STRATHOLME"] ={ " strath", " starth ", " baron", "bastion", " strat", },
+        ["SUNKENTEMPLE"] = { "st", "sunken temple", },
+        ["UBRS"] = 		{ "upper *.spire", "upper *.blackrock", "ubrs", "urbs", },
+        ["ULDAMAN"] = 	{ " ulda", "uldaman", },
+        ["WAILINGCAVES"] = { "wailing cave%a?", "wc", },
+        ["WARSONG"] = 	{ "gulch ", "ws", " warsong", "wsg", },
+        ["ZULFARRAK"] = { " zul [^g]", "zf", "farr?ak ", " mallet", " zul f", },
+        ["ZULGURUB"] = 	{ " zul g", "zg", "gurub", "hakkar", },
+
+    },
+
+    ["ZONE"] = {
+        ["ARATHIHIGHLANDS"] = { "arathi highlands", },
+        ["BARRENS"] = 	{ "barrens", },
+        ["DUSKWOOD"] = 	{ "duskwood", },
+        ["DESOLACE"] = 	{ "desolace", },
+        ["EASTPLAGUE"] = { "eastern? plaguelands", "ep ", },
+        ["ELWYN"] = 	{ "hogger", "elwyn", },
+        ["HILLSBRAD"] = { "southshore", },
+        ["HINTERLANDS"] = {"hinterland", },
+        ["REDRIDGE"] = 	{ "red ridge", "stonewatch", "lakeshire", "rr", },
+        ["SEARINGGORGE"] = { "searing gorge", },
+        ["STRANGLE"] = 	{ "stranglethorn", "stv", },
+        ["TANARIS"] = 	{ "tanaris", },
+        ["WESTFALL"] = 	{ "westfall", "wf", },
+        ["WESTPLAGUE"] = { "western plaguelands", "wp ", },
+        ["WETLANDS"] = 	{ "wetlands?", },
+        ["WINTERSPRING"] = { "winterspring", },
+        ["HELLFIRE"] = { "hellfire", "hellfire peninsula" },
+        ["NAGRAND"] = { "nagrand" },
+        ["TEROKKAR"] = { "terrokar forrest", "Terokkar Forest", "terrokar" },
+        ["SHADOWMOON"] = { "smv", "shadowmoon", "shadowmoon valley" },
+        ["BLADESEDGE"] = { "BEM", "blades", "blades edge" },
+        ["ZANGARMARSH"] = { "zanger", "zm", "zangermarsh", "zangar", "zangarmarsh", "marsh" },
+        ["NETHERSTORM"] = { "NS", "netherstorm", "nether storm" },
+        ["AZUREMYSTISLE"] = 	{ "azuremyst" },
+        ["BLOODMYSTISLE"] = 	{ "bloodmyst" },
+        ["EVERSONGWOODS"] = 	{ "eversong" },
+        ["GHOSTLANDS"] = 	{ "ghostlands" },
+        ["SCARLETENCLAVE"] = 	{ "scarlet enclave" },
+        ["ISLEOFQUELDANAS"] = 	{ "queldanas", "ioq" },
+        ["BOREANTUNDRA"] = 	{ "tundra", "borean" },
+        ["HOWLINGFJORD"] = 	{ "howling", "fjord" },
+        ["DRAGONBLIGHT"] = 	{ "dragonblight" },
+        ["GRIZZLYHILLS"] = 	{ "grizzlyhills" },
+        ["CRYSTALSONGFOREST"] = 	{ "crystalsong" },
+        ["ZULDRAK"] = 	{ "zuldrak" },
+        ["SHOLAZARBASIN"] = 	{ "sholazar" },
+        ["STORMPEAKS"] = 	{ "storm peaks" },
+        ["WINTERGRASP"] = 	{ "wintergrasp" },
+
+    },
+
+
+    ["CAT"] = {
+        {
+            ["name"] = "Ahn'Qiraj",
+            ["keys"] = { "aq", "ahn", "qiraj", "quiraj", },
+        },
+
+        {
+            ["name"] = "Alterac Valley",
+            ["keys"] = { "alterac", "av", },
+        },
+
+        {
+            ["name"] = "Arathi Basin",
+            ["keys"] = { "arathi", "ab", },
+        },
+
+        {
+            ["name"] = "Arathi Highlands",
+            ["keys"] = { "arathi highlands", },
+        },
+
+        {
+            ["name"] = "The Barrens",
+            ["keys"] = { "barrens", },
+        },
+
+        {},
+        {},
+    },
+
 } -- CTA_TRIGGER_LIST
 
 --[[
-	Category format:
-	{	
-		["name"] = "<Zone/Instance Name>", this should be localized to match what would appear in the quest log titles
-		['keys"] = {}, the list of keywords (triggers) to determine whether the LFG message is refering to this zone/instance
-	}
-	
+    Category format:
+    {
+        ["name"] = "<Zone/Instance Name>", this should be localized to match what would appear in the quest log titles
+        ['keys"] = {}, the list of keywords (triggers) to determine whether the LFG message is refering to this zone/instance
+    }
+
 --]]
 
 --[[
