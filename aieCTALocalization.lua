@@ -20,15 +20,15 @@ CTA_ILLEGAL_CHANNEL_WORDS 		= "Local Defense World Trade General";
 
 CTA_PRIEST				= "Priest";
 CTA_MAGE		    	= "Mage";
-CTA_WARLOCK	      = "Warlock";
-CTA_DRUID				  = "Druid";
+CTA_WARLOCK	      		= "Warlock";
+CTA_DRUID				= "Druid";
 CTA_HUNTER				= "Hunter";
-CTA_ROGUE				  = "Rogue";
-CTA_WARRIOR	      = "Warrior";
-CTA_PALADIN	      = "Paladin";
+CTA_ROGUE				= "Rogue";
+CTA_WARRIOR	      		= "Warrior";
+CTA_PALADIN	      		= "Paladin";
 CTA_SHAMAN				= "Shaman";
-CTA_DEATHKNIGHT		= "Death Knight";
-CTA_ANY_CLASS 		= "Any class";
+CTA_DEATHKNIGHT			= "Death Knight";
+CTA_ANY_CLASS 			= "Any class";
 
 -- User interface --
 
@@ -62,7 +62,7 @@ CTA_MAXIMUM_PLAYERS 			= "Maximum players:";
 CTA_MAXIMUM_PLAYERS_HELP 		= "6 - 40";
 CTA_MAXIMUM_PLAYERS_HELP2 		= "For more than 5 members you must convert the party to a raid";
 CTA_MINIMUM_LEVEL 			= "Minimum level:";
-CTA_MINIMUM_LEVEL_HELP			= "1 - 80";
+CTA_MINIMUM_LEVEL_HELP			= "1 - 85";
 CTA_PASSWORD 				= "Password:";
 CTA_PASSWORD_HELP 			= "No spaces in password, leave blank for none";
 CTA_CLASS_DISTRIBUTION 			= "Class distribution:";
@@ -266,7 +266,7 @@ CTA_GenTooltips = {
     },
     CTA_MinimapIcon = {
         tooltip1 		= "Call To Arms",
-        tooltip2 		= "Left-click to open\r\nRight-click to toggle auto-lfg",
+        tooltip2 		= "Left-click or Right-click to open",
         anchor			= "TOPRIGHT",
         relativePoint	= "TOPLEFT"
     }
@@ -354,8 +354,8 @@ CTA_VERSION				= "Version";
 CTA_CURRENT_GROUP_CLASSES		= "Classes in group";
 CTA_TOGGLE_MINIMAP			= "minimap";
 CTA_LFG_FRAME				= "Looking for Group";
-CTA_ANNOUNCE_LFG			= "Broadcast this LFG message over the aieCTAChannel.";
-CTA_ANNOUNCE_INFO_TEXT			= "This LFG message will be sent over the aieCTAChannel only if you are not already advertising a group with Call To Arms.\n\nUse the \'Announce\' button to automatically send your LFG/M message to a channel every 300 seconds and \'/cta announce off\' to stop."; -- MARKER
+CTA_ANNOUNCE_LFG			= "Broadcast this LFG message over the aieCTATesting.";
+CTA_ANNOUNCE_INFO_TEXT			= "This LFG message will be sent over the aieCTATesting only if you are not already advertising a group with Call To Arms.\n\nUse the \'Announce\' button to automatically send your LFG/M message to a channel every 300 seconds and \'/cta announce off\' to stop."; -- MARKER
 CTA_AUTO_ANNOUNCE_OFF			= "announce off";
 
 --P7B3
@@ -491,6 +491,22 @@ CTA_SHOW_IN_CHAT			= "Show filtered LFG messages in chat";
 CTA_SHOW_ON_MINIMAP			= "Show filtered LFG messages on minimap";
 CTA_PLAY_SOUND				= "Play sound for new results";
 
+CTA_CANT_JOIN_SELF			= "Cannot join party/raid that you are hosting";
+CTA_WRONG_GUILD				= "Cannot join party/raid! Not a member of AIE";
+CTA_INVITE_PLAYER			= "Invite player";
+CTA_SUBGUILDS = {
+	"comitas",
+	"dignitas",
+	"gravitas",
+	"invictus",
+	"audacia",
+	"fidelis",
+	"fortuna",
+	"libertas",
+	"verendus",
+	};
+
+
 CTA_FRENCH_FILTER_NOTE	= [[Note to players on French clients - The new filtering system uses filters from the CTA_TRIGGER_LIST table in the CTALocalization.fr.lua file. Unfortunately many of the filters in French version this table are empty and need to be filled before the filtering system will work properly. When entering French keywords into the  CTA_TRIGGER_LIST table, please refer to the English version of the table in the CTALocalization.lua file for an example of how to structure the filters. If you fill in the table and get the French filters to work, please send them to me and I will add them to CTA's next release version.]];
 
 CTA_GETTING_WHO_INFO		= "Getting information on";
@@ -535,14 +551,28 @@ CTA_TRIGGER_LIST = {
                 "nub", "n00b", "vin", "recruit", "trogdoor", " ah ", "open ","unlock", " make ", "price check", "bank", "lock box", "lockbox",
     },
 
--- move WotLk instances to beginning of this list...to speed up search
+-- move WoTlK/Cata instances to beginning of this list...to speed up search
     ["GOAL"] = {
         ["QUEST"] = 	{ "quest", },
         ["INSTANCE"] = 	{ " instan[zc]", " run ", },
         ["ANYTHING"] = 	{ "anything", },
         ["HEROIC"] = 	{ "heroic", },
 
-        ["UTGARDEKEEP"] = {"uk", "keep", "utk"},
+		["BLACKROCKCAVERNS"] = {"blk" , "black rock cavern"}, 
+		["DEADMINES"] = { "dead ?mines", "death ?mines", "dm", "vc", "vancleef", },
+		["GRIMBATOL"] = { "grim ?batol", "grim", "grim b" },
+		["HALLSOFORIGINATION"] = { "halls of ?origination" , "hor"},
+		["LOSTCITYOFTOL'VIR"] = { "lost city of tol'vir" , "lcotv" , "lost ?city" , " lost city of ?tolvir" }, 
+		["SHADOWFANG"] ={ "shadowfang", "sfk", },
+        ["STONECORE"] ={ "stonecore", "stone ?core", },
+		["VORTEXPINNACLE"] ={ "vortex pinnacle", "vortex", "vortex ?pinnacle" },
+        ["THRONEOFTHETIDES"] = { "throne of tides" , "throne" , "throne of the ?tides" , "tott" , "tides" }, 
+		["BLACKWINGDESCENT"] = { "bdw" , "black wing descent" , "black wing ?descent" , "bw ?descent"} ,
+		["THEBASTIONOFTWILIGHT"] = { "bott" , "tbott" , "?bastion of ?twilight" , "bastion"} ,
+		["BARADINHOLD"] = { "baradin hold" , "baradin" , "bh"} ,
+		["THRONEOFTHEFOURWINDS"] = { "throne" , "throne of the four winds" , "throne of ?four" , "four winds" },
+		
+	    ["UTGARDEKEEP"] = {"uk", "keep", "utk"},
         ["THENEXUS"] = {"nex", "nexus"},
         ["AZJOLNERUB"] = {" an", "nerub"},
         ["AHNKAHET"] = {"ak", "kahet", "old kingdom", " ok", "akok"},

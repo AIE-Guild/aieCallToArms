@@ -1,6 +1,6 @@
-﻿CTA_MESSAGE					= "M";
+CTA_MESSAGE					= "M";
 CTA_GENERAL					= "I";
-CTA_GROUP_UPDATE				= "G";
+CTA_GROUP_UPDATE			= "G";
 CTA_BLOCK					= "X";
 CTA_SEARCH					= "S";
 
@@ -38,26 +38,26 @@ CTA_Classes[8] = "PALADIN";
 CTA_Classes[9] = "SHAMAN";
 CTA_Classes[10] = "DEATHKNIGHT";
 
-CTA_Classes[CTA_PRIEST] 	= { id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50 };
-CTA_Classes[CTA_MAGE] 		= { id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25 };
-CTA_Classes[CTA_WARLOCK] 	= { id=3, txMin=0.75, txMax=1.00, tyMin=0.25, tyMax=0.50 };
-CTA_Classes[CTA_DRUID] 		= { id=4, txMin=0.75, txMax=1.00, tyMin=0.00, tyMax=0.25 };
-CTA_Classes[CTA_HUNTER] 	= { id=5, txMin=0.00, txMax=0.25, tyMin=0.25, tyMax=0.50 };
-CTA_Classes[CTA_ROGUE] 		= { id=6, txMin=0.50, txMax=0.75, tyMin=0.00, tyMax=0.25 };
-CTA_Classes[CTA_WARRIOR] 	= { id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25 };
-CTA_Classes[CTA_PALADIN] 	= { id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75 };
-CTA_Classes[CTA_SHAMAN] 	= { id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };
+CTA_Classes[CTA_PRIEST] 		= { id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50 };
+CTA_Classes[CTA_MAGE] 			= { id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25 };
+CTA_Classes[CTA_WARLOCK] 		= { id=3, txMin=0.75, txMax=1.00, tyMin=0.25, tyMax=0.50 };
+CTA_Classes[CTA_DRUID] 			= { id=4, txMin=0.75, txMax=1.00, tyMin=0.00, tyMax=0.25 };
+CTA_Classes[CTA_HUNTER] 		= { id=5, txMin=0.00, txMax=0.25, tyMin=0.25, tyMax=0.50 };
+CTA_Classes[CTA_ROGUE] 			= { id=6, txMin=0.50, txMax=0.75, tyMin=0.00, tyMax=0.25 };
+CTA_Classes[CTA_WARRIOR] 		= { id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25 };
+CTA_Classes[CTA_PALADIN] 		= { id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75 };
+CTA_Classes[CTA_SHAMAN] 		= { id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };
 CTA_Classes[CTA_DEATHKNIGHT] 	= { id=10, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };
 
-CTA_Classes["PRIEST"]	 	= { localName=CTA_PRIEST, 	id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50, hex="ffffff" };
-CTA_Classes["MAGE"] 		= { localName=CTA_MAGE, 	id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25, hex="68ccef" };
-CTA_Classes["WARLOCK"] 		= { localName=CTA_WARLOCK, 	id=3, txMin=0.75, txMax=1.00, tyMin=0.25, tyMax=0.50, hex="9382c9" };
-CTA_Classes["DRUID"] 		= { localName=CTA_DRUID, 	id=4, txMin=0.75, txMax=1.00, tyMin=0.00, tyMax=0.25, hex="ff7c0a" };
-CTA_Classes["HUNTER"] 		= { localName=CTA_HUNTER, 	id=5, txMin=0.00, txMax=0.25, tyMin=0.25, tyMax=0.50, hex="aad372" };
-CTA_Classes["ROGUE"] 		= { localName=CTA_ROGUE, 	id=6, txMin=0.50, txMax=0.75, tyMin=0.00, tyMax=0.25, hex="fff468" };
-CTA_Classes["WARRIOR"]	 	= { localName=CTA_WARRIOR, 	id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25, hex="c69b6d" };
-CTA_Classes["PALADIN"]	 	= { localName=CTA_PALADIN, 	id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75, hex="f48cba" };
-CTA_Classes["SHAMAN"] 		= { localName=CTA_SHAMAN, 	id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50, hex="badb00" };
+CTA_Classes["PRIEST"]	 		= { localName=CTA_PRIEST, 	id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50, hex="ffffff" };
+CTA_Classes["MAGE"] 			= { localName=CTA_MAGE, 	id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25, hex="68ccef" };
+CTA_Classes["WARLOCK"] 			= { localName=CTA_WARLOCK, 	id=3, txMin=0.75, txMax=1.00, tyMin=0.25, tyMax=0.50, hex="9382c9" };
+CTA_Classes["DRUID"] 			= { localName=CTA_DRUID, 	id=4, txMin=0.75, txMax=1.00, tyMin=0.00, tyMax=0.25, hex="ff7c0a" };
+CTA_Classes["HUNTER"] 			= { localName=CTA_HUNTER, 	id=5, txMin=0.00, txMax=0.25, tyMin=0.25, tyMax=0.50, hex="aad372" };
+CTA_Classes["ROGUE"] 			= { localName=CTA_ROGUE, 	id=6, txMin=0.50, txMax=0.75, tyMin=0.00, tyMax=0.25, hex="fff468" };
+CTA_Classes["WARRIOR"]	 		= { localName=CTA_WARRIOR, 	id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25, hex="c69b6d" };
+CTA_Classes["PALADIN"]	 		= { localName=CTA_PALADIN, 	id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75, hex="f48cba" };
+CTA_Classes["SHAMAN"] 			= { localName=CTA_SHAMAN, 	id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50, hex="badb00" };
 CTA_Classes["DEATHKNIGHT"] 		= { localName=CTA_DEATHKNIGHT, 	id=10, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50, hex="c41f3b" };
 
 local trim;

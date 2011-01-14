@@ -1,25 +1,38 @@
-﻿--[[		---------------------------------------------------------------
-        Call To Arms - Updated for WotLK by ggman
+--[[	---------------------------------------------------------------
+        Call To Arms - Updated for Cata by Xcamr aka Rockyoysters
+        English Localization Update and Testing by Sesub
         ---------------------------------------------------------------
         @Author: 		Larry Lewis
         @Author:		Sacha Beharry
         @Author:		Eike Hanus (R10E)
+        @Author:		David Glassbrenner
         @DateCreated: 	26th May 2005
-        @LastUpdate: 		5 December 2008
-        @Release:		WotLK
-        @Interface:		30000
+        @LastUpdate: 	12 January 2011
+        @Release:		Cata
+        @Interface:		40000
 --]]
 
-        CTA_RELEASEVERSION 	= "aieCTA 3.0.4.0";
-        CTA_RELEASENOTE 	= "aieCTA 3.0.4.0";
-        CTA_THIS_VERSION	= 304;
+        CTA_RELEASEVERSION 	= "aieCTA 4.0.7.0";
+        CTA_RELEASENOTE 	= "aieCTA 4.0.7.0";
+        CTA_THIS_VERSION	= 407;
 
 --[[
-        E-Mail Eike Hanus:	Cantoria@Web.de
+        E-Mail David Glassbrenner:	lioneljonson@gmail.com
         Project Name: 		Call To Arms, Grouping Tool for World of Warcraft
 --]]
 
 
+--[[
+		---------------------------------------------------------------
+		NOTES ABOUT BUGS:
+		Invalid Link After Search:
+		Line: 1956
+		Line: 2105
+
+		Invalid Class On ToolTip:
+		Line: 2177
+		---------------------------------------------------------------
+--]]
 
 --[[	Variables
     ---------------------------------------------------------------
@@ -27,7 +40,7 @@
 
 CTA_DEFAULT_RAID_CHANNEL		= "aieCTAChannel";
 CTA_INVITE_MAGIC_WORD 			= "inviteme";
-CTA_PLAYER						= "PLAYER";
+CTA_PLAYER						= "player";
 CTA_MAX_RESULTS_ITEMS			= 20;
 CTA_MAX_BLACKLIST_ITEMS			= 15;
 CTA_ALLIANCE	    			= "Alliance";
@@ -77,7 +90,7 @@ local CTA_GENERAL				= "I";
 local CTA_GROUP_UPDATE			= "G";
 local CTA_BLOCK					= "X";
 local CTA_SEARCH				= "S";
-CTA_NUM_CLASSES           = 10
+CTA_NUM_CLASSES           		= 10
 
 
 local CTA_MESSAGE_COLOURS = {
@@ -135,34 +148,33 @@ CTA_Classes							= {};
 --R7 END
 
 --R11
-CTA_ClassColors = {};
-CTA_ClassColors["Priest"]	 	= "ffffff";
-CTA_ClassColors["Mage"] 		= "68ccef";
-CTA_ClassColors["Warlock"] 		= "9382c9";
-CTA_ClassColors["Druid"] 		= "ff7c0a";
-CTA_ClassColors["Hunter"] 		= "aad372";
-CTA_ClassColors["Rogue"] 		= "fff468";
-CTA_ClassColors["Warrior"]	 	= "c69b6d";
-CTA_ClassColors["Paladin"]	 	= "f48cba";
-CTA_ClassColors["Shaman"] 		= "badb00";
-CTA_ClassColors["Death Knight"] = "c41f3b";
+CTA_ClassColors 					= {};
+CTA_ClassColors["Priest"]	 		= "ffffff";
+CTA_ClassColors["Mage"] 			= "68ccef";
+CTA_ClassColors["Warlock"] 			= "9382c9";
+CTA_ClassColors["Druid"] 			= "ff7c0a";
+CTA_ClassColors["Hunter"] 			= "aad372";
+CTA_ClassColors["Rogue"] 			= "fff468";
+CTA_ClassColors["Warrior"]	 		= "c69b6d";
+CTA_ClassColors["Paladin"]	 		= "f48cba";
+CTA_ClassColors["Shaman"] 			= "badb00";
+CTA_ClassColors["Death Knight"] 	= "c41f3b";
 
-CTA_ClassColors[CTA_PRIEST] 	= "ffffff"; --= { id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50 };
-CTA_ClassColors[CTA_MAGE] 		= "68ccef"; --= { id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25 };
-CTA_ClassColors[CTA_WARLOCK] 	= "9382c9"; --= { id=3, txMin=0.75, txMax=1.00, tyMin=0.25, tyMax=0.50 };
-CTA_ClassColors[CTA_DRUID] 		= "ff7c0a"; --= { id=4, txMin=0.75, txMax=1.00, tyMin=0.00, tyMax=0.25 };
-CTA_ClassColors[CTA_HUNTER] 	= "aad372"; --= { id=5, txMin=0.00, txMax=0.25, tyMin=0.25, tyMax=0.50 };
-CTA_ClassColors[CTA_ROGUE] 		= "fff468"; --= { id=6, txMin=0.50, txMax=0.75, tyMin=0.00, tyMax=0.25 };
-CTA_ClassColors[CTA_WARRIOR] 	= "c69b6d"; --= { id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25 };
-CTA_ClassColors[CTA_PALADIN] 	= "f48cba"; --= { id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75 };
-CTA_ClassColors[CTA_SHAMAN] 	= "badb00";	--= { id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };
+CTA_ClassColors[CTA_PRIEST] 		= "ffffff"; --= { id=1, txMin=0.50, txMax=0.75, tyMin=0.25, tyMax=0.50 };
+CTA_ClassColors[CTA_MAGE] 			= "68ccef"; --= { id=2, txMin=0.25, txMax=0.50, tyMin=0.00, tyMax=0.25 };
+CTA_ClassColors[CTA_WARLOCK] 		= "9382c9"; --= { id=3, txMin=0.75, txMax=1.00, tyMin=0.25, tyMax=0.50 };
+CTA_ClassColors[CTA_DRUID] 			= "ff7c0a"; --= { id=4, txMin=0.75, txMax=1.00, tyMin=0.00, tyMax=0.25 };
+CTA_ClassColors[CTA_HUNTER] 		= "aad372"; --= { id=5, txMin=0.00, txMax=0.25, tyMin=0.25, tyMax=0.50 };
+CTA_ClassColors[CTA_ROGUE] 			= "fff468"; --= { id=6, txMin=0.50, txMax=0.75, tyMin=0.00, tyMax=0.25 };
+CTA_ClassColors[CTA_WARRIOR] 		= "c69b6d"; --= { id=7, txMin=0.00, txMax=0.25, tyMin=0.00, tyMax=0.25 };
+CTA_ClassColors[CTA_PALADIN] 		= "f48cba"; --= { id=8, txMin=0.00, txMax=0.25, tyMin=0.50, tyMax=0.75 };
+CTA_ClassColors[CTA_SHAMAN] 		= "badb00";	--= { id=9, txMin=0.25, txMax=0.50, tyMin=0.25, tyMax=0.50 };
 CTA_ClassColors[CTA_DEATHKNIGHT] 	= "c41f3b";
 
-local CTA_MessageList					= nil;
-CTA_IsAllianceFactionUser		= nil;
-CTA_Reload = 1;
+CTA_IsAllianceFactionUser			= nil;
+CTA_Reload 							= 1;
 
-CTA_UI = {};
+CTA_UI 								= {};
 CTA_UI.getString = function( uiObj, defaultVal )
     local val = uiObj:GetText();
     if( not val or val == "" ) then
@@ -194,7 +206,7 @@ CTA_UI.getNumber = function( uiObj, defaultVal, minVal, maxVal )
     return defaultVal;
 end
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         OnLoad and Slash Commands
         ---------------------------------------------------------------
 --]]
@@ -202,8 +214,7 @@ end
 
 
 
---[[
-        ---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Register events and hook functions.
         ---------------------------------------------------------------
 --]]
@@ -342,7 +353,7 @@ function CTA_ScriptError()
 end
 
 
---[[		CTA_SlashHandler(com)
+--[[	CTA_SlashHandler(com)
         ---------------------------------------------------------------
         For Slash Commands (surprise)
         @arg The command String
@@ -410,14 +421,6 @@ function CTA_SlashHandler(com)
         CTA_Println( CTA_AUTO_ANNOUNCE_TURNED_ON..CTA_AnnounceTimer..CTA_SECONDS );
         CTA_AnnounceToLFGButton:SetText( CTA_ANNOUNCE_LFG_BTN_OFF );
         CTA_AnnounceToLFGButton2:SetText( CTA_ANNOUNCE_LFG_BTN_OFF );
-    else 	-- MARKER: THE ELSE PART COULD BE TAKEN OUT NOW
-        for channelName in string.gmatch( com, CTA_ANNOUNCE_GROUP.." (%w+)" ) do
-            CTA_AutoAnnounce = channelName;
-            if CTA_AnnounceTimer == 0 then CTA_AnnounceTimer = 5 end; -- R10E
-            CTA_Println( CTA_AUTO_ANNOUNCE_TURNED_ON..CTA_AnnounceTimer..CTA_SECONDS );
-            CTA_AnnounceToLFGButton:SetText( CTA_ANNOUNCE_LFG_BTN_OFF );
-            CTA_AnnounceToLFGButton2:SetText( CTA_ANNOUNCE_LFG_BTN_OFF );
-        end
     end
 
 
@@ -433,13 +436,21 @@ function CTA_SlashHandler(com)
         aieCTA_SavedVariables.messageList[GetRealmName()] = aieCTA_SavedVariables.messageList[GetRealmName()] or {};
         aieCTA_SavedVariables.messageList[GetRealmName()][1] = aieCTA_SavedVariables.messageList[GetRealmName()][1] or {};
         aieCTA_SavedVariables.messageList[GetRealmName()][2] = aieCTA_SavedVariables.messageList[GetRealmName()][2] or {};
-        CTA_MessageList = nil;
+        table.wipe(CTA_MessageList);
         if( (UnitFactionGroup("player")) == "Alliance" ) then
             CTA_IsAllianceFactionUser = 1;
-            CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][1];
+
+            for k,v in pairs(aieCTA_SavedVariables.messageList[GetRealmName()][1]) do
+            	CTA_MessageList[k] = v
+            end
+
             CTA_Util.chatPrintln( "Showing Alliance Messages" );
         else
-            CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][2];
+
+            for k,v in pairs(aieCTA_SavedVariables.messageList[GetRealmName()][2]) do
+            	CTA_MessageList[k] = v
+            end
+
             CTA_Util.chatPrintln( "Showing Horde Messages" );
         end
         CTA_UpdateResults();
@@ -457,7 +468,7 @@ function CTA_SlashHandler(com)
 
     if( com == "channels" ) then
         local channelList = {EnumerateServerChannels()};
-        for i=1, getn(channelList) do
+        for i=1, #channelList do
             CTA_Util.chatPrintln( channelList[i] );
         end
     end
@@ -467,14 +478,14 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         OnUpdate and OnEvent
         ---------------------------------------------------------------
 --]]
 
 
 
---[[		CTA_OnUpdate()
+--[[	CTA_OnUpdate()
         ---------------------------------------------------------------
         Keep the <var>CTA_UpdateTicker</var> running.
         @arg The time elapsed since the last call to this function
@@ -612,7 +623,7 @@ function CTA_OnUpdate(self, elapsed ) -- Called by XML on Update
     -- using new who system in r11b2 for results
     CTA_RequestTimer = CTA_RequestTimer + CTA_UpdateTicker;
     if( CTA_RequestTimer > 2 ) then
-        for i = 1, getn( CTA_MessageList ) do
+        for i = 1, #CTA_MessageList do
             if( not CTA_MessageList[i].who ) then
                 local name = CTA_MessageList[i].op or CTA_MessageList[i].author;
                 CTA_MessageList[i].whoAttempts = CTA_MessageList[i].whoAttempts or 0;
@@ -647,19 +658,43 @@ function CTA_OnUpdate(self, elapsed ) -- Called by XML on Update
                     if( pdata ) then
                         CTA_LogMsg( CTA_VALIDATING_REQUEST_FROM..name );
                         --Data format: { time, level, race, class, guild }
-                        local level, class = pdata[2], pdata[4];
+                        local level, class, guild = pdata[2], pdata[4], pdata[5];
                         CTA_OutstandingRequests = CTA_OutstandingRequests - 1;
                         if( CTA_MyRaid and level >= CTA_MyRaid.minLevel and string.find( CTA_GetClassString(CTA_MyRaid.classes),class) ) then
-                            InviteUnit( name );
-                            CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Valid player - Invitation sent" );
 
-                            CTA_InvitationRequests[name].status = 2;
-                            CTA_InvitationRequests[name].class = class;
-                            CTA_InvitationRequests[name].level = level;
+							local v1,v2,v3,v4 = strsplit(" ", guild);
+							local validMainGuild = nil;
 
-                            CTA_IconMsg( CTA_INVITATION_SENT_TO.." "..name, CTA_GROUP_UPDATE );
-                            CTA_SendAutoMsg( CTA_INVITATION_SENT_MESSAGE, name );
-                            CTA_MyRaidInstantUpdate();
+							if(v1 == 'alea' and v2 == 'iacta' and v3 == 'est') then
+								validMainGuild = 1;
+							end
+
+							local subguild = v4;
+
+							local validSubGuild = nil;
+							for k,v in pairs(CTA_SUBGUILDS) do
+								if( v == subguild ) then
+									validSubGuild = 1;
+								end
+							end
+
+							if(subguild and validSubGuild == 1 and validMainGuild == 1) then
+								CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Valid player - Invitation sent" );
+								InviteUnit( name );
+
+								CTA_InvitationRequests[name].status = 2;
+								CTA_InvitationRequests[name].class = class;
+								CTA_InvitationRequests[name].level = level;
+
+								CTA_IconMsg( CTA_INVITATION_SENT_TO.." "..name, CTA_GROUP_UPDATE );
+    	                        CTA_SendAutoMsg( CTA_INVITATION_SENT_MESSAGE, name );
+    	                        CTA_MyRaidInstantUpdate();
+							else
+	                            CTA_InvitationRequests[name] = nil;
+	                            CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Invalid player - request removed" );
+
+								CTA_SendAutoMsg( CTA_WRONG_GUILD, name);
+							end
                         else
                             CTA_InvitationRequests[name] = nil;
                             CTA_LogMsg( CLR:VALUE(name).."\'s request processed: Invalid player - request removed" );
@@ -711,12 +746,12 @@ function CTA_OnUpdate(self, elapsed ) -- Called by XML on Update
     --]]
     CTA_ForwardTimer = CTA_ForwardTimer - 1;
     if( CTA_ForwardTimer == 0 ) then
-        if( lfxChatMessageList[getn(lfxChatMessageList)] ) then
-            CTA_Util.sendChatMessage( lfxChatMessageList[getn(lfxChatMessageList)].message, "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
-            --CTA_Util.chatPrintln( ">>"..lfxChatMessageList[getn(lfxChatMessageList)].message );
-            local name = lfxChatMessageList[getn(lfxChatMessageList)].author;
-            table.remove( lfxChatMessageList, getn(lfxChatMessageList) );
-            CTA_Util.logPrintln( "Forwarded msg from <"..CLR:VALUE(name)..">, pending relay count: "..getn(lfxChatMessageList) );
+        if( lfxChatMessageList[#lfxChatMessageList] ) then
+            CTA_Util.sendChatMessage( lfxChatMessageList[#lfxChatMessageList].message, "CHANNEL", GetChannelName( CTA_CommunicationChannel ) );
+            --CTA_Util.chatPrintln( ">>"..lfxChatMessageList[#lfxChatMessageList].message );
+            local name = lfxChatMessageList[#lfxChatMessageList].author;
+            table.remove( lfxChatMessageList, #lfxChatMessageList );
+            CTA_Util.logPrintln( "Forwarded msg from <"..CLR:VALUE(name)..">, pending relay count: "..#lfxChatMessageList );
         end
         CTA_ForwardTimer = CTA_ForwardThrottle;
 
@@ -755,13 +790,15 @@ function CTA_UpdateMinimapTexture()
     SetDesaturation(CTA_MinimapIconBgTexture, false)
 end
 
---[[		CTA_OnEvent()
+--[[	CTA_OnEvent()
         ---------------------------------------------------------------
         Event handler.
         @arg The event to be handled
 --]]
 
 function CTA_OnEvent(self, event,... ) -- Called by XML on Event
+	local arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9 = ...;
+
     if(event == "PLAYER_ENTERING_WORLD" and CTA_Reload ) then --"VARIABLES_LOADED") then
         CTA_InitWorld(self,event,...)
     end
@@ -774,10 +811,12 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
             CTA_LogMsg( name..CTA_HAS_DECLINED_INVITATION );
             CTA_MyRaidInstantUpdate();
         end
+
         if ( string.find( arg1, CTA_NOW_AFK ) ) then
             --CTA_Println( "AFK" );
             CTA_PlayerIsAFK = 1;
         end
+
         if ( string.find( arg1, CTA_NO_LONGER_AFK ) ) then
             --CTA_Println( "NOT AFK" );
             CTA_PlayerIsAFK = nil;
@@ -785,7 +824,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
     end
 
     -- Listen for Invitation requests
-  if ( event == "CHAT_MSG_WHISPER" ) then
+	if ( event == "CHAT_MSG_WHISPER" ) then
         -- CTA_Util.logPrintln( "Received Whisper: <"..arg1.."> from <"..arg2..">" );
 
         -- If the identity mod is on (and a lot of people in AIE use it),
@@ -796,7 +835,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
         end
         -- CTA_Util.logPrintln( "New the_arg1: "..the_arg1.."" );
 
-        if( CTA_MyRaidIsOnline and string.lower( strsub(the_arg1, 1, 8) ) == CTA_INVITE_MAGIC_WORD ) then
+        if( CTA_MyRaidIsOnline and string.lower( strsub(the_arg1, 1, 8) ) == CTA_INVITE_MAGIC_WORD) then
             if( not CTA_FindInList( arg2, CTA_BlackList ) ) then -- R2
                 if( CTA_ChannelSpam[arg2] == nil ) then
                     CTA_ChannelSpam[arg2] = 0;
@@ -825,7 +864,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
     -- Listen for LFG Channel messages
 
-  if ( event == "CHAT_MSG_CHANNEL" ) then
+	if ( event == "CHAT_MSG_CHANNEL" ) then
         --arg1 = message, arg2 = sender, arg3 = language, arg4 = channelString
         --arg6  = flags, arg8 = channel#, arg9 = channelName
 
@@ -840,12 +879,13 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
         -- CTA channel relay msgs
         if( arg9 == CTA_CommunicationChannel ) then
+            local entry = {};
             -- CTA_Util.logPrintln( "CTA-RELAY: <"..arg1.."> from <"..arg2..">" );
 
             --R7 > Trusted CTA Channel Messages
 
             if( arg1 == "/cta A<>" ) then
-                for i = 1, getn( CTA_MessageList ) do
+                for i = 1, #CTA_MessageList do
                     local name = CTA_MessageList[i].author or "?";
                     if( name == arg2 and not CTA_MessageList[i].op ) then
                         table.remove( CTA_MessageList , i );
@@ -858,10 +898,10 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
             for code, com, opt in string.gmatch( arg1, "/cta A<(%d+):(.+):(.+)>" ) do
                 local tim = string.sub( code,  1,  6 );
-                local cla = tonumber( string.sub( code,  7,  9 ) );
-                local siz = tonumber( string.sub( code,  10,  11 ) );
-                local max = tonumber( string.sub( code, 12, 13 ) );
-                local min = tonumber( string.sub( code, 14, 15 ) );
+                local cla = tonumber( string.sub( code,  7,  10 ) );
+                local siz = tonumber( string.sub( code,  11,  12 ) );
+                local max = tonumber( string.sub( code, 13, 14 ) );
+                local min = tonumber( string.sub( code, 15, 16 ) );
                 local pro = 0;
                 local typ = CTA_RAID_TYPE_PVE;
 
@@ -869,6 +909,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                     typ = CTA_RAID_TYPE_PVP;
                     siz = siz - 40;
                 end
+
                 if( max > 40 ) then
                     pro = 1;
                     max = max - 40;
@@ -880,7 +921,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                 local shownInChatAndOrMinimap = nil;
                 --
 
-                for i = 1, getn( CTA_MessageList ) do
+                for i = 1, #CTA_MessageList do
                     local name = CTA_MessageList[i].author or "?";
                     if( name == arg2 and not CTA_MessageList[i].op ) then
                         whoData = CTA_MessageList[i].who;
@@ -890,32 +931,28 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                     end
                 end
 
-                local entry = {};
                 entry.ctaType = "A";
-                entry.author = arg2;
-                entry.message = com;
-                entry.time = tim;
-                entry.options = opt;
-                entry.who = whoData;
+                entry.author = arg2 or nil;
+                entry.message = com or nil;
+                entry.time = tim or nil;
+                entry.options = opt or nil;
+                entry.who = whoData or nil;
+                entry.op = nil;
 
-                entry.pvtype = tonumber(typ);
-                entry.size = tonumber(siz);
-                entry.maxSize = tonumber(max);
-                entry.minLevel = tonumber(min);
-                entry.classes = tonumber(cla);
-                entry.passwordProtected = tonumber(pro);
-
-                -- R11B4
-                entry.shownInChatAndOrMinimap = shownInChatAndOrMinimap;
-                --
+                entry.pvtype = tonumber(typ) or nil;
+                entry.size = tonumber(siz) or nil;
+                entry.maxSize = tonumber(max) or nil;
+                entry.minLevel = tonumber(min) or nil;
+                entry.classes = tonumber(cla) or nil;
+                entry.passwordProtected = tonumber(pro) or nil;
+                entry.shownInChatAndOrMinimap = shownInChatAndOrMinimap or nil;
 
                 table.insert( CTA_MessageList, 1, entry );
                 CTA_PollApplyFilters = 1;
                 return;
-            end
+			end
 
-            for code, com, opt in string.gmatch( arg1, "/cta B<(%d+):(.+):(.+)>" ) do
-
+			for code, com, opt in string.gmatch( arg1, "/cta B<(%d+):(.+):(.+)>" ) do
                 -- Remove author from LFX list upon receiving new transmission
                 local whoData = nil;
 
@@ -923,7 +960,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                 local shownInChatAndOrMinimap = nil;
                 --
 
-                for i = 1, getn( CTA_MessageList ) do
+                for i = 1, #CTA_MessageList do
                     local name = CTA_MessageList[i].author or "?";
                     if( name == arg2 and not CTA_MessageList[i].op ) then
                         whoData = CTA_MessageList[i].who;
@@ -933,17 +970,21 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                     end
                 end
 
-                local entry = {};
                 entry.ctaType = "B";
-                entry.author = arg2;
-                entry.message = com;
-                entry.time = code;
-                entry.options = opt;
-                entry.who = whoData;
+                entry.author = arg2 or nil;
+                entry.message = com or nil;
+                entry.time = code or nil;
+                entry.options = opt or nil;
+                entry.who = whoData or nil;
+				entry.op = nil;
 
-                -- R11B4
-                entry.shownInChatAndOrMinimap = shownInChatAndOrMinimap;
-                --
+                entry.pvtype = nil;
+                entry.size = nil;
+                entry.maxSize = nil;
+                entry.minLevel = nil;
+                entry.classes = nil;
+                entry.passwordProtected = nil;
+                entry.shownInChatAndOrMinimap = shownInChatAndOrMinimap or nil;
 
                 table.insert( CTA_MessageList, 1, entry );
                 CTA_PollApplyFilters = 1;
@@ -956,48 +997,54 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                 if( CTA_Util.search( com, aieCTA_SavedVariables.lfmTrigger ) > 0 ) then
             --]]
 
-                    -- remove this msg from our forward list
-                    for i = 1,#lfxChatMessageList do
-                        local name = lfxChatMessageList[i].author or "?";
-                        if( name == opname ) then
-                            table.remove( lfxChatMessageList, i );
-                            CTA_Util.logPrintln( "Rx cta forward msg re: <"..CLR:VALUE(opname).."> from <"..CLR:VALUE(arg2).."> - Removed monitor entry" );
-                            break;
-                        end
-                    end
+				-- remove this msg from our forward list
+				for i = 1, #lfxChatMessageList do
+					local name = lfxChatMessageList[i].author or "?";
+					if( name == opname ) then
+						table.remove( lfxChatMessageList, i );
+						CTA_Util.logPrintln( "Rx cta forward msg re: <"..CLR:VALUE(opname).."> from <"..CLR:VALUE(arg2).."> - Removed monitor entry" );
+						break;
+					end
+				end
 
-                    local whoData = nil;
+				local whoData = nil;
 
-                    -- Ignore broadcast from myself
-                    if (CTA_myname == arg2) then
-                        return;
-                    end
+				-- Ignore broadcast from myself
+				if (CTA_myname == arg2) then
+					return;
+				end
 
-                    -- Does this guy already have an entry in our message list?  If so remove.
-                    for i = 1, #CTA_MessageList  do
-                        local name = CTA_MessageList[i].op or "?";
-                        if( name == opname ) then
-                            whoData = CTA_MessageList[i].who;
-                            table.remove( CTA_MessageList , i );
-                            break;
-                        end
-                    end
+				-- Does this guy already have an entry in our message list?  If so remove.
+				for i = 1, #CTA_MessageList do
+					local name = CTA_MessageList[i].op or "?";
+					if( name == opname ) then
+						whoData = CTA_MessageList[i].who;
+						table.remove( CTA_MessageList , i );
+						break;
+					end
+				end
 
-        --			CTA_Util.logPrintln( "MSG-C <"..com.."> from <"..arg2.."> op <"..opname..">" );
+	--			CTA_Util.logPrintln( "MSG-C <"..com.."> from <"..arg2.."> op <"..opname..">" );
 
-                    local entry = {};
-                    entry.ctaType = "C";
-                    entry.author = arg2;
-                    entry.message = com;
-                    entry.time = code;
-                    entry.options = opt;
-                    entry.who = whoData;
+				entry.ctaType = "C";
+				entry.author = arg2 or nil;
+				entry.message = com or nil;
+				entry.time = code or nil;
+				entry.options = opt or nil;
+				entry.who = whoData or nil;
+				entry.op = opname or nil;
 
-                    entry.op = opname;
+                entry.pvtype = nil;
+                entry.size = nil;
+                entry.maxSize = nil;
+                entry.minLevel = nil;
+                entry.classes = nil;
+                entry.passwordProtected = nil;
+				entry.shownInChatAndOrMinimap = nil;
 
-                    table.insert( CTA_MessageList, 1, entry );
-                    CTA_PollApplyFilters = 1;
-                    --]]
+				table.insert( CTA_MessageList, 1, entry );
+				CTA_PollApplyFilters = 1;
+				--]]
             --[[ Removed for beta 4 tests
                 end
             --]]
@@ -1010,7 +1057,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                 --if( CTA_Util.search( com, aieCTA_SavedVariables.lfgTrigger ) > 0 ) then
             --]]
 
-                    for i = 1, getn(lfxChatMessageList) do
+                    for i = 1, #lfxChatMessageList do
                         local name = lfxChatMessageList[i].author or "?";
                         if( name == opname ) then
                             table.remove( lfxChatMessageList, i );
@@ -1027,7 +1074,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                     end
 
                     -- Does this guy already have an entry in our message list?  If so remove.
-                    for i = 1, getn( CTA_MessageList ) do
+                    for i = 1, #CTA_MessageList do
                         local name = CTA_MessageList[i].op or "?";
                         if( name == opname ) then
                             whoData = CTA_MessageList[i].who;
@@ -1037,15 +1084,22 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                         end
                     end
 
-                    local entry = {};
                     entry.ctaType = "D";
-                    entry.author = arg2;
-                    entry.message = com;
-                    entry.time = code;
-                    entry.options = opt;
-                    entry.who = whoData;
+                    entry.author = arg2 or nil;
+                    entry.message = com or nil;
+                    entry.time = code or nil;
+                    entry.options = opt or nil;
+                    entry.who = whoData or nil;
+                    entry.op = opname or nil;
 
-                    entry.op = opname;
+					entry.pvtype = nil;
+					entry.size = nil;
+					entry.maxSize = nil;
+					entry.minLevel = nil;
+					entry.classes = nil;
+					entry.passwordProtected = nil;
+					entry.shownInChatAndOrMinimap = nil;
+
                     --print("--rcvd msg from "..opname)
                     --ignore messages from myself!
                     if (CTA_myname ~= arg2) then
@@ -1060,10 +1114,11 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
         elseif (string.lower( arg9 ) == string.lower( CTA_MONITOR_CHANNEL_NAME )) then -- or (type(arg7) == "number" and arg7 > 0) then  -- Server Channel
 
-      local global_chan = string.lower( arg9 ) == string.lower( CTA_MONITOR_CHANNEL_NAME )	--LookingForGroup channel
+      		local global_chan = string.lower( arg9 ) == string.lower( CTA_MONITOR_CHANNEL_NAME )	--LookingForGroup channel
             local channel = arg8 or "?";
             local author = arg2 or " ";
 
+			local entry = {};
             local msg = arg1 or "?";
             local type = "C"
 
@@ -1096,7 +1151,7 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
             end
 
             -- is a spam by another cta user
-            for i = 1, getn( CTA_MessageList ) do
+            for i = 1, #CTA_MessageList do
                 local name = CTA_MessageList[i].author or "?";
                 if( name == author and not CTA_MessageList[i].op ) then
                     return;
@@ -1113,12 +1168,12 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
 
             -- if LookingForGroup channel-------------------------------------
-       if global_chan then
+			if global_chan then
             -- got this message in the LFG channel
             -- add this message to the list
                 local whoData = nil;
 
-                for i = 1, getn( CTA_MessageList ) do
+                for i = 1, #CTA_MessageList do
                     local name = CTA_MessageList[i].op or "?";
                     if( name == author ) then
                         whoData = CTA_MessageList[i].who;
@@ -1127,64 +1182,74 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
                     end
                 end
 
-                local entry = {};
-                entry.ctaType = mtype;
-                entry.author = ""
-                entry.message = msg;
-                entry.time = tim;
+                entry.ctaType = mtype or nil;
+                entry.author = "";
+                entry.message = msg or nil;
+                entry.time = tim or nil;
                 entry.options = "x";
-                entry.who = whoData;
+                entry.who = whoData or nil;
+                entry.op = author or nil;
 
-                entry.op = author;
+				entry.pvtype = nil;
+				entry.size = nil;
+				entry.maxSize = nil;
+				entry.minLevel = nil;
+				entry.classes = nil;
+				entry.passwordProtected = nil;
+				entry.shownInChatAndOrMinimap = nil;
 
                 table.insert( CTA_MessageList, 1, entry );
                 aieCTA_SavedVariables.timeLastMsgAdded = time();
                 CTA_PollApplyFilters = 1;
             else
-                    -- Forward this message across CTA channel
+				-- Forward this message across CTA channel
 
-                    -- Only forward msgs with no spam and score >= 3
-                    -- otherwise we forwarding too many messages and getting D/C'd
-                    --print("scores: ",spamscore, score)
+				-- Only forward msgs with no spam and score >= 3
+				-- otherwise we forwarding too many messages and getting D/C'd
+				--print("scores: ",spamscore, score)
 
-                    CTA_Util.logPrintln( "Picked up lfx msg in <"..CLR:VALUE(arg9).."> from <"..CLR:VALUE(author)..">");
+				CTA_Util.logPrintln( "Picked up lfx msg in <"..CLR:VALUE(arg9).."> from <"..CLR:VALUE(author)..">");
 
-                    if (spamscore > 0) or (score < 3) then
-                        return;
-                    end
+				if (spamscore > 0) or (score < 3) then
+					return;
+				end
 
-                --CTA_Util.logPrintln("msg added")
-                    -- Add to our message list right now
-                    -- begin add msg
-                        for i = 1, getn( CTA_MessageList ) do
-                    local name = CTA_MessageList[i].op or "?";
-                    if( name == author ) then
-                        whoData = CTA_MessageList[i].who;
-                        table.remove( CTA_MessageList , i );
-                        break;
-                    end
-                end
+				--CTA_Util.logPrintln("msg added")
+				-- Add to our message list right now
+				-- begin add msg
+				for i = 1, #CTA_MessageList do
+					local name = CTA_MessageList[i].op or "?";
+					if( name == author ) then
+						whoData = CTA_MessageList[i].who;
+						table.remove( CTA_MessageList , i );
+						break;
+					end
+				end
 
-            local entry = {};
-                entry.ctaType = mtype;
-                entry.author = ""
-                entry.message = msg;
-                entry.time = tim;
+                entry.ctaType = mtype or nil;
+                entry.author = "";
+                entry.message = msg or nil;
+                entry.time = tim or nil;
                 entry.options = "x";
-                entry.who = whoData;
+                entry.who = whoData or nil;
+                entry.op = author or nil;
 
-                entry.op = author;
+				entry.pvtype = nil;
+				entry.size = nil;
+				entry.maxSize = nil;
+				entry.minLevel = nil;
+				entry.classes = nil;
+				entry.passwordProtected = nil;
+				entry.shownInChatAndOrMinimap = nil;
 
                 table.insert( CTA_MessageList, 1, entry );
                 aieCTA_SavedVariables.timeLastMsgAdded = time();
                 CTA_PollApplyFilters = 1;
 
-                    -- end add msg
-
-
+                -- end add msg
 
                 -- Forward to other CTA users
-                for i = 1, getn(lfxChatMessageList) do
+                for i = 1, #lfxChatMessageList do
                     local name = lfxChatMessageList[i].author or "?";
                     if( name == author ) then
                         table.remove( lfxChatMessageList, i );
@@ -1194,23 +1259,37 @@ function CTA_OnEvent(self, event,... ) -- Called by XML on Event
 
                 if string.find( msg, ":") then msg = string.gsub(msg, ":", "."); end;
 
-                local entry = {};
-                entry.author = author;
+                entry.author = author or nil;
                 entry.message = "/cta "..mtype.."<"..tim..":"..author..":"..msg..":x>";
+
+                entry.ctaType = nil;
+                entry.time = nil;
+                entry.options = nil;
+                entry.who = nil;
+                entry.op = nil;
+
+				entry.pvtype = nil;
+				entry.size = nil;
+				entry.maxSize = nil;
+				entry.minLevel = nil;
+				entry.classes = nil;
+				entry.passwordProtected = nil;
+				entry.shownInChatAndOrMinimap = nil;
+
                 CTA_ForwardMessage( entry );
 
                 --CTA_Util.logPrintln( "Relaying msg, count: "..#lfxChatMessageList );
-        end				-- end if global_chan
+        	end	-- end if global_chan
 
 
-      return
+			return
 
-    end
-    end
+		end
+	end
 
     -- Listen for Who information -- NEEDS WORK
     if ( event == "WHO_LIST_UPDATE" ) then
-        CTAWM.onEventWhoListUpdated(this,event,...);
+        CTAWM.onEventWhoListUpdated(self,event,...);
     end
 
     -- Group update
@@ -1270,13 +1349,21 @@ function CTA_InitWorld(self,event,...)
         aieCTA_SavedVariables.messageList[GetRealmName()][1] = aieCTA_SavedVariables.messageList[GetRealmName()][1] or {};
         aieCTA_SavedVariables.messageList[GetRealmName()][2] = aieCTA_SavedVariables.messageList[GetRealmName()][2] or {};
 
-        CTA_MessageList = nil;
+		table.wipe(CTA_MessageList);
+
         if( (UnitFactionGroup("player")) == "Alliance" ) then
             CTA_IsAllianceFactionUser = 1;
-            CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][1];
+
+			for k,v in pairs(aieCTA_SavedVariables.messageList[GetRealmName()][1]) do
+				CTA_MessageList[k] = v
+			end
+
             CTA_LogMsg( CTA_SHOWING_ALLIANCE_LFX );
         else
-            CTA_MessageList = aieCTA_SavedVariables.messageList[GetRealmName()][2];
+			for k,v in pairs(aieCTA_SavedVariables.messageList[GetRealmName()][2]) do
+				CTA_MessageList[k] = v
+			end
+
             CTA_LogMsg( CTA_SHOWING_HORDE_LFX );
         end
 
@@ -1284,7 +1371,7 @@ function CTA_InitWorld(self,event,...)
         if( time() - aieCTA_SavedVariables.timeLastMsgAdded > 900 ) then
             CTA_MinimapMessageFrame2:AddMessage( CTA_CLEAR_OLD_MSGS, 1, 1, 1 );
             CTA_LogMsg( CTA_CLEAR_OLD_MSGS );
-            CTA_MessageList = {};
+            table.wipe(CTA_MessageList);
         end
 
         CTA_FilterLevelSlider:SetValue( aieCTA_SavedVariables.FilterLevel );
@@ -1308,7 +1395,7 @@ function CTA_InitWorld(self,event,...)
 end  -- end function CTA_InitWorld(self,event,...)
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Communication - System
         ---------------------------------------------------------------
 --]]
@@ -1316,7 +1403,7 @@ end  -- end function CTA_InitWorld(self,event,...)
 
 
 
---[[		CTA_JoinChannel()
+--[[	CTA_JoinChannel()
         ---------------------------------------------------------------
         Attempts to join the <var>CTA_CommunicationChannel</var>
         channel.
@@ -1329,7 +1416,7 @@ end
 
 
 
---[[		CTA_ConnectedToChannel()
+--[[	CTA_ConnectedToChannel()
         ---------------------------------------------------------------
         Determines whether the client has joined the specified channel.
         @arg The name of the channel
@@ -1340,7 +1427,7 @@ function CTA_ConnectedToChannel( channel )  -- NOT IN USE
     local DefaultChannels = { GetChatWindowChannels(DEFAULT_CHAT_FRAME:GetID()) };
     local connected = nil;
     if( DefaultChannels ) then
-        for item = 1, getn(DefaultChannels) do
+        for item = 1, #DefaultChannels do
             CTA_LogMsg( DefaultChannels[item] );
             if( DefaultChannels[item] == channel ) then
                 connected = 1;
@@ -1355,7 +1442,7 @@ end
 
 
 
---[[		CTA_SendAutoMsg()
+--[[	CTA_SendAutoMsg()
         ---------------------------------------------------------------
         Sends a chat message, by whisper, to the specified player.
         @arg The message to be sent
@@ -1371,7 +1458,7 @@ end
 
 
 
---[[		CTA_SendChatMessage()
+--[[	CTA_SendChatMessage()
         ---------------------------------------------------------------
         Sends a chat message to the specified player or channel.
         @arg The message to be sent
@@ -1402,12 +1489,12 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Invitations
         ---------------------------------------------------------------
 --]]
 
---[[		CTA_SendPasswordRaidInvitationRequest()
+--[[	CTA_SendPasswordRaidInvitationRequest()
         ---------------------------------------------------------------
         Sends a request with a pasword for an invitation
 --]]
@@ -1415,16 +1502,18 @@ end
 function CTA_SendPasswordRaidInvitationRequest()
     local raid = CTA_FilteredResultsList[ CTA_SelectedResultListItem ];
     local password = CTA_SafeSet( CTA_JoinRaidWindowEditBox:GetText(), "" );
-    if( password ~= "" ) then
+    if( password ~= "" and raid.leader) then
         CTA_SendChatMessage( CTA_INVITE_MAGIC_WORD.." "..password, "WHISPER", raid.leader );
-        CTA_JoinRaidWindow:Hide();
+    else
+    	DEFAULT_CHAT_FRAME:AddMessage(CTA_CANT_JOIN_SELF, 1.0, 0.0, 0.0);
     end
+    CTA_JoinRaidWindow:Hide();
 end
 
 
 
 
---[[		CTA_SendRaidInvitationRequest()
+--[[	CTA_SendRaidInvitationRequest()
         ---------------------------------------------------------------
         Sends a request for an invitation
 --]]
@@ -1437,14 +1526,16 @@ function CTA_SendRaidInvitationRequest() -- Called by XML
     if( raid.passwordProtected == 1 ) then
         CTA_JoinRaidWindow:Show();
     else
-        CTA_SendChatMessage( CTA_INVITE_MAGIC_WORD, "WHISPER", raid.author );
+    	if( raid ) then
+        	CTA_SendChatMessage( CTA_INVITE_MAGIC_WORD, "WHISPER", raid.author );
+        end
     end
 end
 
 
 
 
---[[		CTA_ReceiveRaidInvitationRequest()
+--[[	CTA_ReceiveRaidInvitationRequest()
         ---------------------------------------------------------------
         Handles incoming invitation requests.
         @arg The invitation request with optional password
@@ -1454,7 +1545,7 @@ end
 function CTA_ReceiveRaidInvitationRequest( msg, author )
     if( CTA_InvitationRequests[author] ) then return; end -- cheap short-circuit hack
     CTA_LogMsg( CTA_RECEIVED_INVITATION_REQUEST..author );
-    if( CTA_MyRaid.size + getn(CTA_InvitationRequests) < CTA_MyRaid.maxSize ) then
+    if( CTA_MyRaid.size + #CTA_InvitationRequests < CTA_MyRaid.maxSize ) then
         if( CTA_MyRaid.passwordProtected==1 ) then
             local password = string.gsub( string.sub( msg, 9 ), "%s*([^%s]+).*", "%1" );
 
@@ -1464,7 +1555,7 @@ function CTA_ReceiveRaidInvitationRequest( msg, author )
                 CTA_SendAutoMsg( CTA_INCORRECT_PASSWORD_MESSAGE, author);
             end
         else
-            CTA_AddRequest( author );
+           	CTA_AddRequest( author );
         end
     else
         CTA_SendAutoMsg( CTA_NO_SPACE_MESSAGE, author);
@@ -1474,7 +1565,7 @@ end
 
 
 
---[[		CTA_AddRequest()
+--[[	CTA_AddRequest()
         ---------------------------------------------------------------
         Adds a player's request for an invitation to join the group.
         @arg The name of the player requesting an invitaion
@@ -1489,7 +1580,7 @@ end
 
 
 
---[[		CTA_RemoveRequest()
+--[[	CTA_RemoveRequest()
         ---------------------------------------------------------------
         Removes a player's request for an invitation to join the group.
         @arg The name of the player requesting an invitaion
@@ -1506,7 +1597,7 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Inter-AddOn Group Information Communication
         ---------------------------------------------------------------
 --]]
@@ -1514,7 +1605,7 @@ end
 
 
 
---[[		CTA_BroadcastRaidInfo()
+--[[	CTA_BroadcastRaidInfo()
         ---------------------------------------------------------------
         Sends this group info to the CTA Channel.
 --]]
@@ -1551,7 +1642,7 @@ function CTA_BroadcastRaidInfo()
         max = max + 40;
     end
 
-    while( string.len( cla ) < 3 ) do
+    while( string.len( cla ) < 4 ) do
         cla = "0"..cla;
     end
 
@@ -1579,7 +1670,7 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Functions Related To The Search Frame And The Group List
         ---------------------------------------------------------------
 --]]
@@ -1587,7 +1678,7 @@ end
 
 
 
---[[		CTA_ApplyFiltersToGroupList()
+--[[	CTA_ApplyFiltersToGroupList()
         ---------------------------------------------------------------
         Applies filter settings to the group list and
         updates the score for each one. This score will be used by the
@@ -1602,8 +1693,8 @@ function CTA_ApplyFiltersToGroupList()
 
     local keywords = CTA_UI.getString( CTA_SearchFrameDescriptionEditBox, "*" );
     local playerClass = CTA_UI.getString( CTA_PlayerClassDropDownText, CTA_ANY_CLASS );
-    local playerMinLevel = CTA_UI.getNumber( CTA_PlayerMinLevelEditBox,  0, 1, 80 );
-    local playerMaxLevel = CTA_UI.getNumber( CTA_PlayerMaxLevelEditBox, 80, 1, 80 );
+    local playerMinLevel = CTA_UI.getNumber( CTA_PlayerMinLevelEditBox,  0, 1, 85 );
+    local playerMaxLevel = CTA_UI.getNumber( CTA_PlayerMaxLevelEditBox, 85, 1, 85 );
 
 
     CTA_RequestInviteButton:Disable();
@@ -1689,7 +1780,7 @@ function CTA_ApplyFiltersToGroupList()
                 if ( data.who and data.who.level ~= 0 ) then
                     if( playerClass ~= CTA_ANY_CLASS and data.who.class ~= playerClass ) then ok = nil; end
                     if( data.who.level < playerMinLevel or data.who.level > playerMaxLevel ) then ok = nil; end
-                elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 80 ) then
+                elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 85 ) then
                     ok = nil;
                 end
 
@@ -1705,7 +1796,7 @@ function CTA_ApplyFiltersToGroupList()
                 if ( data.who and data.who.level ~= 0 ) then
                     if( playerClass ~= CTA_ANY_CLASS and data.who.class ~= playerClass ) then ok = nil; end
                     if( data.who.level < playerMinLevel or data.who.level > playerMaxLevel ) then ok = nil; end
-                elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 80 ) then
+                elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 85 ) then
                     ok = nil;
                 end
 
@@ -1721,7 +1812,7 @@ function CTA_ApplyFiltersToGroupList()
                 if ( data.who and data.who.level ~= 0 ) then
                     if( playerClass ~= CTA_ANY_CLASS and data.who.class ~= playerClass ) then ok = nil; end
                     if( data.who.level < playerMinLevel or data.who.level > playerMaxLevel ) then ok = nil; end
-                elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 80 ) then
+                elseif( playerClass ~= CTA_ANY_CLASS or playerMinLevel > 0 or playerMaxLevel < 85 ) then
                     ok = nil;
                 end
 
@@ -1753,7 +1844,7 @@ function CTA_ApplyFiltersToGroupList()
         --CTA_LogMsg( CTA_REMOVED_OLD_RESULT_ITEMS[1]..pruneCount..CTA_REMOVED_OLD_RESULT_ITEMS[2] );	-- "Removed n old result items" message
     --end
 
-    if ( oldListSize < getn( CTA_FilteredResultsList ) and aieCTA_SavedVariables.playSoundForNewResults ) then
+    if ( oldListSize < #CTA_FilteredResultsList and aieCTA_SavedVariables.playSoundForNewResults ) then
         PlaySoundFile( "Sound\\Interface\\PickUp\\PutDownRing.wav" );
     end
 
@@ -1796,7 +1887,7 @@ end
 
 
 
---[[		CTA_UpdateResults()								UPDATE FUNCTION
+--[[	CTA_UpdateResults()								UPDATE FUNCTION
         ---------------------------------------------------------------
         Updates the groups results list to show only those
         groups with a score of at least 1.
@@ -1806,7 +1897,7 @@ end
 
 function CTA_UpdateResults()
     local index = 1;
-    local groupListLength = getn( CTA_FilteredResultsList );
+    local groupListLength = #CTA_FilteredResultsList;
 
 
     if( groupListLength ~= 0 ) then
@@ -1817,7 +1908,7 @@ function CTA_UpdateResults()
     end
 
     if( groupListLength ~= 1 ) then
-        CTA_ResultsLabel:SetText( CTA_RESULTS_FOUND.." "..groupListLength.." / "..CTA_getn( CTA_MessageList ) );
+        CTA_ResultsLabel:SetText( CTA_RESULTS_FOUND.." "..groupListLength.." / "..#CTA_MessageList );
     else
         CTA_ResultsLabel:SetText( CTA_RESULTS_FOUND.." "..groupListLength );
     end
@@ -1835,17 +1926,17 @@ function CTA_UpdateResults()
     while( index < CTA_MAX_RESULTS_ITEMS + 1 ) do
         local c = "CTA_NewItem"..index;
         local isguildie = false;
-        if( getglobal( c ) ) then
+        if( _G[c] ) then
             if( index+CTA_ResultsListOffset <= groupListLength ) then
                 local entry = CTA_FilteredResultsList[index+CTA_ResultsListOffset];
 
                 -- The text colour
                 if( entry.ctaType== "A" or entry.ctaType== "C" ) then
-                    getglobal( c.."NameLabel"):SetTextColor( 0.75, 0.75, 1, 1 );
+                    _G[c.."NameLabel"]:SetTextColor( 0.75, 0.75, 1, 1 );
                     --getglobal( c.."TextureGold"):Show();
                     --getglobal( c.."TextureSilver"):Hide();
                 else
-                    getglobal( c.."NameLabel"):SetTextColor( 0.75, 1, 0.75, 1 );
+                    _G[c.."NameLabel"]:SetTextColor( 0.75, 1, 0.75, 1 );
                     --getglobal( c.."TextureGold"):Hide();
                     --getglobal( c.."TextureSilver"):Show();
                 end
@@ -1962,19 +2053,19 @@ function CTA_UpdateResults()
 
 
                 -- Set the texts
-                getglobal( c.."NameLabel"):SetText( mainText );
-                getglobal( c.."MoreLabel"):SetText( moreText );
-                getglobal( c.."MoreRightLabel"):SetText( rightText );
+                _G[ c.."NameLabel"]:SetText( mainText );
+                _G[ c.."MoreLabel"]:SetText( moreText );
+                _G[ c.."MoreRightLabel"]:SetText( rightText );
 
                 if( CTA_SelectedResultListItem == index + CTA_ResultsListOffset ) then
-                    getglobal( c.."TextureSelected"):Show();
+                    _G[c.."TextureSelected"]:Show();
                 else
-                    getglobal( c.."TextureSelected"):Hide();
+                    _G[c.."TextureSelected"]:Hide();
                 end
 
-                getglobal( c ):Show();
+                _G[c]:Show();
             else
-                getglobal( c ):Hide();
+                _G[c]:Hide();
             end
         end
         index = index + 1;
@@ -1983,7 +2074,7 @@ end
 
 
 
---[[		CTA_ListItem_OnMouseUp()
+--[[	CTA_ListItem_OnMouseUp()
         ---------------------------------------------------------------
         Sets the caller item as the selected group and updates the
         <ui>CTA_RequestInviteButton</ui> button as necessary, then
@@ -1991,7 +2082,7 @@ end
 --]]
 
 function CTA_ListItem_OnMouseUp(self, button) -- Called by XML
-    local value = string.gsub( this:GetName(), "CTA_NewItem(%d+)", "%1" );
+    local value = string.gsub( self:GetName(), "CTA_NewItem(%d+)", "%1" );
     if( CTA_SelectedResultListItem == CTA_ResultsListOffset + value ) then
         CTA_SelectedResultListItem = 0;
         CTA_RequestInviteButton:Disable();
@@ -2001,7 +2092,7 @@ function CTA_ListItem_OnMouseUp(self, button) -- Called by XML
         local raid = CTA_FilteredResultsList[ CTA_ResultsListOffset + value ];
 
         -- R7
-        if (arg1 == "RightButton") then
+        if (button == "RightButton") then
             local name = raid.op or raid.author;
             --FriendsFrame_ShowDropdown(name, 1);
 
@@ -2010,7 +2101,7 @@ function CTA_ListItem_OnMouseUp(self, button) -- Called by XML
                 FriendsDropDown.initialize = FriendsFrameDropDown_Initialize;
                 FriendsDropDown.displayMode = "MENU";
                 FriendsDropDown.name = name;
-                ToggleDropDownMenu(1, nil, FriendsDropDown, this:GetName());
+                ToggleDropDownMenu(1, nil, FriendsDropDown, self:GetName());
             end
 
             return;
@@ -2033,18 +2124,18 @@ end
 
 
 
---[[		CTA_ListItem_ShowTooltip()
+--[[	CTA_ListItem_ShowTooltip()
         ---------------------------------------------------------------
         Set up and show the tooltip for the calling group list item.
 --]]
 
-function CTA_ListItemAuxLeft_ShowTooltip() -- Called by XML
+function CTA_ListItemAuxLeft_ShowTooltip(self) -- Called by XML
     GameTooltip:ClearLines();
-    local parent = this:GetParent();
+    local parent = self:GetParent();
     local value = CTA_ResultsListOffset + string.gsub( parent:GetName(), "CTA_NewItem(%d+)", "%1" );
 
     local entry = CTA_FilteredResultsList[value];
-    GameTooltip:SetOwner( this, "ANCHOR_BOTTOMLEFT" );
+    GameTooltip:SetOwner( self, "ANCHOR_BOTTOMLEFT" );
     GameTooltip:ClearAllPoints();
     GameTooltip:SetPoint("BOTTOMLEFT", parent:GetName(), "TOPLEFT", 0, 8);
 
@@ -2058,15 +2149,15 @@ function CTA_ListItemAuxLeft_ShowTooltip() -- Called by XML
 end
 
 
-function CTA_ListItemAuxRight_ShowTooltip()
+function CTA_ListItemAuxRight_ShowTooltip(self)
 
-    local parent = this:GetParent();
+    local parent = self:GetParent();
 
     GameTooltip:ClearLines();
     local value = CTA_ResultsListOffset + string.gsub( parent:GetName(), "CTA_NewItem(%d+)", "%1" );
 
     local raid = CTA_FilteredResultsList[value];
-    GameTooltip:SetOwner( this, "ANCHOR_BOTTOMRIGHT" );
+    GameTooltip:SetOwner( self, "ANCHOR_BOTTOMRIGHT" );
     GameTooltip:ClearAllPoints();
     GameTooltip:SetPoint("BOTTOMRIGHT", parent:GetName(), "TOPRIGHT", 0, 8);
 
@@ -2093,8 +2184,10 @@ function CTA_ListItemAuxRight_ShowTooltip()
             local classList = CTA_GetClassString(raid.classes);
             for i = 1, CTA_NUM_CLASSES do
                 if( string.find(classList, classes[i]) ) then
+                    -- Class from table classes is a valid class to choose from
                     GameTooltip:AddDoubleLine( classes[i], groupClasses[i], 0.9, 0.9, 0.1, 0.1, 0.9, 0.1 );
                 else
+                	-- Class from table classes is an invalid class to choose from. BUGGED
                     GameTooltip:AddDoubleLine( classes[i], groupClasses[i], 0.9, 0.9, 0.1, 0.9, 0.1, 0.1 );
                 end
             end
@@ -2153,46 +2246,46 @@ function CTA_ResultItem_Hover_On(parent) -- Called by XML
     if( entry == nil ) then return; end
 
     parent:SetHeight( 32 );
-    getglobal( parent:GetName().."MoreLabel" ):Show();
-    getglobal( parent:GetName().."MoreRightLabel" ):Show();
+    _G[parent:GetName().."MoreLabel"]:Show();
+    _G[parent:GetName().."MoreRightLabel"]:Show();
     if( entry.ctaType== "A" or entry.ctaType== "B" ) then
-        getglobal( parent:GetName().."TexturePurple"):Show();
-        getglobal( parent:GetName().."TextureBlue"):Hide();
+        _G[parent:GetName().."TexturePurple"]:Show();
+        _G[parent:GetName().."TextureBlue"]:Hide();
     else
-        getglobal( parent:GetName().."TexturePurple"):Hide();
-        getglobal( parent:GetName().."TextureBlue"):Show();
+        _G[parent:GetName().."TexturePurple"]:Hide();
+        _G[parent:GetName().."TextureBlue"]:Show();
     end
 
     if( entry.ctaType== "A" ) then
-        getglobal( parent:GetName().."TextureSelectedIcon"):SetTexture( "Interface\\Icons\\Spell_Holy_SealOfFury" );
+        _G[parent:GetName().."TextureSelectedIcon"]:SetTexture( "Interface\\Icons\\Spell_Holy_SealOfFury" );
     elseif( entry.ctaType== "B" ) then
-        getglobal( parent:GetName().."TextureSelectedIcon"):SetTexture( "Interface\\Icons\\Spell_Holy_RetributionAura" );
+        _G[parent:GetName().."TextureSelectedIcon"]:SetTexture( "Interface\\Icons\\Spell_Holy_RetributionAura" );
     elseif( entry.ctaType== "C" ) then
-        getglobal( parent:GetName().."TextureSelectedIcon"):SetTexture( "Interface\\Icons\\Spell_Holy_SealOfProtection" );
+        _G[parent:GetName().."TextureSelectedIcon"]:SetTexture( "Interface\\Icons\\Spell_Holy_SealOfProtection" );
     elseif( entry.ctaType== "D" ) then
-        getglobal( parent:GetName().."TextureSelectedIcon"):SetTexture( "Interface\\Icons\\Spell_Holy_RighteousnessAura" );
+        _G[parent:GetName().."TextureSelectedIcon"]:SetTexture( "Interface\\Icons\\Spell_Holy_RighteousnessAura" );
     end
 
-    getglobal( parent:GetName().."NameLabel"):SetPoint( "TOPLEFT", parent:GetName(), "TOPLEFT", 37, 0 );
-    getglobal( parent:GetName().."MoreLabel"):SetPoint( "LEFT", parent:GetName(), "LEFT", 37, -6 );
+    _G[parent:GetName().."NameLabel"]:SetPoint( "TOPLEFT", parent:GetName(), "TOPLEFT", 37, 0 );
+    _G[parent:GetName().."MoreLabel"]:SetPoint( "LEFT", parent:GetName(), "LEFT", 37, -6 );
 
-    getglobal( parent:GetName().."TextureSelectedBg"):Show();
-    getglobal( parent:GetName().."TextureSelectedIcon"):Show();
+    _G[parent:GetName().."TextureSelectedBg"]:Show();
+    _G[parent:GetName().."TextureSelectedIcon"]:Show();
 
 end
 
 function CTA_ResultItem_Hover_Off(parent) -- Called by XML
     parent:SetHeight( 18 );
-    getglobal( parent:GetName().."MoreLabel" ):Hide();
-    getglobal( parent:GetName().."MoreRightLabel" ):Hide();
-    getglobal( parent:GetName().."TexturePurple"):Hide();
-    getglobal( parent:GetName().."TextureBlue"):Hide();
+    _G[parent:GetName().."MoreLabel"]:Hide();
+    _G[parent:GetName().."MoreRightLabel"]:Hide();
+    _G[parent:GetName().."TexturePurple"]:Hide();
+    _G[parent:GetName().."TextureBlue"]:Hide();
 
-    getglobal( parent:GetName().."NameLabel"):SetPoint( "TOPLEFT", parent:GetName(), "TOPLEFT", 5, 0 );
-    getglobal( parent:GetName().."MoreLabel"):SetPoint( "LEFT", parent:GetName(), "LEFT", 5, -6 );
+    _G[parent:GetName().."NameLabel"]:SetPoint( "TOPLEFT", parent:GetName(), "TOPLEFT", 5, 0 );
+    _G[parent:GetName().."MoreLabel"]:SetPoint( "LEFT", parent:GetName(), "LEFT", 5, -6 );
 
-    getglobal( parent:GetName().."TextureSelectedBg"):Hide();
-    getglobal( parent:GetName().."TextureSelectedIcon"):Hide();
+    _G[parent:GetName().."TextureSelectedBg"]:Hide();
+    _G[parent:GetName().."TextureSelectedIcon"]:Hide();
 
 end
 
@@ -2201,7 +2294,7 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Functions Related To Hosting A Group And The Acid Items
         ---------------------------------------------------------------
 --]]
@@ -2209,7 +2302,7 @@ end
 
 
 
---[[		CTA_MyRaidInstantUpdate()						UPDATE FUNCTION
+--[[	CTA_MyRaidInstantUpdate()						UPDATE FUNCTION
         ---------------------------------------------------------------
         Called by CTA_MyRaidFrame Components.
         This is the longest, most elaborate and buggy function and has
@@ -2233,7 +2326,7 @@ function CTA_MyRaidInstantUpdate()
         -- ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID
         -- ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID
 
---[[		------------------------------------
+--[[	------------------------------------
         [Setup Acid Items]
 
         If the acid item has no class list
@@ -2254,10 +2347,10 @@ function CTA_MyRaidInstantUpdate()
         classes[10] = CTA_DEATHKNIGHT;
 
         local num = 0;
-            while( num <= CTA_NUM_CLASSES) do
+        while( num <= CTA_NUM_CLASSES) do
 
-            local item = getglobal( "CTA_Acid"..num );
-            local class = getglobal( "CTA_Acid"..num.."ClassNameLabel" );
+            local item = _G["CTA_Acid"..num];
+            local class = _G["CTA_Acid"..num.."ClassNameLabel"];
 
             if( num > 0 ) then
                 item.val = 0;
@@ -2265,10 +2358,10 @@ function CTA_MyRaidInstantUpdate()
             else
                 class:SetText( CTA_ANY_CLASS );
                 item.val = CTA_MyRaid.maxSize;
-                getglobal( "CTA_Acid"..num.."LessButton"):Hide();
-                getglobal( "CTA_Acid"..num.."MoreButton"):Hide();
-                --getglobal( "CTA_Acid"..num.."EditButton"):Hide();
-                getglobal( "CTA_Acid"..num.."DeleteButton"):Hide();
+                _G["CTA_Acid"..num.."LessButton"]:Hide();
+                _G["CTA_Acid"..num.."MoreButton"]:Hide();
+                --_G["CTA_Acid"..num.."EditButton"]:Hide();
+                _G["CTA_Acid"..num.."DeleteButton"]:Hide();
             end
 
             num = num + 1;
@@ -2276,7 +2369,7 @@ function CTA_MyRaidInstantUpdate()
     end
 
 
---[[		------------------------------------
+--[[	------------------------------------
         [Update the Max Size]
 
         If the and sets up certain features
@@ -2321,7 +2414,7 @@ function CTA_MyRaidInstantUpdate()
     CTA_MyRaidFrameMaxSizeEditBox:SetText(""..myMaxSize);
 
 
---[[		------------------------------------
+--[[	------------------------------------
         [Update ACID Scale]
 
         According to the max size
@@ -2331,8 +2424,8 @@ function CTA_MyRaidInstantUpdate()
     --if( myMaxSize ~= myOldMax ) then
         local num = 0;
         local cval = 0;
-        while( num < 10 ) do
-            local item = getglobal( "CTA_Acid"..num );
+        while( num <= CTA_NUM_CLASSES ) do
+            local item = _G["CTA_Acid"..num];
             local ratio = item.val/myOldMax;
             item.val = floor(myMaxSize*ratio);
             cval = cval+item.val;
@@ -2342,8 +2435,8 @@ function CTA_MyRaidInstantUpdate()
             CTA_Acid0.val = CTA_Acid0.val + (myMaxSize-cval);
         end
         num = 0;
-        while( num < 10 and cval > myMaxSize ) do
-            local item = getglobal( "CTA_Acid"..num );
+        while( num <= CTA_NUM_CLASSES and cval > myMaxSize ) do
+            local item = _G["CTA_Acid"..num];
             if( item.val > 0 ) then
                 item.val = item.val - 1;
                 cval = cval - 1;
@@ -2355,7 +2448,7 @@ function CTA_MyRaidInstantUpdate()
     --CTA_LogMsg( "Adjusted ACID Size ("..cval..")", CTA_GENERAL );
 
 
---[[		------------------------------------
+--[[	------------------------------------
         [Reset Acid item current size]
 
         Set the current players in each rule
@@ -2366,13 +2459,13 @@ function CTA_MyRaidInstantUpdate()
 
     local num = 0;
     while( num <= CTA_NUM_CLASSES ) do
-        local item = getglobal( "CTA_Acid"..num );
+        local item = _G["CTA_Acid"..num];
         item.cur = 0;
         num = num + 1;
     end
 
 
---[[		------------------------------------
+--[[	------------------------------------
         [Update ACID items current size]
 
         Big change here now
@@ -2390,9 +2483,9 @@ function CTA_MyRaidInstantUpdate()
 
         local bestItem = nil;
         for i = 1, CTA_NUM_CLASSES do
-            local item = getglobal( "CTA_Acid"..i );
+            local item = _G["CTA_Acid"..i];
             if( item.classes and item.classes[class] ) then
-                if( not bestItem or CTA_getn(bestItem.classes) > CTA_getn(item.classes) ) then
+                if( not bestItem or #bestItem.classes > #item.classes ) then
                     if( item.cur < item.val ) then
                         bestItem = item;
                     end
@@ -2417,7 +2510,7 @@ function CTA_MyRaidInstantUpdate()
     end
 
 
---[[		------------------------------------
+--[[	------------------------------------
         [Update the Group Size]
 
         Take pendings into account etc
@@ -2430,7 +2523,7 @@ function CTA_MyRaidInstantUpdate()
         if( name and data.status == 2 ) then 	-- R2: pending members
             --CTA_Println( name..": "..class );
             local index = CTA_GetClassCode( data.class);
-            local item = getglobal( "CTA_Acid"..index );
+            local item = _G["CTA_Acid"..index];
             item.cur = item.cur + 1;
             pendingSize = pendingSize + 1;
             if( item.cur > item.val ) then over = over + 1; end
@@ -2456,7 +2549,7 @@ function CTA_MyRaidInstantUpdate()
     CTA_MyRaid.size = CTA_GetNumGroupMembers();
     local mySize = CTA_MyRaid.size;
     --CTA_Println( "Size = "..mySize );
-    CTA_RaidSizeLabel:SetText( CTA_SIZE..": "..CTA_MyRaid.size.." ("..CTA_CURRENT..": "..CTA_GetNumGroupMembers().." "..CTA_PENDING..": "..CTA_getn(CTA_InvitationRequests)..")" );
+    CTA_RaidSizeLabel:SetText( CTA_SIZE..": "..CTA_MyRaid.size.." ("..CTA_CURRENT..": "..CTA_GetNumGroupMembers().." "..CTA_PENDING..": "..#CTA_InvitationRequests..")" );
 
 
     if( CTA_MyRaid.size > oldSize ) then
@@ -2473,7 +2566,7 @@ function CTA_MyRaidInstantUpdate()
     end
 
 
---[[		------------------------------------
+--[[	------------------------------------
         [Update the Acid Items]
 
         Accordingly
@@ -2503,22 +2596,22 @@ function CTA_MyRaidInstantUpdate()
     end
 
     while( num <= CTA_NUM_CLASSES ) do
-        local item = getglobal( "CTA_Acid"..num );
+        local item = _G["CTA_Acid"..num];
 
         if( item.classes or item:GetName()=="CTA_Acid0" ) then
 
-            local nam = getglobal( "CTA_Acid"..num.."ClassNameLabel" );
+            local nam = _G["CTA_Acid"..num.."ClassNameLabel"];
 
             if( item:GetName()~="CTA_Acid0" ) then
-                getglobal( "CTA_Acid"..num.."ClassNameLabel" ):Show();
-                --getglobal( "CTA_Acid"..num.."ClassPercentLabel" ):Show();
-                getglobal( "CTA_Acid"..num.."ClassAbsoluteLabel" ):Show();
-                getglobal( "CTA_Acid"..num.."ClassCurrentLabel" ):Show();
+                _G["CTA_Acid"..num.."ClassNameLabel"]:Show();
+                --_G["CTA_Acid"..num.."ClassPercentLabel"]:Show();
+                _G["CTA_Acid"..num.."ClassAbsoluteLabel"]:Show();
+                _G["CTA_Acid"..num.."ClassCurrentLabel"]:Show();
 
-                getglobal( "CTA_Acid"..num.."LessButton"):Show();
-                getglobal( "CTA_Acid"..num.."MoreButton"):Show();
-                --getglobal( "CTA_Acid"..num.."EditButton"):Show();
-                getglobal( "CTA_Acid"..num.."DeleteButton"):SetText( CTA_ACID_EDIT );
+                _G["CTA_Acid"..num.."LessButton"]:Show();
+                _G["CTA_Acid"..num.."MoreButton"]:Show();
+                --_G["CTA_Acid"..num.."EditButton"]:Show();
+                _G["CTA_Acid"..num.."DeleteButton"]:SetText( CTA_ACID_EDIT );
 
                 nam:SetText( "" );
                 for key, val in pairs(item.classes) do
@@ -2538,11 +2631,11 @@ function CTA_MyRaidInstantUpdate()
                 end
             end
 
-            local percent = getglobal( "CTA_Acid"..num.."ClassPercentLabel" );
-            local current = getglobal( "CTA_Acid"..num.."ClassAbsoluteLabel" );
-            local absolute = getglobal( "CTA_Acid"..num.."ClassCurrentLabel" );
-            local percentTex = getglobal( "CTA_Acid"..num.."PercentTexture" );
-            local currentTex = getglobal( "CTA_Acid"..num.."CurrentTexture" );
+            local percent = _G["CTA_Acid"..num.."ClassPercentLabel"];
+            local current = _G["CTA_Acid"..num.."ClassAbsoluteLabel"];
+            local absolute = _G["CTA_Acid"..num.."ClassCurrentLabel"];
+            local percentTex = _G["CTA_Acid"..num.."PercentTexture"];
+            local currentTex = _G["CTA_Acid"..num.."CurrentTexture"];
 
             local pval = floor(50*item.val/CTA_MyRaid.maxSize); --80 changed to 50 R5
             if( pval > 50 ) then pval = 50; end -- cheapo fix
@@ -2598,19 +2691,19 @@ function CTA_MyRaidInstantUpdate()
             end
         else
 
-            getglobal( "CTA_Acid"..num.."ClassNameLabel" ):Hide();
+            _G["CTA_Acid"..num.."ClassNameLabel"]:Hide();
 
-            --getglobal( "CTA_Acid"..num.."ClassPercentLabel" ):Hide();
-            getglobal( "CTA_Acid"..num.."ClassAbsoluteLabel" ):Hide();
-            getglobal( "CTA_Acid"..num.."ClassCurrentLabel" ):Hide();
+            --_G["CTA_Acid"..num.."ClassPercentLabel"]:Hide();
+            _G["CTA_Acid"..num.."ClassAbsoluteLabel"]:Hide();
+            _G["CTA_Acid"..num.."ClassCurrentLabel"]:Hide();
 
-            getglobal( "CTA_Acid"..num.."PercentTexture" ):Hide();
-            getglobal( "CTA_Acid"..num.."CurrentTexture" ):Hide();
+            _G["CTA_Acid"..num.."PercentTexture"]:Hide();
+            _G["CTA_Acid"..num.."CurrentTexture"]:Hide();
 
-            getglobal( "CTA_Acid"..num.."LessButton"):Hide();
-            getglobal( "CTA_Acid"..num.."MoreButton"):Hide();
-            --getglobal( "CTA_Acid"..num.."EditButton"):Hide();
-            getglobal( "CTA_Acid"..num.."DeleteButton"):SetText( CTA_ACID_ADD );
+            _G["CTA_Acid"..num.."LessButton"]:Hide();
+            _G["CTA_Acid"..num.."MoreButton"]:Hide();
+            --_G["CTA_Acid"..num.."EditButton"]:Hide();
+            _G["CTA_Acid"..num.."DeleteButton"]:SetText( CTA_ACID_ADD );
 
 
             --item:Hide();
@@ -2633,7 +2726,7 @@ function CTA_MyRaidInstantUpdate()
     -- ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID
     -- ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID ACID
 
-    local myMinLevel = CTA_SafeSetNumber( CTA_MyRaidFrameMinLevelEditBox:GetText(), 1, 80 );
+    local myMinLevel = CTA_SafeSetNumber( CTA_MyRaidFrameMinLevelEditBox:GetText(), 1, 85 );
     if( not myMinLevel ) then
         CTA_MyRaidFrameMinLevelEditBox:SetText( CTA_MyRaid.minLevel );
         myMinLevel = CTA_MyRaid.minLevel;
@@ -2641,13 +2734,13 @@ function CTA_MyRaidInstantUpdate()
 
     local myClasses = 0;
     if( CTA_Acid0.cur < CTA_Acid0.val ) then
-        myClasses = 255+512;
+		myClasses = 1023;
     else
         local num = 1;
         local b = 1;
         local combinedClasses = {};
         for i = 1, CTA_NUM_CLASSES do
-            local item = getglobal( "CTA_Acid"..i );
+            local item = _G["CTA_Acid"..i];
             if( item.classes and item.cur < item.val ) then
                 for k, v in pairs(item.classes) do
                     combinedClasses[ k ] = 1;
@@ -2661,7 +2754,7 @@ function CTA_MyRaidInstantUpdate()
         end
         --[[
         while( num <= CTA_NUM_CLASSES ) do
-            local item = getglobal( "CTA_Acid"..num );
+            local item = _G["CTA_Acid"..num];
             if( item.cur < item.val ) then
                 myClasses = myClasses + b;
             end
@@ -2669,7 +2762,7 @@ function CTA_MyRaidInstantUpdate()
             num = num + 1;
         end	]]
     end
-
+    
     local myUsePassword = 1;
     local oldPassword = CTA_MyRaidPassword;
     CTA_MyRaidPassword = CTA_MyRaidFramePasswordEditBox:GetText();
@@ -2699,9 +2792,9 @@ end
 
 
 function CTA_AcidItemButton_OnClick(self, button, down) -- Called by XML
-    local item = getglobal( this:GetParent():GetName() );
+    local item = _G[self:GetParent():GetName()];
 
-    if( string.find( this:GetName(), "Delete" ) ) then
+    if( string.find( self:GetName(), "Delete" ) ) then
         CTA_StartEditAcidItem( item );
         --[[
         if( item.classes == nil ) then
@@ -2709,7 +2802,7 @@ function CTA_AcidItemButton_OnClick(self, button, down) -- Called by XML
         else
             CTA_StartEditAcidItem(item);
         end]]
-    elseif( string.find( this:GetName(), "Less" ) ) then
+    elseif( string.find( self:GetName(), "Less" ) ) then
         if( item.val > 0 ) then
             item.val = item.val - 1;
             CTA_Acid0.val = CTA_Acid0.val + 1;
@@ -2727,7 +2820,7 @@ end
 
 
 
---[[		CTA_StartEditAcidItem()
+--[[	CTA_StartEditAcidItem()
         ---------------------------------------------------------------
         Called by CTA_Acid(0-8) AddButton Components.
         All this function really does is set up the check buttons
@@ -2737,7 +2830,7 @@ end
 
 function CTA_StartEditAcidItem( item )
     for i = 1, CTA_NUM_CLASSES do
-        getglobal( "CTA_AcidClassCheckButton"..i ):SetChecked( 0 );
+        _G["CTA_AcidClassCheckButton"..i]:SetChecked( 0 );
     end
 
 --	CTA_AcidClassCheckButton8TextLabel:SetText( CTA_PALADIN.."/"..CTA_SHAMAN  );
@@ -2746,8 +2839,8 @@ function CTA_StartEditAcidItem( item )
         for key, val in pairs(item.classes) do
 
             for i = 1, CTA_NUM_CLASSES do
-                if ( getglobal( "CTA_AcidClassCheckButton"..i.."TextLabel" ):GetText() == key ) then
-                    getglobal( "CTA_AcidClassCheckButton"..i ):SetChecked( 1 );
+                if ( _G["CTA_AcidClassCheckButton"..i.."TextLabel"]:GetText() == key ) then
+                    _G["CTA_AcidClassCheckButton"..i]:SetChecked( 1 );
                 end
             end
         end
@@ -2764,7 +2857,7 @@ end
 
 
 
---[[		CTA_EditAcidItem()
+--[[	CTA_EditAcidItem()
         ---------------------------------------------------------------
         Called by the <ui>CTA_AcidEditDialog</ui>'s OKButton Component.
         Sets the Acid item's class list to what classes were checked
@@ -2772,13 +2865,13 @@ end
 --]]
 
 function CTA_EditAcidItem()
-    local acidItem = getglobal( CTA_AcidEditDialog.target );
+    local acidItem = _G[CTA_AcidEditDialog.target];
     local checkCount = 0;
     acidItem.classes = {};
     for i = 1, CTA_NUM_CLASSES do
-        local checked =  getglobal( "CTA_AcidClassCheckButton"..i ):GetChecked();
+        local checked =  _G["CTA_AcidClassCheckButton"..i]:GetChecked();
         if( checked ) then
-            acidItem.classes[ getglobal( "CTA_AcidClassCheckButton"..i.."TextLabel" ):GetText() ] = 0;
+            acidItem.classes[ _G["CTA_AcidClassCheckButton"..i.."TextLabel"]:GetText() ] = 0;
             checkCount = checkCount + 1;
         end
     end
@@ -2796,28 +2889,7 @@ function CTA_EditAcidItem()
 
 end
 
-
-
-
---[[		CTA_getn()
-        ---------------------------------------------------------------
-        Utility function that returns the length of a list.
-        @arg the list
-        @return the length of the list
---]]
-
-function CTA_getn( list )
-    local c = 0;
-    for i, j in pairs(list) do
-        c = c + 1;
-    end
-    return c;
-end
-
-
-
-
---[[		CTA_StartAParty()
+--[[	CTA_StartAParty()
         ---------------------------------------------------------------
         Starts a party group.
         Called by StartARaidFrame's StartAPartyButton
@@ -2834,7 +2906,7 @@ end
 
 
 
---[[		CTA_StartARaid
+--[[	CTA_StartARaid
         ---------------------------------------------------------------
         Starts a raid group.
         Called by StartARaidFrame's StartARaidButton
@@ -2851,7 +2923,7 @@ end
 
 
 
---[[		CTA_StopHosting()
+--[[	CTA_StopHosting()
         ---------------------------------------------------------------
         Stops hosting a group with CTA.
 --]]
@@ -2875,7 +2947,7 @@ end
 
 
 
---[[		CTA_ShowStartRaidFrame()
+--[[	CTA_ShowStartRaidFrame()
         ---------------------------------------------------------------
         Prompts the user to start hosting a group with CTA or
         tells the user that s/he cannot currently host a group or
@@ -2940,18 +3012,18 @@ end
 
 
 
---[[		CTA_AcidItem_ShowTooltip()
+--[[	CTA_AcidItem_ShowTooltip()
         ---------------------------------------------------------------
         Shows tooltip for acid items.
 --]]
 
-function CTA_AcidItem_ShowTooltip() -- Called by XML
-    GameTooltip:SetOwner( this, "ANCHOR_TOP" );
+function CTA_AcidItem_ShowTooltip(self) -- Called by XML
+    GameTooltip:SetOwner( self, "ANCHOR_TOP" );
     GameTooltip:ClearLines();
     GameTooltip:ClearAllPoints();
-    GameTooltip:SetPoint("TOPLEFT", this:GetName(), "BOTTOMLEFT", 0, -8);
+    GameTooltip:SetPoint("TOPLEFT", self:GetName(), "BOTTOMLEFT", 0, -8);
 
-    local acidItem = this;
+    local acidItem = self;
     if( not acidItem.classes and acidItem:GetName() ~= "CTA_Acid0" ) then
         GameTooltip:AddLine( CTA_NO_CLASSES_TOOLTIP );
         GameTooltip:AddLine( CTA_NO_CLASSES_TOOLTIP2, 1, 1, 1, 1, 1 );
@@ -2961,14 +3033,14 @@ function CTA_AcidItem_ShowTooltip() -- Called by XML
     local needed = acidItem.val - acidItem.cur;
     if( needed < 0 ) then needed = 0; end
 
-    if( this:GetName() == "CTA_Acid0" ) then
-        GameTooltip:AddDoubleLine( CTA_MAXIMUM_PLAYERS_ALLOWED..":", ""..this.val );
-        GameTooltip:AddDoubleLine( CTA_PLAYERS_IN_RAID..":", ""..this.cur );
+    if( self:GetName() == "CTA_Acid0" ) then
+        GameTooltip:AddDoubleLine( CTA_MAXIMUM_PLAYERS_ALLOWED..":", ""..self.val );
+        GameTooltip:AddDoubleLine( CTA_PLAYERS_IN_RAID..":", ""..self.cur );
         GameTooltip:AddDoubleLine( CTA_NUMBER_OF_PLAYERS_NEEDED..":", ""..needed );
         GameTooltip:AddLine( CTA_ANY_CLASS_TOOLTIP, 1, 1, 1, 1, 1 );
     else
-        GameTooltip:AddDoubleLine( CTA_MINIMUM_PLAYERS_WANTED..":", ""..this.val );
-        GameTooltip:AddDoubleLine( CTA_PLAYERS_IN_RAID..":", ""..this.cur );
+        GameTooltip:AddDoubleLine( CTA_MINIMUM_PLAYERS_WANTED..":", ""..self.val );
+        GameTooltip:AddDoubleLine( CTA_PLAYERS_IN_RAID..":", ""..self.cur );
         GameTooltip:AddDoubleLine( CTA_NUMBER_OF_PLAYERS_NEEDED..":", ""..needed );
         GameTooltip:AddLine( CTA_CLASS_TOOLTIP, 1, 1, 1, 1, 1 );
     end
@@ -2979,7 +3051,7 @@ end
 
 
 
---[[		CTA_GetGroupMemberInfo()
+--[[	CTA_GetGroupMemberInfo()
         ---------------------------------------------------------------
         Returns information about a group member.
         @arg the index of the group member
@@ -3010,7 +3082,7 @@ end
 
 
 
---[[		CTA_GetNumGroupMembers()
+--[[	CTA_GetNumGroupMembers()
         ---------------------------------------------------------------
         Returns information about a group member.
         @arg the index of the group member
@@ -3030,7 +3102,7 @@ end
 
 
 
---[[		CTA_DissolveRaid()
+--[[	CTA_DissolveRaid()
         ---------------------------------------------------------------
         Dissolves the group by removing each member.
 --]]
@@ -3055,7 +3127,7 @@ end
 
 
 
---[[		CTA_ConvertToParty()
+--[[	CTA_ConvertToParty()
         ---------------------------------------------------------------
         convert your raid to a party.
 --]]
@@ -3068,31 +3140,37 @@ function CTA_ConvertToParty() --R2 (suggested by Sadris) -- Called by XML
         CTA_Println( CTA_CANNOT_CONVERT_TO_PARTY );
         return;
     end
-    local memberList = {};
-    local name, rank, subgroup, level, class, fileName, zone, online, isDead;
-    local over = 0;
-    while ( num <= numRaidMembers ) do
-        name, rank, subgroup, level, class, fileName, zone, online, isDead = GetRaidRosterInfo(num);
-        if( name ~= UnitName(CTA_PLAYER) ) then
-            memberList[num] = name;
-            UninviteByName( name );
-            CTA_MyRaidInstantUpdate();
 
-            CTA_SendAutoMsg( CTA_CONVERTING_TO_PARTY_MESSAGE, name);
-        end
-        num = num+1;
+    if( IsPartyLeader() ) then
+        CTA_HostingRaidGroup = nil;
+        ConvertToParty();
     end
-    for i = 1, numRaidMembers - 1 do
-        InviteUnit( memberList[i] );
-    end
+
+--    local memberList = {};
+--    local name, rank, subgroup, level, class, fileName, zone, online, isDead;
+--    local over = 0;
+--    while ( num <= numRaidMembers ) do
+--        name, rank, subgroup, level, class, fileName, zone, online, isDead = GetRaidRosterInfo(num);
+--        if( name ~= UnitName(CTA_PLAYER) ) then
+--            memberList[num] = name;
+--            UninviteUnit( name );
+--            CTA_MyRaidInstantUpdate();
+--
+--            CTA_SendAutoMsg( CTA_CONVERTING_TO_PARTY_MESSAGE, name);
+--        end
+--        num = num+1;
+--    end
+--    for i = 1, numRaidMembers - 1 do
+--        InviteUnit( memberList[i] );
+--    end
     CTA_IconMsg( CTA_CONVERTING_TO_PARTY_DONE, CTA_GROUP_UPDATE );
-    CTA_HostingRaidGroup = nil;
+--    CTA_HostingRaidGroup = nil;
 end
 
 
 
 
---[[		CTA_GetGroupType()
+--[[	CTA_GetGroupType()
         ---------------------------------------------------------------
         Returns a String representation of the type of group
         currently being hosted.
@@ -3125,7 +3203,7 @@ end
 
 
 
---[[		CTA_PlayerCanHostGroup()
+--[[	CTA_PlayerCanHostGroup()
         ---------------------------------------------------------------
         Indicates whether a player can start hosting a group according
         to CTA logic.
@@ -3143,7 +3221,7 @@ function CTA_PlayerCanHostGroup()
 end
 
 
---[[		CTA_SetRaidInfo()
+--[[	CTA_SetRaidInfo()
         ---------------------------------------------------------------
         Set group information for the specified group.
 --]]
@@ -3170,7 +3248,7 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Functions Related To The Blacklist
         ---------------------------------------------------------------
 --]]
@@ -3178,7 +3256,7 @@ end
 
 
 
---[[		CTA_UpdateGreyListItems()     			UPDATE FUNCTION
+--[[	CTA_UpdateGreyListItems()     			UPDATE FUNCTION
         ---------------------------------------------------------------
         Updates the list of blacklisted players.
 --]]
@@ -3189,7 +3267,7 @@ function CTA_UpdateGreyListItems()
     CTA_GreyListItem0StatusLabel:SetText( "" );
     CTA_GreyListItem0:Show();
 
-    local gls = getn(CTA_BlackList);
+    local gls = #CTA_BlackList;
     if( not gls ) then
         gls = 0;
     end
@@ -3202,19 +3280,19 @@ function CTA_UpdateGreyListItems()
 
 
     for index = 1, CTA_MAX_BLACKLIST_ITEMS do
-        local item = getglobal( "CTA_GreyListItem"..index );
+        local item = _G["CTA_GreyListItem"..index];
         if( index + CTA_PlayerListOffset <= gls  ) then
             local data = CTA_BlackList[ index + CTA_PlayerListOffset ];
-            getglobal( "CTA_GreyListItem"..index.."NameLabel" ):SetText( data.name );
+            _G["CTA_GreyListItem"..index.."NameLabel"]:SetText( data.name );
             local i = CTA_FindInList( data.name, aieCTA_SavedVariables.GreyList );
             if( i ) then
-                getglobal( "CTA_GreyListItem"..index.."NoteLabel" ):SetTextColor( 1, 1, 1 );
+                _G["CTA_GreyListItem"..index.."NoteLabel"]:SetTextColor( 1, 1, 1 );
             else
-                getglobal( "CTA_GreyListItem"..index.."NoteLabel" ):SetTextColor( 1, 0, 0 );
+                _G["CTA_GreyListItem"..index.."NoteLabel"]:SetTextColor( 1, 0, 0 );
             end
-            getglobal( "CTA_GreyListItem"..index.."NoteLabel" ):SetText( data.note );
-            getglobal( "CTA_GreyListItem"..index.."RatingLabel" ):SetText( data.rating );
-            getglobal( "CTA_GreyListItem"..index ):Show();
+            _G["CTA_GreyListItem"..index.."NoteLabel"]:SetText( data.note );
+            _G["CTA_GreyListItem"..index.."RatingLabel"]:SetText( data.rating );
+            _G["CTA_GreyListItem"..index]:Show();
         else
             item:Hide();
         end
@@ -3224,7 +3302,7 @@ end
 
 
 
---[[		CTA_ShowGreyListFrame()
+--[[	CTA_ShowGreyListFrame()
         ---------------------------------------------------------------
         Show the Greylist frame
 --]]
@@ -3242,14 +3320,14 @@ end
 
 
 
---[[		CTA_EditGreyListItem()
+--[[	CTA_EditGreyListItem()
         ---------------------------------------------------------------
         Shows the Edit frame for the selected Greylist item
 --]]
 
-function CTA_EditGreyListItem()
-    local listItem = getglobal( this:GetName() );
-    CTA_GreyListItemEditFrame.name = ( getglobal( listItem:GetName().."NameLabel" ):GetText() or "?" );
+function CTA_EditGreyListItem(self)
+    local listItem = _G[self:GetName()];
+    CTA_GreyListItemEditFrame.name = ( _G[listItem:GetName().."NameLabel"]:GetText() or "?" );
     if( not CTA_FindInList( CTA_GreyListItemEditFrame.name, aieCTA_SavedVariables.GreyList ) ) then
         CTA_AddPlayer( CTA_GreyListItemEditFrame.name, CTA_DEFAULT_PLAYER_NOTE, CTA_DEFAULT_STATUS, CTA_DEFAULT_RATING, aieCTA_SavedVariables.GreyList );
     end
@@ -3261,7 +3339,7 @@ end
 
 
 
---[[		CTA_GreyListItemSaveChanges()
+--[[	CTA_GreyListItemSaveChanges()
         ---------------------------------------------------------------
         Commits changes made to the selected Greylist item
 --]]
@@ -3277,7 +3355,7 @@ end
 
 
 
---[[		CTA_DeletePlayer()
+--[[	CTA_DeletePlayer()
         ---------------------------------------------------------------
         Removes the player from the Greylist
 --]]
@@ -3307,7 +3385,7 @@ end
 
 
 
---[[		CTA_ImportIgnoreListToGreyList()
+--[[	CTA_ImportIgnoreListToGreyList()
         ---------------------------------------------------------------
         Adds players from the ignore list to the Greylist
 --]]
@@ -3325,13 +3403,13 @@ end
 
 
 
---[[		CTA_AddGreyToBlack()
+--[[	CTA_AddGreyToBlack()
         ---------------------------------------------------------------
         Updates the Blacklist by adding Greylist entries to it.
 --]]
 
 function CTA_AddGreyToBlack()
-    for i = 1, getn(aieCTA_SavedVariables.GreyList) do
+    for i = 1, #aieCTA_SavedVariables.GreyList do
         CTA_AddToList( aieCTA_SavedVariables.GreyList[i], CTA_BlackList );
     end
 end
@@ -3340,7 +3418,7 @@ end
 
 
 
---[[		CTA_AddPlayer()
+--[[	CTA_AddPlayer()
         ---------------------------------------------------------------
         Adds a new player to the Greylist.
         @arg the name of the player
@@ -3357,7 +3435,7 @@ function CTA_AddPlayer( name, note, status, rating, list )
 end
 
 
---[[		CTA_AddToList()
+--[[	CTA_AddToList()
         ---------------------------------------------------------------
         Add data to list only if the name is not already in the List
         @arg the data to be added
@@ -3373,7 +3451,7 @@ end
 
 
 
---[[		CTA_FindInList()
+--[[	CTA_FindInList()
         ---------------------------------------------------------------
         Returns the index of the data which has a name field that
         matches the name provided
@@ -3383,7 +3461,7 @@ end
 --]]
 
 function CTA_FindInList( name, list )
-    for i = 1, getn(list) do
+    for i = 1, #list do
         if( list[i].name == name ) then
             return i;
         end
@@ -3394,7 +3472,7 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Generic Functions Driven Directly By User Interface Events
         ---------------------------------------------------------------
 --]]
@@ -3402,7 +3480,7 @@ end
 
 
 
---[[		CTA_ToggleMainFrame()
+--[[	CTA_ToggleMainFrame()
         ---------------------------------------------------------------
         Show/hide the Main Frame. If the search frame is visible
         and the main frame is opened the results list is automatically
@@ -3427,7 +3505,7 @@ end
 
 
 
---[[		CTA_Tab_OnCLick()
+--[[	CTA_Tab_OnCLick()
         ---------------------------------------------------------------
         Switches visibility of the frames in the main frame.
         Called by all tab buttons under the main frame.
@@ -3456,22 +3534,22 @@ function CTA_Tab_OnClick(self, button, down) -- Called by XML
     CTA_ShowLFGButton:SetFrameLevel(CTA_MainFrame:GetFrameLevel() - 1);	-- r7
     CTA_ShowMFFButton:SetFrameLevel(CTA_MainFrame:GetFrameLevel() - 1);
 
-    this:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 1);
+    self:SetFrameLevel(CTA_MainFrame:GetFrameLevel() + 1);
 
-    if( this:GetName() == "CTA_ShowSearchButton" ) then
+    if( self:GetName() == "CTA_ShowSearchButton" ) then
         CTA_SearchFrame:Show();
         --[[CTA_ApplyFiltersToGroupList();]]
-    elseif( this:GetName() == "CTA_ShowMyRaidButton" ) then
+    elseif( self:GetName() == "CTA_ShowMyRaidButton" ) then
         CTA_ShowStartRaidFrame();
-    elseif( this:GetName() == "CTA_ShowPlayerListButton" ) then
+    elseif( self:GetName() == "CTA_ShowPlayerListButton" ) then
         CTA_ShowGreyListFrame();
-    elseif( this:GetName() == "CTA_ShowSettingsButton" ) then
+    elseif( self:GetName() == "CTA_ShowSettingsButton" ) then
         CTA_SettingsFrame:Show();
-    elseif( this:GetName() == "CTA_ShowLogButton" ) then
+    elseif( self:GetName() == "CTA_ShowLogButton" ) then
         CTA_LogFrame:Show();
-    elseif( this:GetName() == "CTA_ShowLFGButton" ) then
+    elseif( self:GetName() == "CTA_ShowLFGButton" ) then
         CTA_ShowLFGFrame();
-    elseif( this:GetName() == "CTA_ShowMFFButton" ) then
+    elseif( self:GetName() == "CTA_ShowMFFButton" ) then
         CTA_MoreFeaturesFrame:Show();
     end
 end
@@ -3479,13 +3557,13 @@ end
 
 
 
---[[		CTA_DialogOKButton_OnCLick()
+--[[	CTA_DialogOKButton_OnCLick()
         ---------------------------------------------------------------
         Handles all 'Ok button' events generated by dialogs.
 --]]
 
 function CTA_DialogOKButton_OnClick(self, button, down) -- Called by XML
-    local item = this:GetParent();
+    local item = self:GetParent();
     if( item:GetName() == "CTA_AddPlayerFrame" ) then
         local name = CTA_AddPlayerFrameEditBox:GetText();
         if( name and name ~= "" ) then
@@ -3508,7 +3586,7 @@ end
 
 
 
---[[		CTA_UpdateMinimapIcon()
+--[[	CTA_UpdateMinimapIcon()
         ---------------------------------------------------------------
         Adjusts the minimap icon position.
 --]]
@@ -3528,7 +3606,7 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         Utility Functions
         ---------------------------------------------------------------
 --]]
@@ -3745,14 +3823,14 @@ end
 
 --	Generic Tooltip Function
 --
-function CTA_ShowTooltip() -- Called by XML
-    if( CTA_GenTooltips[this:GetName()] ) then
-        GameTooltip:SetOwner( getglobal(this:GetName()), "ANCHOR_TOP" );
+function CTA_ShowTooltip(self) -- Called by XML
+    if( CTA_GenTooltips[self:GetName()] ) then
+        GameTooltip:SetOwner( _G[self:GetName()], "ANCHOR_TOP" );
         GameTooltip:ClearLines();
         GameTooltip:ClearAllPoints();
-        GameTooltip:SetPoint("TOPLEFT", this:GetName(), "BOTTOMLEFT", 0, -2);
-        GameTooltip:AddLine( CTA_GenTooltips[this:GetName()].tooltip1 );
-        GameTooltip:AddLine( CTA_GenTooltips[this:GetName()].tooltip2, 1, 1, 1, 1, 1 );
+        GameTooltip:SetPoint("TOPLEFT", self:GetName(), "BOTTOMLEFT", 0, -2);
+        GameTooltip:AddLine( CTA_GenTooltips[self:GetName()].tooltip1 );
+        GameTooltip:AddLine( CTA_GenTooltips[self:GetName()].tooltip2, 1, 1, 1, 1, 1 );
         GameTooltip:Show();
     end
 end
@@ -3760,7 +3838,7 @@ end
 
 
 
---[[		---------------------------------------------------------------
+--[[	---------------------------------------------------------------
         DEBUG / PROVING GROUNDS
         ---------------------------------------------------------------
 --]]
@@ -3972,7 +4050,7 @@ function CTA_DecodeGroupClasses( code )
         return;
     end
 
-    local classes = { };
+    local classes = {};
     classes[1] = CTA_PRIEST;
     classes[2] = CTA_MAGE;
     classes[3] = CTA_WARLOCK;
@@ -4021,9 +4099,9 @@ end
 
 
 
-function CTA_RoleplayDropDown_OnClick()
-    UIDropDownMenu_SetSelectedID(CTA_RoleplayDropDown, this:GetID());
-    CTA_RP_TYPE = this:GetID()
+function CTA_RoleplayDropDown_OnClick(self)
+    UIDropDownMenu_SetSelectedID(CTA_RoleplayDropDown, self:GetID());
+    CTA_RP_TYPE = self:GetID()
     CTA_MyRaidInstantUpdate();
 end
 
@@ -4051,8 +4129,8 @@ end
 
 
 
-function CTA_SearchDropDown_OnClick()
-    UIDropDownMenu_SetSelectedID(CTA_SearchDropDown, this:GetID());
+function CTA_SearchDropDown_OnClick(self)
+    UIDropDownMenu_SetSelectedID(CTA_SearchDropDown, self:GetID());
 end
 
 function CTA_SearchDropDown_Init()
@@ -4061,12 +4139,10 @@ function CTA_SearchDropDown_Init()
     info.func = CTA_SearchDropDown_OnClick;
     UIDropDownMenu_AddButton(info);
 
-    info = {};
     info.text = CTA_SHOW_GROUPS_ONLY;
     info.func = CTA_SearchDropDown_OnClick;
     UIDropDownMenu_AddButton(info);
 
-    info = {};
     info.text = CTA_SHOW_PLAYERS_ONLY;
     info.func = CTA_SearchDropDown_OnClick;
     UIDropDownMenu_AddButton(info);
@@ -4121,14 +4197,13 @@ function CTA_PlayerClassDropDown_Init()
     UIDropDownMenu_AddButton(info);
 
     for i=1, CTA_NUM_CLASSES do
-        info = {};
         info.text = CTA_Classes[i];
         info.func = CTA_PlayerClassDropDown_OnClick;
         UIDropDownMenu_AddButton(info);
     end
 end
 
-function CTA_PlayerClassDropDown_OnClick()
-    UIDropDownMenu_SetSelectedID(CTA_PlayerClassDropDown, this:GetID());
+function CTA_PlayerClassDropDown_OnClick(self)
+    UIDropDownMenu_SetSelectedID(CTA_PlayerClassDropDown, self:GetID());
 end
 
