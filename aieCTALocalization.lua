@@ -354,8 +354,8 @@ CTA_VERSION				= "Version";
 CTA_CURRENT_GROUP_CLASSES		= "Classes in group";
 CTA_TOGGLE_MINIMAP			= "minimap";
 CTA_LFG_FRAME				= "Looking for Group";
-CTA_ANNOUNCE_LFG			= "Broadcast this LFG message over the aieCTATesting.";
-CTA_ANNOUNCE_INFO_TEXT			= "This LFG message will be sent over the aieCTATesting only if you are not already advertising a group with Call To Arms.\n\nUse the \'Announce\' button to automatically send your LFG/M message to a channel every 300 seconds and \'/cta announce off\' to stop."; -- MARKER
+CTA_ANNOUNCE_LFG			= "Broadcast this LFG message over the aieCTAChannel.";
+CTA_ANNOUNCE_INFO_TEXT			= "This LFG message will be sent over the aieCTAChannel only if you are not already advertising a group with Call To Arms.\n\nUse the \'Announce\' button to automatically send your LFG/M message to a channel every 300 seconds and \'/cta announce off\' to stop."; -- MARKER
 CTA_AUTO_ANNOUNCE_OFF			= "announce off";
 
 --P7B3

@@ -3,7 +3,12 @@
 ## DefaultState: Enabled
 ## Notes: LFG AddOn for Alea Iacta Est on Earthen Ring
 ## LoadOnDemand: 0
+## OptionalDeps: LibWho-2.0, LibStub, CallbackHandler-1.0
 ## SavedVariables: aieCTA_SavedVariables
 aieCallToArms.xml
 Bindings.xml
 ChatThrottleLib.lua
+
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+libs\LibWho-2.0\LibWho-2.0.lua

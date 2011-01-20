@@ -12,9 +12,9 @@
         @Interface:		40000
 --]]
 
-        CTA_RELEASEVERSION 	= "aieCTA 4.0.7.0";
-        CTA_RELEASENOTE 	= "aieCTA 4.0.7.0";
-        CTA_THIS_VERSION	= 407;
+        CTA_RELEASEVERSION 	= "aieCTA 4.0.8.0";
+        CTA_RELEASENOTE 	= "aieCTA 4.0.8.0";
+        CTA_THIS_VERSION	= 408;
 
 --[[
         E-Mail David Glassbrenner:	lioneljonson@gmail.com
@@ -25,12 +25,8 @@
 --[[
 		---------------------------------------------------------------
 		NOTES ABOUT BUGS:
-		Invalid Link After Search:
-		Line: 1956
-		Line: 2105
+		There is a problem with his addon and CensusPlus from warcraftrealms.com
 
-		Invalid Class On ToolTip:
-		Line: 2177
 		---------------------------------------------------------------
 --]]
 
@@ -173,8 +169,8 @@ CTA_ClassColors[CTA_DEATHKNIGHT] 	= "c41f3b";
 
 CTA_IsAllianceFactionUser			= nil;
 CTA_Reload 							= 1;
-
 CTA_UI 								= {};
+
 CTA_UI.getString = function( uiObj, defaultVal )
     local val = uiObj:GetText();
     if( not val or val == "" ) then
@@ -233,7 +229,7 @@ function CTA_OnLoad(self)
     self:RegisterEvent("CHAT_MSG_CHANNEL");
     --self:RegisterEvent("CHAT_MSG_GUILD");
     self:RegisterEvent("RAID_ROSTER_UPDATE");
-    self:RegisterEvent("WHO_LIST_UPDATE");
+    --self:RegisterEvent("WHO_LIST_UPDATE");
     self:RegisterEvent("VARIABLES_LOADED");
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
 
@@ -265,61 +261,61 @@ function CTA_OnLoad(self)
 
     CTA_myguild = "<"..(GetGuildInfo("player") or "_")..">";
     CTA_myname = UnitName("player")
-    print(CTA_myguild, CTA_myname)
+    print(CTA_myguild, CTA_myname);
+    
+	local function myChatFilter(msg)
+			--If chatFilter returns true, the message is discarded.
+			--If chatFilter returns false the second parameter as non-false/nil, the current message text is replaced with your return
 
-local function myChatFilter(msg)
-        --If chatFilter returns true, the message is discarded.
-        --If chatFilter returns false the second parameter as non-false/nil, the current message text is replaced with your return
+			if( aieCTA_SavedVariables.muteLFGChannel and ( arg9 or "?" ) == CTA_MONITOR_CHANNEL_NAME ) then
+				print("--MUTE--")
+				return;
+			end
 
-        if( aieCTA_SavedVariables.muteLFGChannel and ( arg9 or "?" ) == CTA_MONITOR_CHANNEL_NAME ) then
-            print("--MUTE--")
-            return;
-        end
+			--print("filtering ", this and this:GetName() or "nil", arg2 or "nil", aieCTA_SavedVariables.muteLFGChannel or "nil")
+			--if (true) then
+			--	return false, msg
+			--end
 
-        --print("filtering ", this and this:GetName() or "nil", arg2 or "nil", aieCTA_SavedVariables.muteLFGChannel or "nil")
-        --if (true) then
-        --	return false, msg
-        --end
+			-- R5 : effectively makes blacklist an extended ignore list as well
+			if( arg2 and CTA_IgnoreBlacklisted and CTA_FindInList( arg2, CTA_BlackList ) ) then
+				--CTA_IconMsg( arg2, CTA_BLOCK ); -- left for testing, disabled for R7
+				CTA_LogMsg( CTA_BLOCKED_MESSAGE..arg2, CTA_BLOCK ); -- R7
+				return;
+			end
 
-        -- R5 : effectively makes blacklist an extended ignore list as well
-        if( arg2 and CTA_IgnoreBlacklisted and CTA_FindInList( arg2, CTA_BlackList ) ) then
-            --CTA_IconMsg( arg2, CTA_BLOCK ); -- left for testing, disabled for R7
-            CTA_LogMsg( CTA_BLOCKED_MESSAGE..arg2, CTA_BLOCK ); -- R7
-            return;
-        end
+			if( strsub(event, 1, 16) == "CHAT_MSG_WHISPER" ) then
+				-- R11b7: back to hiding all auto-whispers until R12
+				--[[
+				if( msg and strsub(msg, 1, 5) == "[CTA]" ) then --R11b5: visible to cta recipients as well
+					--CTA_IconMsg( arg2, CTA_MESSAGE );
+					if( arg2 == nil or arg2 ~= UnitName("player") ) then
+						CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
+						return; --R3
+					else
+						CTA_LogMsg( "Message was shown in chat, arg2 = "..arg2, CTA_MESSAGE );
+					end
+				end
+				--]]
+				if( msg and strsub(msg, 2, 4) == "CTA" ) then
+					if( strlen(event) > 16 or arg2 == nil or arg2 == UnitName("player") ) then
+						CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
+						return;
+					end
 
-        if( strsub(event, 1, 16) == "CHAT_MSG_WHISPER" ) then
-            -- R11b7: back to hiding all auto-whispers until R12
-            --[[
-            if( msg and strsub(msg, 1, 5) == "[CTA]" ) then --R11b5: visible to cta recipients as well
-                --CTA_IconMsg( arg2, CTA_MESSAGE );
-                if( arg2 == nil or arg2 ~= UnitName("player") ) then
-                    CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
-                    return; --R3
-                else
-                    CTA_LogMsg( "Message was shown in chat, arg2 = "..arg2, CTA_MESSAGE );
-                end
-            end
-            --]]
-            if( msg and strsub(msg, 2, 4) == "CTA" ) then
-                if( strlen(event) > 16 or arg2 == nil or arg2 == UnitName("player") ) then
-                    CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
-                    return;
-                end
+					CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
+				end
+				--
 
-                CTA_LogMsg( ( arg2 or "nil" )..": "..msg, CTA_MESSAGE );
-            end
-            --
-
-        end
+			end
 
 
-        if ( not msg or strsub(event, 1, 16) ~= "CHAT_MSG_WHISPER" or strsub(msg, 1, 5) ~= "/cta " ) then -- not msg: R3 bug fix
-            if( not msg or not CTA_MainFrame:IsVisible() or not string.find( msg, CTA_AWAY_FROM_KEYBOARD) ) then -- not msg: R3 bug fix
-                return false, msg
-            end
-        end
-end
+			if ( not msg or strsub(event, 1, 16) ~= "CHAT_MSG_WHISPER" or strsub(msg, 1, 5) ~= "/cta " ) then -- not msg: R3 bug fix
+				if( not msg or not CTA_MainFrame:IsVisible() or not string.find( msg, CTA_AWAY_FROM_KEYBOARD) ) then -- not msg: R3 bug fix
+					return false, msg
+				end
+			end
+	end
 
 
 --ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", myChatFilter)
@@ -735,7 +731,7 @@ function CTA_OnUpdate(self, elapsed ) -- Called by XML on Update
                     SetWhoToUI(1);
                     CTA_WhoName = name;
                     SendWho("n-"..name);
-                    --SendWho(name);
+                    SendWho(name);
                     CTA_LogMsg( CTA_VALIDATING_REQUEST_FROM..name );
                     break;
                 end
@@ -4203,7 +4199,7 @@ function CTA_PlayerClassDropDown_Init()
     end
 end
 
+
 function CTA_PlayerClassDropDown_OnClick(self)
     UIDropDownMenu_SetSelectedID(CTA_PlayerClassDropDown, self:GetID());
 end
-

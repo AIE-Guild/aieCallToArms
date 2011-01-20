@@ -2527,8 +2527,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 									if (CTA_AutoAnnounce) then
 										CTA_SlashHandler(CTA_AUTO_ANNOUNCE_OFF);
 									else
-										-- CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." on"); -- MARKER DELETE NEXT LINE AFTER TESTING
-										CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." Auge");
+										CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." on"); -- MARKER DELETE NEXT LINE AFTER TESTING
+										-- CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." Auge");
 									end
 								end
 							</OnClick>
@@ -2774,8 +2774,8 @@ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
 								if (CTA_AutoAnnounce) then
 									CTA_SlashHandler(CTA_AUTO_ANNOUNCE_OFF);
 								else
-									-- CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." on"); -- MARKER DELETE NEXT LINE AFTER TESTING
-									CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." Auge");
+									CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." on"); -- MARKER DELETE NEXT LINE AFTER TESTING
+									-- CTA_SlashHandler(CTA_ANNOUNCE_GROUP.." Auge");
 								end
 							</OnClick>
 						</Scripts>
