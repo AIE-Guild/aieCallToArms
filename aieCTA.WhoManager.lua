@@ -19,11 +19,11 @@ local timeSinceLastPruning = 0;
 local whoQueue = {};
 local urgentWhoQueue = {};
 
+local wholib = wholib or LibStub:GetLibrary("LibWho-2.0",1);
+
 -- tracks the current status of the who manager system
 -- has 2 states: 0 - paused/inactive; 1 - resumed/active.
 local state = 1;
-
-wholib = LibStub:GetLibrary("LibWho-2.0", true); 
 
 -- who manager function package
 CTAWM = {};
@@ -31,6 +31,7 @@ CTAWM = {};
 -- CTA or an XML object must call these functions in OnEvent() and OnUpdate()
 
 CTAWM.onEventVariablesLoaded = function( event )
+    
     if( aieCTA_SavedVariables.CTAWM_Variables == nil ) then
         aieCTA_SavedVariables.CTAWM_Variables = {
             data = {},
@@ -278,9 +279,11 @@ end
 
 CTAWM.CTA_SendWho = function( msg )
 	timeSinceLastWhoSent = 0;
+	wholib = wholib or LibStub:GetLibrary("LibWho-2.0",1);
 	if wholib then
 		wholib:AskWho({query = msg, queue = wholib.WHOLIB_QUEUE_QUIET, callback = CTAWM.onEventWhoListUpdated })
 	else
+		CTA_Println("Old SendWho");
 		SendWho( msg );
 	end
 end

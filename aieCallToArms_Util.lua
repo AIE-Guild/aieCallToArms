@@ -450,27 +450,6 @@ end
 
 --[[
     ------------------------------------------------------------------------------------------------------------------------
-    Player information retrieval
-    Usage: 		CTA_Util.getWhoInfo( Player Name )
-    Returns: 	Name, Guild, Level, Race, Class, Zone, Group
-    Comment:	May need restructuring to allow less obsessive use of /who
-    ------------------------------------------------------------------------------------------------------------------------
---]]
-CTA_Util.getWhoInfo = function( playerName )
-    local numWhos, totalCount = GetNumWhoResults();
-    local name, guild, level, race, class, zone, group;
-    for i=1, totalCount do
-        name, guild, level, race, class, zone, group = GetWhoInfo(i);
-        if( name == playerName ) then
-            return name, guild, level, race, class, zone, group;
-        end
-    end
-end
-
-
-
---[[
-    ------------------------------------------------------------------------------------------------------------------------
     Prefix and Suffix contents of CTA_TRIGGER_LIST with " " and convert them to lower case
     Usage:		CTA_ExpandStrings( Table, Length )
         Table:	Table filled with sub-tables and strings

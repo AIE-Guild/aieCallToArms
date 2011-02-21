@@ -7,7 +7,7 @@
         @Author:		Eike Hanus (R10E)
         @Author:		David Glassbrenner
         @DateCreated: 	26th May 2005
-        @LastUpdate: 	12 January 2011
+        @LastUpdate: 	21 February 2011
         @Release:		Cata
         @Interface:		40000
 --]]
@@ -73,7 +73,6 @@ CTA_PlayerListOffset 			= 0;
 CTA_MyRaidIsOnline 				= nil;
 
 CTA_IgnoreBlacklisted			= 1;
-
 
 local CTA_RAID_TYPE_PVP 		= 1;
 local CTA_RAID_TYPE_PVE 		= 0;
@@ -232,7 +231,6 @@ function CTA_OnLoad(self)
     --self:RegisterEvent("WHO_LIST_UPDATE");
     self:RegisterEvent("VARIABLES_LOADED");
     self:RegisterEvent("PLAYER_ENTERING_WORLD");
-
 
     --Announce AddOn to user
     CTA_Error("-[ CTA "..CTA_RELEASEVERSION.." ]-");
